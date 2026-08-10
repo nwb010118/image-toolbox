@@ -38,7 +38,8 @@ h1 {
 .upload-area {
   position: relative;
   border: 2px dashed #d0d0d5;
-  min-height: 200px;
+  border-radius: 16px;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,10 +55,31 @@ h1 {
   background-color: #eef6ff;
 }
 
+.upload-icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  color: #a0a0a8;
+}
+
+.upload-btn {
+  border-radius: 999px;
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
 .upload-hint {
   color: #6e6e73;
   font-size: 15px;
   margin: 0;
+}
+
+.upload-formats {
+  color: #b0b0b5;
+  font-size: 12px;
+  margin: 10px 0 0;
 }
 
 .visually-hidden {
@@ -70,6 +92,15 @@ h1 {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.compress-warning {
+  color: #9a6700;
+  background: #fff8e5;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  margin: 8px 0;
 }
 
 .error-message {

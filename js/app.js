@@ -12,6 +12,7 @@ var originalPreview = document.getElementById('originalPreview');
 var compressedPreview = document.getElementById('compressedPreview');
 var originalSize = document.getElementById('originalSize');
 var compressedSize = document.getElementById('compressedSize');
+var compressWarning = document.getElementById('compressWarning');
 var downloadBtn = document.getElementById('downloadBtn');
 
 var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -100,6 +101,7 @@ function handleFile(file) {
   previewArea.hidden = false;
   compressedPreview.src = '';
   compressedSize.textContent = '';
+  compressWarning.hidden = true;
   downloadBtn.hidden = true;
 }
 
@@ -151,6 +153,7 @@ compressBtn.addEventListener('click', function () {
     return;
   }
   clearError();
+  compressWarning.hidden = true;
   compressBtn.disabled = true;
   compressBtn.textContent = '압축 중...';
 
@@ -160,6 +163,7 @@ compressBtn.addEventListener('click', function () {
     .then(function (result) {
       compressedPreview.src = result.url;
       compressedSize.textContent = '압축 크기: ' + formatBytes(result.blob.size);
+      compressWarning.hidden = result.blob.size <= selectedFile.size;
       downloadBtn.href = result.url;
 
       var extension = selectedFile.type === 'image/png' ? 'png' : (selectedFile.type === 'image/webp' ? 'webp' : 'jpg');

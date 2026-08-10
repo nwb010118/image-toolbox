@@ -13,7 +13,14 @@
 
     <section class="upload-area" id="uploadArea">
       <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
-      <p class="upload-hint">클릭하거나 파일을 이 영역에 끌어다 놓으세요</p>
+      <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12"></path>
+        <path d="M7 8l5-5 5 5"></path>
+        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+      </svg>
+      <button type="button" class="upload-btn">파일 선택</button>
+      <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
+      <p class="upload-formats">JPG, PNG, WebP 지원 · 최대 20MB</p>
       <div id="errorMessage" class="error-message" hidden></div>
     </section>
 
@@ -33,6 +40,7 @@
         <h2>압축본</h2>
         <img id="compressedPreview" alt="압축된 이미지 미리보기">
         <p id="compressedSize"></p>
+        <p id="compressWarning" class="compress-warning" hidden>⚠ 압축 결과가 원본보다 커요. 품질을 낮추거나 다운로드하지 않는 걸 권장해요.</p>
         <a id="downloadBtn" href="#" download="compressed-image.jpg" hidden>다운로드</a>
       </div>
     </section>
