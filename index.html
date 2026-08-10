@@ -11,8 +11,9 @@
     <h1>이미지 압축 도구</h1>
     <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p>
 
-    <section class="upload-area">
-      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+    <section class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
+      <p class="upload-hint">클릭하거나 파일을 이 영역에 끌어다 놓으세요</p>
       <div id="errorMessage" class="error-message" hidden></div>
     </section>
 

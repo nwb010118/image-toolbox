@@ -1,5 +1,6 @@
 var selectedFile = null;
 
+var uploadArea = document.getElementById('uploadArea');
 var fileInput = document.getElementById('fileInput');
 var errorMessage = document.getElementById('errorMessage');
 var controls = document.getElementById('controls');
@@ -72,8 +73,7 @@ function clearError() {
   errorMessage.hidden = true;
 }
 
-fileInput.addEventListener('change', function (e) {
-  var file = e.target.files[0];
+function handleFile(file) {
   clearError();
   controls.hidden = true;
   previewArea.hidden = true;
@@ -101,6 +101,45 @@ fileInput.addEventListener('change', function (e) {
   compressedPreview.src = '';
   compressedSize.textContent = '';
   downloadBtn.hidden = true;
+}
+
+fileInput.addEventListener('change', function (e) {
+  handleFile(e.target.files[0]);
+});
+
+uploadArea.addEventListener('click', function (e) {
+  if (e.target !== fileInput) {
+    fileInput.click();
+  }
+});
+
+var dragCounter = 0;
+
+uploadArea.addEventListener('dragenter', function (e) {
+  e.preventDefault();
+  dragCounter = dragCounter + 1;
+  uploadArea.classList.add('drag-over');
+});
+
+uploadArea.addEventListener('dragover', function (e) {
+  e.preventDefault();
+});
+
+uploadArea.addEventListener('dragleave', function () {
+  dragCounter = dragCounter - 1;
+  if (dragCounter <= 0) {
+    dragCounter = 0;
+    uploadArea.classList.remove('drag-over');
+  }
+});
+
+uploadArea.addEventListener('drop', function (e) {
+  e.preventDefault();
+  dragCounter = 0;
+  uploadArea.classList.remove('drag-over');
+  var file = e.dataTransfer.files[0];
+  fileInput.value = '';
+  handleFile(file);
 });
 
 qualitySlider.addEventListener('input', function () {

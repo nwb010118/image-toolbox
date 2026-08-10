@@ -35,6 +35,43 @@ h1 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
+.upload-area {
+  position: relative;
+  border: 2px dashed #d0d0d5;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.upload-area.drag-over {
+  border-color: #0071e3;
+  background-color: #eef6ff;
+}
+
+.upload-hint {
+  color: #6e6e73;
+  font-size: 15px;
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .error-message {
   color: #d70015;
   margin-top: 12px;
