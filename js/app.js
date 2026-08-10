@@ -15,6 +15,11 @@ function compressImage(file, quality) {
       canvas.height = img.naturalHeight;
 
       var ctx = canvas.getContext('2d');
+      if (!ctx) {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+        return;
+      }
       ctx.drawImage(img, 0, 0);
 
       canvas.toBlob(
