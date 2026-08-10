@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이미지 압축 도구 - 브라우저에서 바로 사진 용량 줄이기</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>이미지 압축 도구</h1>
+    <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p>
+
+    <section class="upload-area">
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+      <div id="errorMessage" class="error-message" hidden></div>
+    </section>
+
+    <section class="controls" id="controls" hidden>
+      <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
+      <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      <button id="compressBtn">압축하기</button>
+    </section>
+
+    <section class="preview-area" id="previewArea" hidden>
+      <div class="preview-box">
+        <h2>원본</h2>
+        <img id="originalPreview" alt="원본 이미지 미리보기">
+        <p id="originalSize"></p>
+      </div>
+      <div class="preview-box">
+        <h2>압축본</h2>
+        <img id="compressedPreview" alt="압축된 이미지 미리보기">
+        <p id="compressedSize"></p>
+        <a id="downloadBtn" href="#" download="compressed-image.jpg" hidden>다운로드</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/imageTools.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
