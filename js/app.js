@@ -1,3 +1,20 @@
+var selectedFile = null;
+
+var fileInput = document.getElementById('fileInput');
+var errorMessage = document.getElementById('errorMessage');
+var controls = document.getElementById('controls');
+var qualitySlider = document.getElementById('qualitySlider');
+var qualityValue = document.getElementById('qualityValue');
+var compressBtn = document.getElementById('compressBtn');
+var previewArea = document.getElementById('previewArea');
+var originalPreview = document.getElementById('originalPreview');
+var compressedPreview = document.getElementById('compressedPreview');
+var originalSize = document.getElementById('originalSize');
+var compressedSize = document.getElementById('compressedSize');
+var downloadBtn = document.getElementById('downloadBtn');
+
+var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+
 function compressImage(file, quality) {
   return new Promise(function (resolve, reject) {
     var outputType = getOutputMimeType(file.type);
@@ -44,3 +61,77 @@ function compressImage(file, quality) {
     img.src = objectUrl;
   });
 }
+
+function showError(message) {
+  errorMessage.textContent = message;
+  errorMessage.hidden = false;
+}
+
+function clearError() {
+  errorMessage.textContent = '';
+  errorMessage.hidden = true;
+}
+
+fileInput.addEventListener('change', function (e) {
+  var file = e.target.files[0];
+  clearError();
+  controls.hidden = true;
+  previewArea.hidden = true;
+  selectedFile = null;
+
+  if (!file) {
+    return;
+  }
+
+  if (!isSupportedImageType(file.type)) {
+    showError('지원하지 않는 파일 형식입니다. JPG, PNG, WebP 파일만 업로드할 수 있어요.');
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    showError('파일이 너무 큽니다 (최대 20MB). 더 작은 파일을 선택해주세요.');
+    return;
+  }
+
+  selectedFile = file;
+  originalPreview.src = URL.createObjectURL(file);
+  originalSize.textContent = '원본 크기: ' + formatBytes(file.size);
+  controls.hidden = false;
+  previewArea.hidden = false;
+  compressedPreview.src = '';
+  compressedSize.textContent = '';
+  downloadBtn.hidden = true;
+});
+
+qualitySlider.addEventListener('input', function () {
+  qualityValue.textContent = qualitySlider.value;
+});
+
+compressBtn.addEventListener('click', function () {
+  if (!selectedFile) {
+    return;
+  }
+  clearError();
+  compressBtn.disabled = true;
+  compressBtn.textContent = '압축 중...';
+
+  var quality = Number(qualitySlider.value) / 100;
+
+  compressImage(selectedFile, quality)
+    .then(function (result) {
+      compressedPreview.src = result.url;
+      compressedSize.textContent = '압축 크기: ' + formatBytes(result.blob.size);
+      downloadBtn.href = result.url;
+
+      var extension = selectedFile.type === 'image/png' ? 'png' : (selectedFile.type === 'image/webp' ? 'webp' : 'jpg');
+      downloadBtn.download = 'compressed-image.' + extension;
+      downloadBtn.hidden = false;
+    })
+    .catch(function (err) {
+      showError(err.message);
+    })
+    .then(function () {
+      compressBtn.disabled = false;
+      compressBtn.textContent = '압축하기';
+    });
+});
