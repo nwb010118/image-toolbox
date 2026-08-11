@@ -25,10 +25,9 @@ var originalImageHeight = 0;
 
 var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
-function compressImage(file, quality) {
+function processImage(file, options) {
   return new Promise(function (resolve, reject) {
-    var outputType = getOutputMimeType(file.type);
-    if (!outputType) {
+    if (!options.outputMimeType) {
       reject(new Error('지원하지 않는 파일 형식입니다.'));
       return;
     }
@@ -37,9 +36,11 @@ function compressImage(file, quality) {
     var objectUrl = URL.createObjectURL(file);
 
     img.onload = function () {
+      var dimensions = resolveDimensions(img.naturalWidth, img.naturalHeight, options.targetWidth, options.targetHeight);
+
       var canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
+      canvas.width = dimensions.width;
+      canvas.height = dimensions.height;
 
       var ctx = canvas.getContext('2d');
       if (!ctx) {
@@ -47,19 +48,24 @@ function compressImage(file, quality) {
         reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
         return;
       }
-      ctx.drawImage(img, 0, 0);
+
+      if (options.outputMimeType === 'image/jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
 
       canvas.toBlob(
         function (blob) {
           URL.revokeObjectURL(objectUrl);
           if (!blob) {
-            reject(new Error('이미지 압축에 실패했습니다.'));
+            reject(new Error('이미지 처리에 실패했습니다.'));
             return;
           }
-          resolve({ blob: blob, url: URL.createObjectURL(blob) });
+          resolve({ blob: blob, url: URL.createObjectURL(blob), width: dimensions.width, height: dimensions.height });
         },
-        outputType,
-        quality
+        options.outputMimeType,
+        options.quality
       );
     };
 
@@ -176,20 +182,38 @@ compressBtn.addEventListener('click', function () {
   }
   clearError();
   compressWarning.hidden = true;
+
+  var widthInput = readDimensionInput(resizeWidth);
+  var heightInput = readDimensionInput(resizeHeight);
+
+  if (isNaN(widthInput) || isNaN(heightInput)) {
+    showError('가로/세로 값은 숫자로 입력해주세요.');
+    return;
+  }
+  if ((widthInput !== null && !isValidDimensionInput(widthInput)) || (heightInput !== null && !isValidDimensionInput(heightInput))) {
+    showError('가로/세로 값은 1~' + MAX_DIMENSION + 'px 사이여야 합니다.');
+    return;
+  }
+
+  var outputMimeType = resolveOutputMimeType(selectedFile.type, formatSelect.value);
+
   compressBtn.disabled = true;
-  compressBtn.textContent = '압축 중...';
+  compressBtn.textContent = '처리 중...';
 
   var quality = Number(qualitySlider.value) / 100;
 
-  compressImage(selectedFile, quality)
+  processImage(selectedFile, {
+    quality: quality,
+    targetWidth: widthInput,
+    targetHeight: heightInput,
+    outputMimeType: outputMimeType
+  })
     .then(function (result) {
       compressedPreview.src = result.url;
-      compressedSize.textContent = '압축 크기: ' + formatBytes(result.blob.size);
+      compressedSize.textContent = '결과 크기: ' + formatBytes(result.blob.size) + ' (' + result.width + '×' + result.height + ')';
       compressWarning.hidden = result.blob.size <= selectedFile.size;
       downloadBtn.href = result.url;
-
-      var extension = selectedFile.type === 'image/png' ? 'png' : (selectedFile.type === 'image/webp' ? 'webp' : 'jpg');
-      downloadBtn.download = 'compressed-image.' + extension;
+      downloadBtn.download = 'processed-image.' + getExtensionForMimeType(outputMimeType);
       downloadBtn.hidden = false;
     })
     .catch(function (err) {
@@ -197,7 +221,7 @@ compressBtn.addEventListener('click', function () {
     })
     .then(function () {
       compressBtn.disabled = false;
-      compressBtn.textContent = '압축하기';
+      compressBtn.textContent = '적용하기';
     });
 });
 
