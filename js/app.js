@@ -15,6 +15,14 @@ var compressedSize = document.getElementById('compressedSize');
 var compressWarning = document.getElementById('compressWarning');
 var downloadBtn = document.getElementById('downloadBtn');
 
+var resizeWidth = document.getElementById('resizeWidth');
+var resizeHeight = document.getElementById('resizeHeight');
+var maintainAspectRatio = document.getElementById('maintainAspectRatio');
+var formatSelect = document.getElementById('formatSelect');
+
+var originalImageWidth = 0;
+var originalImageHeight = 0;
+
 var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
 function compressImage(file, quality) {
@@ -79,6 +87,10 @@ function handleFile(file) {
   controls.hidden = true;
   previewArea.hidden = true;
   selectedFile = null;
+  originalImageWidth = 0;
+  originalImageHeight = 0;
+  resizeWidth.value = '';
+  resizeHeight.value = '';
 
   if (!file) {
     return;
@@ -104,6 +116,16 @@ function handleFile(file) {
   compressWarning.hidden = true;
   downloadBtn.hidden = true;
 }
+
+originalPreview.addEventListener('load', function () {
+  if (!selectedFile) {
+    return;
+  }
+  originalImageWidth = originalPreview.naturalWidth;
+  originalImageHeight = originalPreview.naturalHeight;
+  resizeWidth.value = originalImageWidth;
+  resizeHeight.value = originalImageHeight;
+});
 
 fileInput.addEventListener('change', function (e) {
   handleFile(e.target.files[0]);
@@ -177,4 +199,35 @@ compressBtn.addEventListener('click', function () {
       compressBtn.disabled = false;
       compressBtn.textContent = '압축하기';
     });
+});
+
+function readDimensionInput(inputEl) {
+  var raw = inputEl.value.trim();
+  if (raw === '') {
+    return null;
+  }
+  var num = Number(raw);
+  return isNaN(num) ? NaN : num;
+}
+
+resizeWidth.addEventListener('input', function () {
+  if (!maintainAspectRatio.checked || !originalImageWidth || !originalImageHeight) {
+    return;
+  }
+  var w = Number(resizeWidth.value);
+  if (!w || isNaN(w)) {
+    return;
+  }
+  resizeHeight.value = calculateAspectRatioHeight(originalImageWidth, originalImageHeight, w);
+});
+
+resizeHeight.addEventListener('input', function () {
+  if (!maintainAspectRatio.checked || !originalImageWidth || !originalImageHeight) {
+    return;
+  }
+  var h = Number(resizeHeight.value);
+  if (!h || isNaN(h)) {
+    return;
+  }
+  resizeWidth.value = calculateAspectRatioWidth(originalImageWidth, originalImageHeight, h);
 });
