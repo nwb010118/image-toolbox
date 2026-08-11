@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF 변환 도구 - 이미지를 PDF로, PDF를 이미지로</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>PDF 변환 도구</h1>
+    <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p>
+    <p class="tool-nav"><a href="index.html">← 이미지 압축 도구</a></p>
+
+    <section class="pdf-section">
+      <h2>이미지 → PDF</h2>
+      <section class="upload-area" id="imgToPdfUploadArea">
+        <input type="file" id="imgToPdfFileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp" multiple>
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="M7 8l5-5 5 5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        <button type="button" class="upload-btn">파일 선택 (여러 장 가능)</button>
+        <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
+        <p class="upload-formats">JPG, PNG, WebP 지원 · 파일당 최대 20MB · 최대 50장</p>
+        <div id="imgToPdfError" class="error-message" hidden></div>
+      </section>
+
+      <ul id="imgToPdfFileList" class="file-list"></ul>
+
+      <button id="imgToPdfBtn" hidden>PDF로 변환</button>
+      <a id="imgToPdfDownloadBtn" class="btn" href="#" download="images.pdf" hidden>PDF 다운로드</a>
+    </section>
+
+    <section class="pdf-section">
+      <h2>PDF → 이미지</h2>
+      <section class="upload-area" id="pdfToImgUploadArea">
+        <input type="file" id="pdfToImgFileInput" class="visually-hidden" accept="application/pdf,.pdf">
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="M7 8l5-5 5 5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        <button type="button" class="upload-btn">PDF 파일 선택</button>
+        <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
+        <p class="upload-formats">PDF 지원 · 최대 20MB · 최대 300페이지</p>
+        <div id="pdfToImgError" class="error-message" hidden></div>
+      </section>
+
+      <p id="pdfToImgProgress" class="pdf-progress" hidden></p>
+      <div id="pdfToImgPages" class="pdf-page-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
+  <script src="js/imageTools.js"></script>
+  <script src="js/pdfTools.js"></script>
+  <script src="js/pdfApp.js"></script>
+</body>
+</html>
