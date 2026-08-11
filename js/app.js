@@ -22,6 +22,7 @@ var formatSelect = document.getElementById('formatSelect');
 
 var originalImageWidth = 0;
 var originalImageHeight = 0;
+var lastResultUrl = null;
 
 var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
@@ -97,6 +98,10 @@ function handleFile(file) {
   originalImageHeight = 0;
   resizeWidth.value = '';
   resizeHeight.value = '';
+  if (lastResultUrl) {
+    URL.revokeObjectURL(lastResultUrl);
+    lastResultUrl = null;
+  }
 
   if (!file) {
     return;
@@ -130,19 +135,9 @@ originalPreview.addEventListener('load', function () {
   originalImageWidth = originalPreview.naturalWidth;
   originalImageHeight = originalPreview.naturalHeight;
 
-  var prefillWidth = originalImageWidth;
-  var prefillHeight = originalImageHeight;
-  if (originalImageWidth > MAX_DIMENSION || originalImageHeight > MAX_DIMENSION) {
-    if (originalImageWidth / MAX_DIMENSION >= originalImageHeight / MAX_DIMENSION) {
-      prefillWidth = MAX_DIMENSION;
-      prefillHeight = calculateAspectRatioHeight(originalImageWidth, originalImageHeight, MAX_DIMENSION);
-    } else {
-      prefillHeight = MAX_DIMENSION;
-      prefillWidth = calculateAspectRatioWidth(originalImageWidth, originalImageHeight, MAX_DIMENSION);
-    }
-  }
-  resizeWidth.value = prefillWidth;
-  resizeHeight.value = prefillHeight;
+  var prefill = clampDimensionsToMax(originalImageWidth, originalImageHeight);
+  resizeWidth.value = prefill.width;
+  resizeHeight.value = prefill.height;
 });
 
 fileInput.addEventListener('change', function (e) {
@@ -207,6 +202,12 @@ compressBtn.addEventListener('click', function () {
     return;
   }
 
+  var resolved = resolveDimensions(originalImageWidth, originalImageHeight, widthInput, heightInput);
+  if (!isValidDimensionInput(resolved.width) || !isValidDimensionInput(resolved.height)) {
+    showError('가로/세로 값은 1~' + MAX_DIMENSION + 'px 사이여야 합니다.');
+    return;
+  }
+
   var outputMimeType = resolveOutputMimeType(selectedFile.type, formatSelect.value);
 
   compressBtn.disabled = true;
@@ -221,11 +222,15 @@ compressBtn.addEventListener('click', function () {
     outputMimeType: outputMimeType
   })
     .then(function (result) {
+      if (lastResultUrl) {
+        URL.revokeObjectURL(lastResultUrl);
+      }
+      lastResultUrl = result.url;
       compressedPreview.src = result.url;
       compressedSize.textContent = '결과 크기: ' + formatBytes(result.blob.size) + ' (' + result.width + '×' + result.height + ')';
       compressWarning.hidden = result.blob.size <= selectedFile.size;
       downloadBtn.href = result.url;
-      downloadBtn.download = 'processed-image.' + getExtensionForMimeType(outputMimeType);
+      downloadBtn.download = 'processed-image.' + getExtensionForMimeType(result.blob.type);
       downloadBtn.hidden = false;
     })
     .catch(function (err) {

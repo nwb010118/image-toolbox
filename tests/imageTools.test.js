@@ -9,6 +9,7 @@ const {
   resolveOutputMimeType,
   getExtensionForMimeType,
   isValidDimensionInput,
+  clampDimensionsToMax,
   MAX_DIMENSION
 } = require('../js/imageTools.js');
 
@@ -120,6 +121,22 @@ test('isValidDimensionInput rejects out-of-range or non-numeric values', () => {
   assert.strictEqual(isValidDimensionInput(-5), false);
   assert.strictEqual(isValidDimensionInput(MAX_DIMENSION + 1), false);
   assert.strictEqual(isValidDimensionInput(NaN), false);
+});
+
+test('clampDimensionsToMax returns unchanged dimensions when within range', () => {
+  assert.deepStrictEqual(clampDimensionsToMax(1000, 500), { width: 1000, height: 500 });
+});
+
+test('clampDimensionsToMax scales down wide images to MAX_DIMENSION width', () => {
+  assert.deepStrictEqual(clampDimensionsToMax(16000, 8000), { width: 8000, height: 4000 });
+});
+
+test('clampDimensionsToMax scales down tall images to MAX_DIMENSION height', () => {
+  assert.deepStrictEqual(clampDimensionsToMax(4000, 16000), { width: 2000, height: 8000 });
+});
+
+test('clampDimensionsToMax scales down square oversized images', () => {
+  assert.deepStrictEqual(clampDimensionsToMax(10000, 10000), { width: 8000, height: 8000 });
 });
 
 if (process.exitCode !== 1) {

@@ -76,6 +76,16 @@
     return typeof value === 'number' && !isNaN(value) && value >= 1 && value <= MAX_DIMENSION;
   }
 
+  function clampDimensionsToMax(width, height) {
+    if (width <= MAX_DIMENSION && height <= MAX_DIMENSION) {
+      return { width: width, height: height };
+    }
+    if (width >= height) {
+      return { width: MAX_DIMENSION, height: calculateAspectRatioHeight(width, height, MAX_DIMENSION) };
+    }
+    return { width: calculateAspectRatioWidth(width, height, MAX_DIMENSION), height: MAX_DIMENSION };
+  }
+
   exports.formatBytes = formatBytes;
   exports.isSupportedImageType = isSupportedImageType;
   exports.getOutputMimeType = getOutputMimeType;
@@ -86,4 +96,5 @@
   exports.resolveOutputMimeType = resolveOutputMimeType;
   exports.getExtensionForMimeType = getExtensionForMimeType;
   exports.isValidDimensionInput = isValidDimensionInput;
+  exports.clampDimensionsToMax = clampDimensionsToMax;
 })(typeof module !== 'undefined' ? module.exports : window);
