@@ -129,8 +129,20 @@ originalPreview.addEventListener('load', function () {
   }
   originalImageWidth = originalPreview.naturalWidth;
   originalImageHeight = originalPreview.naturalHeight;
-  resizeWidth.value = originalImageWidth;
-  resizeHeight.value = originalImageHeight;
+
+  var prefillWidth = originalImageWidth;
+  var prefillHeight = originalImageHeight;
+  if (originalImageWidth > MAX_DIMENSION || originalImageHeight > MAX_DIMENSION) {
+    if (originalImageWidth / MAX_DIMENSION >= originalImageHeight / MAX_DIMENSION) {
+      prefillWidth = MAX_DIMENSION;
+      prefillHeight = calculateAspectRatioHeight(originalImageWidth, originalImageHeight, MAX_DIMENSION);
+    } else {
+      prefillHeight = MAX_DIMENSION;
+      prefillWidth = calculateAspectRatioWidth(originalImageWidth, originalImageHeight, MAX_DIMENSION);
+    }
+  }
+  resizeWidth.value = prefillWidth;
+  resizeHeight.value = prefillHeight;
 });
 
 fileInput.addEventListener('change', function (e) {
@@ -186,7 +198,7 @@ compressBtn.addEventListener('click', function () {
   var widthInput = readDimensionInput(resizeWidth);
   var heightInput = readDimensionInput(resizeHeight);
 
-  if (isNaN(widthInput) || isNaN(heightInput)) {
+  if ((widthInput !== null && isNaN(widthInput)) || (heightInput !== null && isNaN(heightInput))) {
     showError('가로/세로 값은 숫자로 입력해주세요.');
     return;
   }
