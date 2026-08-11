@@ -1,3 +1,14 @@
+:root {
+  --color-bg: #eef9fb;
+  --color-accent: #14b8a6;
+  --color-accent-dark: #0d9488;
+  --color-accent-soft: #ccfbf1;
+  --color-surface: #ffffff;
+  --color-border: #a7e8df;
+  --color-text: #1d1d1f;
+  --color-text-secondary: #5b6b6a;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,8 +21,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
   margin: 0;
   padding: 0;
-  background: #f5f5f7;
-  color: #1d1d1f;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .container {
@@ -23,25 +34,28 @@ body {
 h1 {
   font-size: 28px;
   margin-bottom: 4px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--color-accent);
+  display: inline-block;
 }
 
 .subtitle {
-  color: #6e6e73;
-  margin-top: 0;
+  color: var(--color-text-secondary);
+  margin-top: 12px;
   margin-bottom: 24px;
 }
 
 .upload-area, .controls, .preview-area {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(20, 184, 166, 0.12);
 }
 
 .upload-area {
   position: relative;
-  border: 2px dashed #d0d0d5;
+  border: 2px dashed var(--color-border);
   border-radius: 16px;
   min-height: 96px;
   display: flex;
@@ -55,15 +69,15 @@ h1 {
 }
 
 .upload-area.drag-over {
-  border-color: #0071e3;
-  background-color: #eef6ff;
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-soft);
 }
 
 .upload-icon {
   width: 28px;
   height: 28px;
   margin-bottom: 8px;
-  color: #a0a0a8;
+  color: var(--color-accent);
 }
 
 .upload-btn {
@@ -75,13 +89,13 @@ h1 {
 }
 
 .upload-hint {
-  color: #6e6e73;
+  color: var(--color-text-secondary);
   font-size: 15px;
   margin: 0;
 }
 
 .upload-formats {
-  color: #b0b0b5;
+  color: var(--color-text-secondary);
   font-size: 12px;
   margin: 10px 0 0;
 }
@@ -123,7 +137,7 @@ h1 {
 }
 
 button, #downloadBtn, .btn {
-  background: #0071e3;
+  background: var(--color-accent);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -132,6 +146,10 @@ button, #downloadBtn, .btn {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+}
+
+button:hover, #downloadBtn:hover, .btn:hover {
+  background: var(--color-accent-dark);
 }
 
 .preview-area {
@@ -170,14 +188,14 @@ button, #downloadBtn, .btn {
   display: flex;
   flex-direction: column;
   font-size: 13px;
-  color: #6e6e73;
+  color: var(--color-text-secondary);
   gap: 4px;
 }
 
 .resize-label input[type="number"] {
   width: 90px;
   padding: 8px;
-  border: 1px solid #d0d0d5;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 14px;
 }
@@ -187,7 +205,7 @@ button, #downloadBtn, .btn {
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #1d1d1f;
+  color: var(--color-text);
   margin-bottom: 8px;
 }
 
@@ -196,7 +214,7 @@ button, #downloadBtn, .btn {
   width: 100%;
   max-width: 200px;
   padding: 8px;
-  border: 1px solid #d0d0d5;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 14px;
   margin-bottom: 16px;
@@ -207,7 +225,7 @@ button, #downloadBtn, .btn {
 }
 
 .tool-nav a {
-  color: #0071e3;
+  color: var(--color-accent);
   text-decoration: none;
   font-size: 14px;
 }
@@ -225,9 +243,9 @@ button, #downloadBtn, .btn {
   list-style: none;
   padding: 0;
   margin: 12px 0;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(20, 184, 166, 0.12);
 }
 
 .file-list:empty {
@@ -236,7 +254,7 @@ button, #downloadBtn, .btn {
 
 .file-list li {
   padding: 10px 16px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border);
   font-size: 14px;
   display: flex;
   justify-content: space-between;
@@ -247,7 +265,7 @@ button, #downloadBtn, .btn {
 }
 
 .pdf-progress {
-  color: #6e6e73;
+  color: var(--color-text-secondary);
   font-size: 14px;
   margin: 12px 0;
 }
@@ -259,10 +277,10 @@ button, #downloadBtn, .btn {
 }
 
 .pdf-page-item {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(20, 184, 166, 0.12);
   width: 160px;
   text-align: center;
 }
@@ -272,7 +290,7 @@ button, #downloadBtn, .btn {
   border-radius: 8px;
   display: block;
   margin-bottom: 8px;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border);
 }
 
 .pdf-page-item a {
@@ -281,11 +299,11 @@ button, #downloadBtn, .btn {
 }
 
 .info-section {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(20, 184, 166, 0.12);
 }
 
 .info-section h2 {
@@ -294,12 +312,16 @@ button, #downloadBtn, .btn {
 }
 
 .info-section details {
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border);
   padding: 12px 0;
 }
 
 .info-section details:first-of-type {
   border-top: none;
+}
+
+.info-section details[open] {
+  background: var(--color-accent-soft);
 }
 
 .info-section summary {
@@ -308,7 +330,7 @@ button, #downloadBtn, .btn {
 }
 
 .info-section summary + p {
-  color: #6e6e73;
+  color: var(--color-text-secondary);
   margin: 10px 0 0;
 }
 
@@ -319,10 +341,11 @@ button, #downloadBtn, .btn {
 }
 
 .site-footer a {
-  color: #6e6e73;
+  color: var(--color-text-secondary);
   text-decoration: none;
 }
 
 .site-footer a:hover {
   text-decoration: underline;
+  color: var(--color-accent);
 }
