@@ -77,7 +77,27 @@
         <a id="downloadBtn" href="#" download="compressed-image.jpg" hidden>다운로드</a>
       </div>
     </section>
+
+    <section class="info-section">
+      <h2>자주 묻는 질문</h2>
+      <details>
+        <summary>업로드한 사진이 서버에 저장되나요?</summary>
+        <p>아니요. 이 도구는 이미지를 어떤 서버로도 전송하지 않습니다. 브라우저의 Canvas API를 이용해 기기 안에서만 압축이 이루어지고, 페이지를 벗어나면 처리 결과는 사라집니다.</p>
+      </details>
+      <details>
+        <summary>어떤 파일 형식을 지원하나요?</summary>
+        <p>JPG, PNG, WebP 형식의 이미지를 업로드할 수 있고, 세 형식 중 원하는 형식으로 저장할 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>압축 품질은 어떻게 설정하나요?</summary>
+        <p>슬라이더로 10~100% 사이 품질을 조절할 수 있습니다. 값이 낮을수록 파일 크기는 작아지지만 화질이 떨어집니다. 원본보다 결과가 커지는 경우 저장 전에 경고가 표시됩니다.</p>
+      </details>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <a href="privacy.html">개인정보처리방침</a>
+  </footer>
 
   <script src="js/imageTools.js"></script>
   <script src="js/app.js"></script>
