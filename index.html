@@ -27,7 +27,29 @@
     <section class="controls" id="controls" hidden>
       <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
       <input type="range" id="qualitySlider" min="10" max="100" value="80">
-      <button id="compressBtn">압축하기</button>
+
+      <div class="resize-fields">
+        <label class="resize-label">가로(px)
+          <input type="number" id="resizeWidth" min="1" max="8000">
+        </label>
+        <label class="resize-label">세로(px)
+          <input type="number" id="resizeHeight" min="1" max="8000">
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="maintainAspectRatio" checked>
+          비율 유지
+        </label>
+      </div>
+
+      <label for="formatSelect">출력 형식</label>
+      <select id="formatSelect">
+        <option value="original">원본과 동일</option>
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WebP</option>
+      </select>
+
+      <button id="compressBtn">적용하기</button>
     </section>
 
     <section class="preview-area" id="previewArea" hidden>
@@ -37,7 +59,7 @@
         <p id="originalSize"></p>
       </div>
       <div class="preview-box">
-        <h2>압축본</h2>
+        <h2>결과</h2>
         <img id="compressedPreview" alt="압축된 이미지 미리보기">
         <p id="compressedSize"></p>
         <p id="compressWarning" class="compress-warning" hidden>⚠ 압축 결과가 원본보다 커요. 품질을 낮추거나 다운로드하지 않는 걸 권장해요.</p>
