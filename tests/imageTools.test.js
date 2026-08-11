@@ -1,5 +1,16 @@
 const assert = require('assert');
-const { formatBytes, isSupportedImageType, getOutputMimeType } = require('../js/imageTools.js');
+const {
+  formatBytes,
+  isSupportedImageType,
+  getOutputMimeType,
+  calculateAspectRatioHeight,
+  calculateAspectRatioWidth,
+  resolveDimensions,
+  resolveOutputMimeType,
+  getExtensionForMimeType,
+  isValidDimensionInput,
+  MAX_DIMENSION
+} = require('../js/imageTools.js');
 
 function test(name, fn) {
   try {
@@ -42,6 +53,73 @@ test('getOutputMimeType returns the same type for supported input', () => {
 
 test('getOutputMimeType returns null for unsupported input', () => {
   assert.strictEqual(getOutputMimeType('image/gif'), null);
+});
+
+test('calculateAspectRatioHeight scales height proportionally to new width', () => {
+  assert.strictEqual(calculateAspectRatioHeight(1000, 500, 400), 200);
+});
+
+test('calculateAspectRatioHeight rounds to nearest integer', () => {
+  assert.strictEqual(calculateAspectRatioHeight(1000, 333, 700), 233);
+});
+
+test('calculateAspectRatioWidth scales width proportionally to new height', () => {
+  assert.strictEqual(calculateAspectRatioWidth(1000, 500, 100), 200);
+});
+
+test('resolveDimensions keeps original size when neither dimension given', () => {
+  const result = resolveDimensions(1000, 500, null, null);
+  assert.deepStrictEqual(result, { width: 1000, height: 500 });
+});
+
+test('resolveDimensions uses both values as-is when both given (free stretch)', () => {
+  const result = resolveDimensions(1000, 500, 300, 300);
+  assert.deepStrictEqual(result, { width: 300, height: 300 });
+});
+
+test('resolveDimensions derives height from width when only width given', () => {
+  const result = resolveDimensions(1000, 500, 400, null);
+  assert.deepStrictEqual(result, { width: 400, height: 200 });
+});
+
+test('resolveDimensions derives width from height when only height given', () => {
+  const result = resolveDimensions(1000, 500, null, 100);
+  assert.deepStrictEqual(result, { width: 200, height: 100 });
+});
+
+test('resolveOutputMimeType passes through original type when format is "original"', () => {
+  assert.strictEqual(resolveOutputMimeType('image/png', 'original'), 'image/png');
+});
+
+test('resolveOutputMimeType returns explicitly selected supported format', () => {
+  assert.strictEqual(resolveOutputMimeType('image/png', 'image/jpeg'), 'image/jpeg');
+});
+
+test('resolveOutputMimeType returns null for unsupported explicit format', () => {
+  assert.strictEqual(resolveOutputMimeType('image/png', 'image/gif'), null);
+});
+
+test('getExtensionForMimeType maps known mime types to extensions', () => {
+  assert.strictEqual(getExtensionForMimeType('image/jpeg'), 'jpg');
+  assert.strictEqual(getExtensionForMimeType('image/png'), 'png');
+  assert.strictEqual(getExtensionForMimeType('image/webp'), 'webp');
+});
+
+test('getExtensionForMimeType falls back to jpg for unknown mime type', () => {
+  assert.strictEqual(getExtensionForMimeType('image/gif'), 'jpg');
+});
+
+test('isValidDimensionInput accepts values within 1..MAX_DIMENSION', () => {
+  assert.strictEqual(isValidDimensionInput(1), true);
+  assert.strictEqual(isValidDimensionInput(MAX_DIMENSION), true);
+  assert.strictEqual(isValidDimensionInput(1234), true);
+});
+
+test('isValidDimensionInput rejects out-of-range or non-numeric values', () => {
+  assert.strictEqual(isValidDimensionInput(0), false);
+  assert.strictEqual(isValidDimensionInput(-5), false);
+  assert.strictEqual(isValidDimensionInput(MAX_DIMENSION + 1), false);
+  assert.strictEqual(isValidDimensionInput(NaN), false);
 });
 
 if (process.exitCode !== 1) {
