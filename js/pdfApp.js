@@ -33,6 +33,11 @@ function handleImageFiles(files) {
   clearImgToPdfError();
   imgToPdfBtn.hidden = true;
   imgToPdfDownloadBtn.hidden = true;
+  if (lastPdfUrl) {
+    URL.revokeObjectURL(lastPdfUrl);
+    lastPdfUrl = null;
+  }
+  imgToPdfDownloadBtn.removeAttribute('href');
   selectedImageFiles = [];
   renderImgToPdfFileList();
 
@@ -196,6 +201,7 @@ var pdfToImgProgress = document.getElementById('pdfToImgProgress');
 var pdfToImgPages = document.getElementById('pdfToImgPages');
 
 var pdfPageUrls = [];
+var isProcessingPdf = false;
 
 function showPdfToImgError(message) {
   pdfToImgError.textContent = message;
@@ -317,6 +323,12 @@ function handlePdfFile(file) {
     showPdfToImgError('PDF 처리 기능을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
     return;
   }
+  if (isProcessingPdf) {
+    showPdfToImgError('이전 PDF를 처리하는 중입니다. 완료된 후 다시 시도해주세요.');
+    return;
+  }
+
+  isProcessingPdf = true;
 
   processPdfFile(file)
     .then(function () {
@@ -325,6 +337,9 @@ function handlePdfFile(file) {
     .catch(function (err) {
       pdfToImgProgress.hidden = true;
       showPdfToImgError(err.message);
+    })
+    .then(function () {
+      isProcessingPdf = false;
     });
 }
 
