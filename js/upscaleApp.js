@@ -67,7 +67,7 @@ function updateUpscaleModeAvailability(width, height) {
     var radio = upscaleModeRadios[i];
     var mode = radio.value;
 
-    if (mode === '2x' || mode === '4x') {
+    if (!RESOLUTION_PRESETS[mode]) {
       continue;
     }
 
@@ -94,11 +94,17 @@ function updateUpscaleModeAvailability(width, height) {
 }
 
 function handleUpscaleFile(file) {
+  if (upscaleBtn.disabled) {
+    showUpscaleError('처리 중에는 새 이미지를 선택할 수 없습니다. 완료 후 다시 시도해주세요.');
+    return;
+  }
+
   clearUpscaleError();
   upscaleControls.hidden = true;
   upscalePreviewArea.hidden = true;
   upscaleResultPreview.hidden = true;
   upscaleDownloadBtn.hidden = true;
+  upscaleResultHeading.textContent = '결과';
   selectedUpscaleFile = null;
   selectedUpscaleDataUrl = null;
   selectedUpscaleWidth = null;
@@ -238,6 +244,13 @@ upscaleBtn.addEventListener('click', function () {
   var mode = checkedRadio.value;
   var plan = getUpscalePlan(mode, selectedUpscaleWidth, selectedUpscaleHeight);
 
+  if (!plan.reachable) {
+    showUpscaleError('이 이미지로는 선택한 해상도에 도달할 수 없습니다.');
+    return;
+  }
+
+  var runFileName = selectedUpscaleFile.name;
+
   upscaleBtn.disabled = true;
   upscaleBtn.textContent = '처리 중...';
   upscaleProgress.textContent = '처리 중... (0%)';
@@ -263,7 +276,7 @@ upscaleBtn.addEventListener('click', function () {
       upscaleResultPreview.src = finalDataUrl;
       upscaleResultPreview.hidden = false;
       upscaleDownloadBtn.href = finalDataUrl;
-      upscaleDownloadBtn.download = getUpscaledFilename(selectedUpscaleFile.name, mode);
+      upscaleDownloadBtn.download = getUpscaledFilename(runFileName, mode);
       upscaleDownloadBtn.hidden = false;
     })
     .catch(function (err) {
