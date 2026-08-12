@@ -13,6 +13,7 @@ var upscaleDownloadBtn = document.getElementById('upscaleDownloadBtn');
 
 var selectedUpscaleFile = null;
 var selectedUpscaleDataUrl = null;
+var upscaler = null;
 
 function showUpscaleError(message) {
   upscaleError.textContent = message;
@@ -149,9 +150,11 @@ upscaleBtn.addEventListener('click', function () {
   upscaleResultPreview.hidden = true;
   upscaleDownloadBtn.hidden = true;
 
-  var upscaler = new Upscaler({ model: ESRGANSlim2x });
+  if (!upscaler) {
+    upscaler = new Upscaler({ model: ESRGANSlim2x });
+  }
 
-  upscaler.upscale(selectedUpscaleDataUrl)
+  upscaler.upscale(selectedUpscaleDataUrl, { patchSize: 128, padding: 2 })
     .then(function (resultDataUrl) {
       upscaleResultPreview.src = resultDataUrl;
       upscaleResultPreview.hidden = false;
@@ -160,7 +163,8 @@ upscaleBtn.addEventListener('click', function () {
       upscaleDownloadBtn.hidden = false;
     })
     .catch(function (err) {
-      showUpscaleError('업스케일링 중 오류가 발생했습니다: ' + (err && err.message ? err.message : String(err)));
+      console.error('Upscale failed:', err);
+      showUpscaleError('업스케일링 중 오류가 발생했습니다. 다른 이미지로 다시 시도해주세요.');
     })
     .then(function () {
       upscaleBtn.disabled = false;
