@@ -146,6 +146,7 @@ upscaleBtn.addEventListener('click', function () {
 
   upscaleBtn.disabled = true;
   upscaleBtn.textContent = '처리 중...';
+  upscaleProgress.textContent = '처리 중... (0%)';
   upscaleProgress.hidden = false;
   upscaleResultPreview.hidden = true;
   upscaleDownloadBtn.hidden = true;
@@ -154,7 +155,13 @@ upscaleBtn.addEventListener('click', function () {
     upscaler = new Upscaler({ model: ESRGANSlim2x });
   }
 
-  upscaler.upscale(selectedUpscaleDataUrl, { patchSize: 128, padding: 2 })
+  upscaler.upscale(selectedUpscaleDataUrl, {
+    patchSize: 128,
+    padding: 2,
+    progress: function (amount) {
+      upscaleProgress.textContent = '처리 중... (' + Math.round(amount * 100) + '%)';
+    }
+  })
     .then(function (resultDataUrl) {
       upscaleResultPreview.src = resultDataUrl;
       upscaleResultPreview.hidden = false;
