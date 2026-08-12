@@ -3,16 +3,23 @@
 var upscaleUploadArea = document.getElementById('upscaleUploadArea');
 var upscaleFileInput = document.getElementById('upscaleFileInput');
 var upscaleError = document.getElementById('upscaleError');
+var upscaleControls = document.getElementById('upscaleControls');
 var upscaleBtn = document.getElementById('upscaleBtn');
 var upscaleProgress = document.getElementById('upscaleProgress');
 var upscalePreviewArea = document.getElementById('upscalePreviewArea');
 var upscaleOriginalPreview = document.getElementById('upscaleOriginalPreview');
 var upscaleOriginalSize = document.getElementById('upscaleOriginalSize');
+var upscaleResultHeading = document.getElementById('upscaleResultHeading');
 var upscaleResultPreview = document.getElementById('upscaleResultPreview');
 var upscaleDownloadBtn = document.getElementById('upscaleDownloadBtn');
+var upscaleModeRadios = document.querySelectorAll('input[name="upscaleMode"]');
+
+var UPSCALE_MODE_LABELS = { '2x': '2배', '4x': '4배', '1440p': '1440p', '4K': '4K' };
 
 var selectedUpscaleFile = null;
 var selectedUpscaleDataUrl = null;
+var selectedUpscaleWidth = null;
+var selectedUpscaleHeight = null;
 var upscaler = null;
 
 function showUpscaleError(message) {
@@ -53,14 +60,49 @@ function imageToDataUrl(img) {
   return canvas.toDataURL('image/png');
 }
 
+function updateUpscaleModeAvailability(width, height) {
+  var disabledCurrentlyChecked = false;
+
+  for (var i = 0; i < upscaleModeRadios.length; i++) {
+    var radio = upscaleModeRadios[i];
+    var mode = radio.value;
+
+    if (mode === '2x' || mode === '4x') {
+      continue;
+    }
+
+    var reachable = isReachable(mode, width, height);
+    radio.disabled = !reachable;
+    if (!reachable && radio.checked) {
+      disabledCurrentlyChecked = true;
+    }
+
+    var note = document.getElementById('upscaleNote' + mode);
+    if (reachable) {
+      note.hidden = true;
+      note.textContent = '';
+    } else {
+      var minLongEdge = Math.ceil(RESOLUTION_PRESETS[mode] / MAX_AI_SCALE);
+      note.textContent = '이 이미지로는 도달할 수 없어요 (긴 변 최소 ' + minLongEdge + 'px 필요)';
+      note.hidden = false;
+    }
+  }
+
+  if (disabledCurrentlyChecked) {
+    document.querySelector('input[name="upscaleMode"][value="2x"]').checked = true;
+  }
+}
+
 function handleUpscaleFile(file) {
   clearUpscaleError();
-  upscaleBtn.hidden = true;
+  upscaleControls.hidden = true;
   upscalePreviewArea.hidden = true;
   upscaleResultPreview.hidden = true;
   upscaleDownloadBtn.hidden = true;
   selectedUpscaleFile = null;
   selectedUpscaleDataUrl = null;
+  selectedUpscaleWidth = null;
+  selectedUpscaleHeight = null;
 
   if (!file) {
     return;
@@ -84,11 +126,14 @@ function handleUpscaleFile(file) {
 
       selectedUpscaleFile = file;
       selectedUpscaleDataUrl = imageToDataUrl(img);
+      selectedUpscaleWidth = img.naturalWidth;
+      selectedUpscaleHeight = img.naturalHeight;
 
       upscaleOriginalPreview.src = selectedUpscaleDataUrl;
       upscaleOriginalSize.textContent = img.naturalWidth + ' × ' + img.naturalHeight + ' · ' + formatBytes(file.size);
       upscalePreviewArea.hidden = false;
-      upscaleBtn.hidden = false;
+      updateUpscaleModeAvailability(img.naturalWidth, img.naturalHeight);
+      upscaleControls.hidden = false;
     })
     .catch(function (err) {
       showUpscaleError(err.message);
@@ -133,6 +178,51 @@ upscaleUploadArea.addEventListener('drop', function (e) {
   handleUpscaleFile(e.dataTransfer.files[0]);
 });
 
+function chainOneUpscalePass(chain, passIndex, passCount, onProgress) {
+  return chain.then(function (inputDataUrl) {
+    return upscaler.upscale(inputDataUrl, {
+      patchSize: 128,
+      padding: 2,
+      progress: function (amount) {
+        onProgress((passIndex + amount) / passCount);
+      }
+    });
+  });
+}
+
+function runUpscalePasses(dataUrl, passCount, onProgress) {
+  var chain = Promise.resolve(dataUrl);
+  for (var i = 0; i < passCount; i++) {
+    chain = chainOneUpscalePass(chain, i, passCount, onProgress);
+  }
+  return chain;
+}
+
+function resizeDataUrlToLongEdge(dataUrl, targetLongEdge) {
+  return new Promise(function (resolve, reject) {
+    var img = new Image();
+    img.onload = function () {
+      var scale = targetLongEdge / Math.max(img.naturalWidth, img.naturalHeight);
+      var targetWidth = Math.round(img.naturalWidth * scale);
+      var targetHeight = Math.round(img.naturalHeight * scale);
+      var canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+        return;
+      }
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror = function () {
+      reject(new Error('업스케일 결과 이미지를 불러올 수 없습니다.'));
+    };
+    img.src = dataUrl;
+  });
+}
+
 upscaleBtn.addEventListener('click', function () {
   if (!selectedUpscaleDataUrl) {
     return;
@@ -143,6 +233,10 @@ upscaleBtn.addEventListener('click', function () {
     showUpscaleError('업스케일링 기능을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
     return;
   }
+
+  var checkedRadio = document.querySelector('input[name="upscaleMode"]:checked');
+  var mode = checkedRadio.value;
+  var plan = getUpscalePlan(mode, selectedUpscaleWidth, selectedUpscaleHeight);
 
   upscaleBtn.disabled = true;
   upscaleBtn.textContent = '처리 중...';
@@ -155,18 +249,21 @@ upscaleBtn.addEventListener('click', function () {
     upscaler = new Upscaler({ model: ESRGANSlim2x });
   }
 
-  upscaler.upscale(selectedUpscaleDataUrl, {
-    patchSize: 128,
-    padding: 2,
-    progress: function (amount) {
-      upscaleProgress.textContent = '처리 중... (' + Math.round(amount * 100) + '%)';
-    }
+  runUpscalePasses(selectedUpscaleDataUrl, plan.aiPasses, function (fraction) {
+    upscaleProgress.textContent = '처리 중... (' + Math.round(fraction * 100) + '%)';
   })
     .then(function (resultDataUrl) {
-      upscaleResultPreview.src = resultDataUrl;
+      if (plan.targetLongEdge) {
+        return resizeDataUrlToLongEdge(resultDataUrl, plan.targetLongEdge);
+      }
+      return resultDataUrl;
+    })
+    .then(function (finalDataUrl) {
+      upscaleResultHeading.textContent = '결과 (' + UPSCALE_MODE_LABELS[mode] + ')';
+      upscaleResultPreview.src = finalDataUrl;
       upscaleResultPreview.hidden = false;
-      upscaleDownloadBtn.href = resultDataUrl;
-      upscaleDownloadBtn.download = getUpscaledFilename(selectedUpscaleFile.name);
+      upscaleDownloadBtn.href = finalDataUrl;
+      upscaleDownloadBtn.download = getUpscaledFilename(selectedUpscaleFile.name, mode);
       upscaleDownloadBtn.hidden = false;
     })
     .catch(function (err) {
@@ -175,7 +272,7 @@ upscaleBtn.addEventListener('click', function () {
     })
     .then(function () {
       upscaleBtn.disabled = false;
-      upscaleBtn.textContent = '2배로 확대';
+      upscaleBtn.textContent = '확대하기';
       upscaleProgress.hidden = true;
     });
 });
