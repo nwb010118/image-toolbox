@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>이미지 업스케일링 - AI로 사진 화질 2배 확대</title>
+  <title>이미지 업스케일링 - AI로 사진 화질 최대 4배, 4K까지 확대</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
      crossorigin="anonymous"></script>
-  <meta name="description" content="AI 모델로 사진을 2배 확대하는 무료 온라인 도구. 서버 전송 없이 브라우저에서 바로 처리합니다.">
+  <meta name="description" content="AI 모델로 사진을 2배, 4배 확대하거나 1440p·4K 해상도로 키우는 무료 온라인 도구. 서버 전송 없이 브라우저에서 바로 처리합니다.">
   <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/upscale.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="이미지 업스케일링 - AI로 사진 화질 2배 확대">
-  <meta property="og:description" content="AI 모델로 사진을 2배 확대하는 무료 온라인 도구.">
+  <meta property="og:title" content="이미지 업스케일링 - AI로 사진 화질 최대 4배, 4K까지 확대">
+  <meta property="og:description" content="AI 모델로 사진을 2배, 4배 확대하거나 1440p·4K 해상도로 키우는 무료 온라인 도구.">
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/upscale.html">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
@@ -18,7 +18,7 @@
 <body>
   <main class="container">
     <h1>이미지 업스케일링</h1>
-    <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서 AI로 2배 확대됩니다.</p>
+    <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서 AI로 확대됩니다.</p>
     <p class="tool-nav"><a href="index.html">← 이미지 압축 도구</a></p>
     <p class="tool-nav"><a href="pdf.html">PDF 변환 도구 →</a></p>
 
@@ -35,7 +35,30 @@
       <div id="upscaleError" class="error-message" hidden></div>
     </section>
 
-    <button id="upscaleBtn" hidden>2배로 확대</button>
+    <section class="controls" id="upscaleControls" hidden>
+      <p class="upscale-mode-label">확대 방식 선택</p>
+      <div class="upscale-mode-group">
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="2x" checked>
+          2배
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="4x">
+          4배
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="1440p">
+          1440p로
+          <span class="upscale-mode-note" id="upscaleNote1440p" hidden></span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="4K">
+          4K로
+          <span class="upscale-mode-note" id="upscaleNote4K" hidden></span>
+        </label>
+      </div>
+      <button id="upscaleBtn">확대하기</button>
+    </section>
     <p id="upscaleProgress" class="pdf-progress" hidden>처리 중...</p>
 
     <section class="preview-area" id="upscalePreviewArea" hidden>
@@ -45,7 +68,7 @@
         <p id="upscaleOriginalSize"></p>
       </div>
       <div class="preview-box">
-        <h2>결과 (2배)</h2>
+        <h2 id="upscaleResultHeading">결과</h2>
         <img id="upscaleResultPreview" alt="업스케일링된 이미지 미리보기" hidden>
         <a id="upscaleDownloadBtn" class="btn" href="#" download="upscaled.png" hidden>다운로드</a>
       </div>
@@ -55,7 +78,7 @@
       <h2>자주 묻는 질문</h2>
       <details>
         <summary>몇 배까지 확대할 수 있나요?</summary>
-        <p>현재는 2배 확대만 지원합니다.</p>
+        <p>2배, 4배 확대와 1440p·4K 해상도로 키우는 옵션을 지원합니다. AI 모델은 한 번에 2배씩만 확대할 수 있어서 내부적으로 최대 두 번(4배)까지 반복 적용하며, 그보다 더 큰 배율이 필요한 해상도 옵션은 원본 이미지가 충분히 클 때만 선택할 수 있습니다.</p>
       </details>
       <details>
         <summary>왜 이미지 크기 제한이 있나요?</summary>

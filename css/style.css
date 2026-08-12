@@ -209,6 +209,35 @@ button:hover, #downloadBtn:hover, .btn:hover {
   margin-bottom: 8px;
 }
 
+.upscale-mode-label {
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.upscale-mode-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.radio-label input[disabled] {
+  cursor: not-allowed;
+}
+
+.upscale-mode-note {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
 #formatSelect {
   display: block;
   width: 100%;
