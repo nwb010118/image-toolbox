@@ -3,17 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>이미지 업스케일링 - AI로 사진 화질 최대 4배, 4K까지 확대</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>무료 이미지 업스케일링 - AI로 화질 최대 4배, 4K까지 확대</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
      crossorigin="anonymous"></script>
   <meta name="description" content="AI 모델로 사진을 2배, 4배 확대하거나 1440p·4K 해상도로 키우는 무료 온라인 도구. 서버 전송 없이 브라우저에서 바로 처리합니다.">
   <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/upscale.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="이미지 업스케일링 - AI로 사진 화질 최대 4배, 4K까지 확대">
+  <meta property="og:title" content="무료 이미지 업스케일링 - AI로 화질 최대 4배, 4K까지 확대">
   <meta property="og:description" content="AI 모델로 사진을 2배, 4배 확대하거나 1440p·4K 해상도로 키우는 무료 온라인 도구.">
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/upscale.html">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "이미지 업스케일링",
+    "url": "https://nwb010118.github.io/image-toolbox/upscale.html",
+    "description": "AI 모델로 사진을 2배, 4배 확대하거나 1440p·4K 해상도로 키우는 무료 온라인 도구. 서버 전송 없이 브라우저에서 바로 처리합니다.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "KRW"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "몇 배까지 확대할 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2배, 4배 확대와 1440p·4K 해상도로 키우는 옵션을 지원합니다. AI 모델은 한 번에 2배씩만 확대할 수 있어서 내부적으로 최대 두 번(4배)까지 반복 적용하며, 그보다 더 큰 배율이 필요한 해상도 옵션은 원본 이미지가 충분히 클 때만 선택할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "왜 이미지 크기 제한이 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI 모델이 브라우저 안에서 직접 계산을 하기 때문에, 너무 큰 이미지를 넣으면 처리 시간이 오래 걸리거나 브라우저가 멈출 수 있습니다. 가로세로 각각 1000px 이하 이미지만 지원하며, 더 큰 이미지는 이미지 압축 도구에서 먼저 크기를 줄인 뒤 이용해주세요."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "업로드한 사진이 서버에 저장되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. AI 모델 계산이 전부 브라우저 안에서 이루어지며, 어떤 이미지도 서버로 전송되지 않습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "저해상도 이미지를 고해상도로 만들 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. AI 모델이 이미지의 픽셀 정보를 분석해 디테일을 추론하며 확대합니다. 단순히 늘리는 것과 달리 경계선과 질감이 더 선명하게 복원됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "처리 시간은 얼마나 걸리나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "이미지 크기와 선택한 배율/해상도에 따라 다르지만, 브라우저에서 직접 AI 연산을 하기 때문에 보통 몇 초에서 최대 수십 초 정도 걸립니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "설치나 가입 없이 바로 쓸 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 프로그램 설치나 회원가입 없이 브라우저에서 바로 이용할 수 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <main class="container">
@@ -21,6 +94,7 @@
     <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서 AI로 확대됩니다.</p>
     <p class="tool-nav"><a href="index.html">← 이미지 압축 도구</a></p>
     <p class="tool-nav"><a href="pdf.html">PDF 변환 도구 →</a></p>
+    <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="upload-area" id="upscaleUploadArea">
       <input type="file" id="upscaleFileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
@@ -87,6 +161,18 @@
       <details>
         <summary>업로드한 사진이 서버에 저장되나요?</summary>
         <p>아니요. AI 모델 계산이 전부 브라우저 안에서 이루어지며, 어떤 이미지도 서버로 전송되지 않습니다.</p>
+      </details>
+      <details>
+        <summary>저해상도 이미지를 고해상도로 만들 수 있나요?</summary>
+        <p>네. AI 모델이 이미지의 픽셀 정보를 분석해 디테일을 추론하며 확대합니다. 단순히 늘리는 것과 달리 경계선과 질감이 더 선명하게 복원됩니다.</p>
+      </details>
+      <details>
+        <summary>처리 시간은 얼마나 걸리나요?</summary>
+        <p>이미지 크기와 선택한 배율/해상도에 따라 다르지만, 브라우저에서 직접 AI 연산을 하기 때문에 보통 몇 초에서 최대 수십 초 정도 걸립니다.</p>
+      </details>
+      <details>
+        <summary>설치나 가입 없이 바로 쓸 수 있나요?</summary>
+        <p>네. 프로그램 설치나 회원가입 없이 브라우저에서 바로 이용할 수 있습니다.</p>
       </details>
     </section>
   </main>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>무료 이미지 압축, 변환, 업스케일링 - 브라우저에서 바로 처리</title>
   <meta name="google-site-verification" content="e5VPp9-RIlXSBWmBFrx-g4lSrCV6J0hMLsDPn9fVUPM" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
@@ -15,6 +16,78 @@
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "이미지 압축 도구",
+    "url": "https://nwb010118.github.io/image-toolbox/",
+    "description": "사진을 서버에 올리지 않고 브라우저에서 무료로 압축, PDF 변환, AI 업스케일링까지 한 번에 처리하는 온라인 도구. JPG, PNG, WebP 지원.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "KRW"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "업로드한 사진이 서버에 저장되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. 이 도구는 이미지를 어떤 서버로도 전송하지 않습니다. 브라우저의 Canvas API를 이용해 기기 안에서만 압축이 이루어지고, 페이지를 벗어나면 처리 결과는 사라집니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "어떤 파일 형식을 지원하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JPG, PNG, WebP 형식의 이미지를 업로드할 수 있고, 세 형식 중 원하는 형식으로 저장할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "압축 품질은 어떻게 설정하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "슬라이더로 10~100% 사이 품질을 조절할 수 있습니다. 값이 낮을수록 파일 크기는 작아지지만 화질이 떨어집니다. 원본보다 결과가 커지는 경우 저장 전에 경고가 표시됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "사진 용량을 얼마나 줄일 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "압축 품질을 얼마나 낮추느냐에 따라 다르지만, 보통 원본 대비 50~90%까지 용량을 줄일 수 있습니다. 사진의 원래 형식과 내용에 따라 결과는 달라질 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "이미지 크기(가로세로 픽셀)도 줄일 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 가로/세로 값을 직접 입력해 크기를 조정할 수 있고, '비율 유지'를 켜면 한쪽 값만 입력해도 원본 비율 그대로 나머지 값이 자동 계산됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "회원가입이나 설치가 필요한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. 별도 가입이나 프로그램 설치 없이 브라우저에서 바로 사용할 수 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <main class="container">
@@ -22,6 +95,7 @@
     <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p>
     <p class="tool-nav"><a href="pdf.html">PDF 변환 도구 →</a></p>
     <p class="tool-nav"><a href="upscale.html">이미지 업스케일링 →</a></p>
+    <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="upload-area" id="uploadArea">
       <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
@@ -92,6 +166,18 @@
       <details>
         <summary>압축 품질은 어떻게 설정하나요?</summary>
         <p>슬라이더로 10~100% 사이 품질을 조절할 수 있습니다. 값이 낮을수록 파일 크기는 작아지지만 화질이 떨어집니다. 원본보다 결과가 커지는 경우 저장 전에 경고가 표시됩니다.</p>
+      </details>
+      <details>
+        <summary>사진 용량을 얼마나 줄일 수 있나요?</summary>
+        <p>압축 품질을 얼마나 낮추느냐에 따라 다르지만, 보통 원본 대비 50~90%까지 용량을 줄일 수 있습니다. 사진의 원래 형식과 내용에 따라 결과는 달라질 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>이미지 크기(가로세로 픽셀)도 줄일 수 있나요?</summary>
+        <p>네. 가로/세로 값을 직접 입력해 크기를 조정할 수 있고, '비율 유지'를 켜면 한쪽 값만 입력해도 원본 비율 그대로 나머지 값이 자동 계산됩니다.</p>
+      </details>
+      <details>
+        <summary>회원가입이나 설치가 필요한가요?</summary>
+        <p>아니요. 별도 가입이나 프로그램 설치 없이 브라우저에서 바로 사용할 수 있습니다.</p>
       </details>
     </section>
   </main>

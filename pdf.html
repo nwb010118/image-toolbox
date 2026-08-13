@@ -3,17 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF 변환 도구 - 이미지를 PDF로, PDF를 이미지로</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>무료 PDF 변환 도구 - 이미지를 PDF로, PDF를 이미지로</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
      crossorigin="anonymous"></script>
   <meta name="description" content="이미지를 PDF로 합치거나 PDF 페이지를 이미지로 추출하는 무료 온라인 도구. 서버 전송 없이 브라우저에서 바로 변환.">
   <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/pdf.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="PDF 변환 도구 - 이미지를 PDF로, PDF를 이미지로">
+  <meta property="og:title" content="무료 PDF 변환 도구 - 이미지를 PDF로, PDF를 이미지로">
   <meta property="og:description" content="이미지를 PDF로 합치거나 PDF 페이지를 이미지로 추출하는 무료 온라인 도구.">
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/pdf.html">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PDF 변환 도구",
+    "url": "https://nwb010118.github.io/image-toolbox/pdf.html",
+    "description": "이미지를 PDF로 합치거나 PDF 페이지를 이미지로 추출하는 무료 온라인 도구. 서버 전송 없이 브라우저에서 바로 변환.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "KRW"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "여러 장의 이미지를 하나의 PDF로 합칠 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 최대 50장까지 선택해서 업로드한 순서 그대로 PDF 페이지로 만들 수 있습니다. 각 페이지는 원본 이미지의 가로세로 비율 그대로 생성됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PDF에서 이미지를 추출하면 어떤 형식으로 받나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PDF의 각 페이지가 PNG 이미지로 변환되며, 페이지별로 개별 다운로드할 수 있습니다. 최대 300페이지까지 지원합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "업로드한 파일이 서버로 전송되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. PDF 생성과 페이지 추출 모두 브라우저 안에서만 처리되며, 어떤 파일도 서버로 전송되지 않습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PDF 파일 용량도 줄일 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "이 도구는 이미지를 PDF로 합치거나 PDF의 각 페이지를 이미지로 추출하는 기능입니다. PDF 자체의 용량을 압축하려면, 이미지로 추출한 뒤 이미지 압축 도구에서 압축하고 다시 PDF로 합치는 방식을 이용해주세요."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "스캔한 문서 이미지를 PDF로 만들 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 스캔본이나 사진으로 찍은 문서 이미지를 여러 장 선택해 순서대로 하나의 PDF로 합칠 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "설치나 가입 없이 바로 쓸 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 프로그램 설치나 회원가입 없이 브라우저에서 바로 변환할 수 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <main class="container">
@@ -21,6 +94,7 @@
     <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p>
     <p class="tool-nav"><a href="index.html">← 이미지 압축 도구</a></p>
     <p class="tool-nav"><a href="upscale.html">이미지 업스케일링 →</a></p>
+    <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="pdf-section">
       <h2>이미지 → PDF</h2>
@@ -75,6 +149,18 @@
       <details>
         <summary>업로드한 파일이 서버로 전송되나요?</summary>
         <p>아니요. PDF 생성과 페이지 추출 모두 브라우저 안에서만 처리되며, 어떤 파일도 서버로 전송되지 않습니다.</p>
+      </details>
+      <details>
+        <summary>PDF 파일 용량도 줄일 수 있나요?</summary>
+        <p>이 도구는 이미지를 PDF로 합치거나 PDF의 각 페이지를 이미지로 추출하는 기능입니다. PDF 자체의 용량을 압축하려면, 이미지로 추출한 뒤 이미지 압축 도구에서 압축하고 다시 PDF로 합치는 방식을 이용해주세요.</p>
+      </details>
+      <details>
+        <summary>스캔한 문서 이미지를 PDF로 만들 수 있나요?</summary>
+        <p>네. 스캔본이나 사진으로 찍은 문서 이미지를 여러 장 선택해 순서대로 하나의 PDF로 합칠 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>설치나 가입 없이 바로 쓸 수 있나요?</summary>
+        <p>네. 프로그램 설치나 회원가입 없이 브라우저에서 바로 변환할 수 있습니다.</p>
       </details>
     </section>
   </main>
