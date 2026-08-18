@@ -137,9 +137,67 @@ function convertPdfToPptx(pdfDoc, totalPages) {
   });
 }
 
+function extractPdfConvertPageLines(pdfDoc, pageNumber) {
+  return pdfDoc.getPage(pageNumber).then(function (page) {
+    return page.getTextContent();
+  }).then(function (textContent) {
+    var items = textContent.items.map(function (item) {
+      return { str: item.str, x: item.transform[4], y: item.transform[5] };
+    });
+    return groupTextItemsIntoLines(items, LINE_Y_TOLERANCE);
+  });
+}
+
+function extractPdfConvertPagesLines(pdfDoc, totalPages) {
+  var pageNumbers = [];
+  for (var i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+  var pagesLines = [];
+
+  return pageNumbers.reduce(function (promise, pageNumber) {
+    return promise.then(function () {
+      pdfConvertProgress.textContent = '텍스트를 읽는 중... (' + pageNumber + '/' + totalPages + ')';
+      return extractPdfConvertPageLines(pdfDoc, pageNumber);
+    }).then(function (lines) {
+      pagesLines.push(lines);
+    });
+  }, Promise.resolve()).then(function () {
+    return pagesLines;
+  });
+}
+
+function convertPdfToDocx(pagesLines) {
+  var docChildren = [];
+
+  pagesLines.forEach(function (lines, pageIndex) {
+    var paragraphs = groupLinesIntoParagraphs(lines, PARAGRAPH_GAP_THRESHOLD);
+    paragraphs.forEach(function (text, paragraphIndex) {
+      docChildren.push(new docx.Paragraph({
+        children: [new docx.TextRun(text)],
+        pageBreakBefore: paragraphIndex === 0 && pageIndex > 0
+      }));
+    });
+  });
+
+  var doc = new docx.Document({
+    sections: [{ properties: {}, children: docChildren }]
+  });
+
+  return docx.Packer.toBlob(doc);
+}
+
 function runPdfConversion(pdfDoc, totalPages, format) {
   if (format === 'ppt') {
     return convertPdfToPptx(pdfDoc, totalPages);
+  }
+  if (format === 'word') {
+    return extractPdfConvertPagesLines(pdfDoc, totalPages).then(function (pagesLines) {
+      if (!hasSubstantialText(concatenatePagesLinesText(pagesLines))) {
+        throw new Error('이 PDF는 텍스트가 없는 스캔본으로 보입니다. PPT 변환을 이용해주세요.');
+      }
+      return convertPdfToDocx(pagesLines);
+    });
   }
   return Promise.reject(new Error('아직 지원하지 않는 형식입니다: ' + format));
 }
