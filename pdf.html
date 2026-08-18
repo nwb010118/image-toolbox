@@ -136,6 +136,44 @@
       <div id="pdfToImgPages" class="pdf-page-list"></div>
     </section>
 
+    <section class="pdf-section">
+      <h2>PDF → 문서 변환</h2>
+      <section class="upload-area" id="pdfConvertUploadArea">
+        <input type="file" id="pdfConvertFileInput" class="visually-hidden" accept="application/pdf,.pdf">
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="M7 8l5-5 5 5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        <button type="button" class="upload-btn">PDF 파일 선택</button>
+        <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
+        <p class="upload-formats">PDF 지원 · 최대 20MB · 최대 300페이지</p>
+        <div id="pdfConvertError" class="error-message" hidden></div>
+      </section>
+
+      <section class="controls" id="pdfConvertControls" hidden>
+        <p class="upscale-mode-label">출력 형식 선택</p>
+        <div class="upscale-mode-group">
+          <label class="radio-label">
+            <input type="radio" name="pdfConvertFormat" value="ppt" checked>
+            PowerPoint (.pptx)
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="pdfConvertFormat" value="word">
+            Word (.docx)
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="pdfConvertFormat" value="excel">
+            Excel (.xlsx)
+          </label>
+        </div>
+        <button id="pdfConvertBtn">변환하기</button>
+      </section>
+
+      <p id="pdfConvertProgress" class="pdf-progress" hidden></p>
+      <a id="pdfConvertDownloadBtn" class="btn" href="#" download hidden>변환된 파일 다운로드</a>
+    </section>
+
     <section class="info-section">
       <h2>자주 묻는 질문</h2>
       <details>
@@ -174,5 +212,10 @@
   <script src="js/imageTools.js"></script>
   <script src="js/pdfTools.js"></script>
   <script src="js/pdfApp.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js" integrity="sha384-qb0Xhi7LLYpvW1HCK6oMrmDLSY9sy7vwm6ZlV6KjtrlL9yg30+YN4neTwnmX+Kp8" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js" integrity="sha384-9OH56uLhIvkZkwF0jWNlfpcK3gPuSy5DfEMNqKe156wCpkND+MDdtaRyd05kwpG0" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
+  <script src="js/pdfConvertTools.js"></script>
+  <script src="js/pdfConvertApp.js"></script>
 </body>
 </html>
