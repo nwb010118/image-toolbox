@@ -187,19 +187,41 @@ function convertPdfToDocx(pagesLines) {
   return docx.Packer.toBlob(doc);
 }
 
+function convertPdfToXlsx(pagesLines) {
+  var rows = [];
+
+  pagesLines.forEach(function (lines, pageIndex) {
+    if (pageIndex > 0) {
+      rows.push(['']);
+    }
+    lines.forEach(function (line) {
+      rows.push([line.text]);
+    });
+  });
+
+  var worksheet = XLSX.utils.aoa_to_sheet(rows);
+  var workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  var arrayBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  return new Blob([arrayBuffer], { type: 'application/octet-stream' });
+}
+
 function runPdfConversion(pdfDoc, totalPages, format) {
   if (format === 'ppt') {
     return convertPdfToPptx(pdfDoc, totalPages);
   }
-  if (format === 'word') {
+  if (format === 'word' || format === 'excel') {
     return extractPdfConvertPagesLines(pdfDoc, totalPages).then(function (pagesLines) {
       if (!hasSubstantialText(concatenatePagesLinesText(pagesLines))) {
         throw new Error('이 PDF는 텍스트가 없는 스캔본으로 보입니다. PPT 변환을 이용해주세요.');
       }
-      return convertPdfToDocx(pagesLines);
+      if (format === 'word') {
+        return convertPdfToDocx(pagesLines);
+      }
+      return convertPdfToXlsx(pagesLines);
     });
   }
-  return Promise.reject(new Error('아직 지원하지 않는 형식입니다: ' + format));
+  return Promise.reject(new Error('지원하지 않는 형식입니다: ' + format));
 }
 
 function isPdfConvertLibraryLoaded(format) {
