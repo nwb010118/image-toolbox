@@ -28,6 +28,10 @@ function getSelectedPdfConvertFormat() {
 
 function handlePdfConvertFile(file) {
   clearPdfConvertError();
+  if (isConvertingPdf) {
+    showPdfConvertError('변환이 진행 중입니다. 완료된 후 다시 시도해주세요.');
+    return;
+  }
   pdfConvertControls.hidden = true;
   pdfConvertDownloadBtn.hidden = true;
   if (lastPdfConvertUrl) {
@@ -270,6 +274,9 @@ pdfConvertBtn.addEventListener('click', function () {
 
       if (!isValidPageCount(pdfDoc.numPages)) {
         throw new Error('PDF 페이지 수가 너무 많습니다 (최대 ' + MAX_PDF_PAGES + '페이지).');
+      }
+      if (format === 'ppt' && pdfDoc.numPages > MAX_PPT_CONVERSION_PAGES) {
+        throw new Error('PowerPoint 변환은 메모리 보호를 위해 최대 ' + MAX_PPT_CONVERSION_PAGES + '페이지까지 지원합니다. 더 많은 페이지는 PDF를 나눠서 변환해주세요.');
       }
 
       return runPdfConversion(pdfDoc, pdfDoc.numPages, format);

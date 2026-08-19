@@ -7,7 +7,8 @@ const {
   getConvertedFilename,
   MIN_TEXT_LENGTH_FOR_CONVERSION,
   LINE_Y_TOLERANCE,
-  PARAGRAPH_GAP_THRESHOLD
+  PARAGRAPH_GAP_THRESHOLD,
+  MAX_PPT_CONVERSION_PAGES
 } = require('../js/pdfConvertTools.js');
 
 function test(name, fn) {
@@ -23,6 +24,10 @@ function test(name, fn) {
 
 test('MIN_TEXT_LENGTH_FOR_CONVERSION is 20', () => {
   assert.strictEqual(MIN_TEXT_LENGTH_FOR_CONVERSION, 20);
+});
+
+test('MAX_PPT_CONVERSION_PAGES is 100', () => {
+  assert.strictEqual(MAX_PPT_CONVERSION_PAGES, 100);
 });
 
 test('hasSubstantialText accepts text at/above the threshold', () => {
@@ -45,6 +50,15 @@ test('groupTextItemsIntoLines groups items with the same y into one line', () =>
   const items = [
     { str: 'Hello', x: 10, y: 700 },
     { str: 'World', x: 60, y: 700 }
+  ];
+  const lines = groupTextItemsIntoLines(items, LINE_Y_TOLERANCE);
+  assert.deepStrictEqual(lines, [{ y: 700, text: 'Hello World' }]);
+});
+
+test('groupTextItemsIntoLines orders same-line items by x regardless of input order', () => {
+  const items = [
+    { str: 'World', x: 60, y: 700 },
+    { str: 'Hello', x: 10, y: 700 }
   ];
   const lines = groupTextItemsIntoLines(items, LINE_Y_TOLERANCE);
   assert.deepStrictEqual(lines, [{ y: 700, text: 'Hello World' }]);

@@ -2,6 +2,7 @@
   var MIN_TEXT_LENGTH_FOR_CONVERSION = 20;
   var LINE_Y_TOLERANCE = 3;
   var PARAGRAPH_GAP_THRESHOLD = 20;
+  var MAX_PPT_CONVERSION_PAGES = 100;
   var FORMAT_EXTENSIONS = { ppt: 'pptx', word: 'docx', excel: 'xlsx' };
 
   function hasSubstantialText(text) {
@@ -17,9 +18,9 @@
         if (current !== null) {
           lines.push(current);
         }
-        current = { y: item.y, parts: [item.str] };
+        current = { y: item.y, parts: [{ x: item.x, str: item.str }] };
       } else {
-        current.parts.push(item.str);
+        current.parts.push({ x: item.x, str: item.str });
       }
     });
 
@@ -29,7 +30,15 @@
 
     return lines
       .map(function (line) {
-        return { y: line.y, text: line.parts.join(' ').replace(/\s+/g, ' ').trim() };
+        var orderedParts = line.parts.slice().sort(function (a, b) {
+          return a.x - b.x;
+        });
+        var text = orderedParts
+          .map(function (part) { return part.str; })
+          .join(' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        return { y: line.y, text: text };
       })
       .filter(function (line) {
         return line.text.length > 0;
@@ -77,6 +86,7 @@
   exports.MIN_TEXT_LENGTH_FOR_CONVERSION = MIN_TEXT_LENGTH_FOR_CONVERSION;
   exports.LINE_Y_TOLERANCE = LINE_Y_TOLERANCE;
   exports.PARAGRAPH_GAP_THRESHOLD = PARAGRAPH_GAP_THRESHOLD;
+  exports.MAX_PPT_CONVERSION_PAGES = MAX_PPT_CONVERSION_PAGES;
   exports.hasSubstantialText = hasSubstantialText;
   exports.groupTextItemsIntoLines = groupTextItemsIntoLines;
   exports.groupLinesIntoParagraphs = groupLinesIntoParagraphs;
