@@ -100,6 +100,22 @@ h1 {
   margin: 10px 0 0;
 }
 
+.offline-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+}
+
+.offline-badge-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

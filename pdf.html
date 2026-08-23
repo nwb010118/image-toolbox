@@ -130,6 +130,13 @@
       <ul id="imgToPdfFileList" class="file-list"></ul>
 
       <button id="imgToPdfBtn" hidden>PDF로 변환</button>
+      <p class="offline-badge">
+        <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        서버 전송 없음 · 브라우저에서만 처리
+      </p>
       <a id="imgToPdfDownloadBtn" class="btn" href="#" download="images.pdf" hidden>PDF 다운로드</a>
     </section>
 
@@ -147,6 +154,14 @@
         <p class="upload-formats">PDF 지원 · 최대 20MB · 최대 300페이지</p>
         <div id="pdfToImgError" class="error-message" hidden></div>
       </section>
+
+      <p class="offline-badge">
+        <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        서버 전송 없음 · 브라우저에서만 처리
+      </p>
 
       <p id="pdfToImgProgress" class="pdf-progress" hidden></p>
       <div id="pdfToImgPages" class="pdf-page-list"></div>
@@ -184,6 +199,13 @@
           </label>
         </div>
         <button id="pdfConvertBtn">변환하기</button>
+        <p class="offline-badge">
+          <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+            <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+          </svg>
+          서버 전송 없음 · 브라우저에서만 처리
+        </p>
       </section>
 
       <p id="pdfConvertProgress" class="pdf-progress" hidden></p>
