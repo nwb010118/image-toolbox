@@ -194,3 +194,50 @@ test('pdf.html has the tool-overview content section linking to all 3 long-tail 
     assert.ok(html.includes('href="' + page + '"'), 'pdf.html missing link to ' + page);
   });
 });
+
+test('benchmark.html exists and has required <head> tags', function () {
+  const html = readRepoFile('benchmark.html');
+  assert.ok(/<title>[^<]+<\/title>/.test(html), 'missing <title>');
+  assert.ok(html.includes('rel="canonical"'), 'missing canonical link');
+  assert.ok(html.includes('property="og:title"'), 'missing og:title');
+});
+
+test('benchmark.html has valid Article JSON-LD', function () {
+  const html = readRepoFile('benchmark.html');
+  const types = extractJsonLdBlocks(html).map(function (b) { return b['@type']; });
+  assert.ok(types.includes('Article'), 'missing Article block');
+});
+
+test('benchmark.html links back to index.html', function () {
+  const html = readRepoFile('benchmark.html');
+  assert.ok(html.includes('href="index.html"'), 'benchmark.html missing link to index.html');
+});
+
+test('benchmark.html contains the measured photo-image byte values', function () {
+  const html = readRepoFile('benchmark.html');
+  assert.ok(html.includes('1,808,456'), 'missing original photo-image size');
+  assert.ok(html.includes('787,571'), 'missing JPG 100% photo result');
+  assert.ok(html.includes('115,393'), 'missing JPG 80% photo result');
+});
+
+test('benchmark.html contains the measured graphic-image byte values', function () {
+  const html = readRepoFile('benchmark.html');
+  assert.ok(html.includes('22,791'), 'missing original graphic-image size');
+  assert.ok(html.includes('35,171'), 'missing JPG 100% graphic result (larger than original)');
+  assert.ok(html.includes('6,010'), 'missing WebP 100% graphic result');
+});
+
+test('index.html links to benchmark.html', function () {
+  const html = readRepoFile('index.html');
+  assert.ok(html.includes('href="benchmark.html"'), 'index.html missing link to benchmark.html');
+});
+
+test('guide.html links to benchmark.html', function () {
+  const html = readRepoFile('guide.html');
+  assert.ok(html.includes('href="benchmark.html"'), 'guide.html missing link to benchmark.html');
+});
+
+test('sitemap.xml includes benchmark.html', function () {
+  const xml = readRepoFile('sitemap.xml');
+  assert.ok(xml.includes('/image-toolbox/benchmark.html'), 'sitemap.xml missing benchmark.html');
+});
