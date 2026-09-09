@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>PNG vs JPG vs WebP, 언제 무엇을 써야 할까</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="PNG, JPG, WebP 세 이미지 형식의 압축 방식·투명도·호환성 차이를 정리하고, 실측 데이터를 근거로 상황별 추천 형식을 안내합니다.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/image-format-comparison.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="PNG vs JPG vs WebP, 언제 무엇을 써야 할까">
+  <meta property="og:description" content="PNG, JPG, WebP 세 이미지 형식의 차이를 실측 데이터와 함께 정리했습니다.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/image-format-comparison.html">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "PNG vs JPG vs WebP, 언제 무엇을 써야 할까",
+    "url": "https://nwb010118.github.io/image-toolbox/image-format-comparison.html",
+    "description": "PNG, JPG, WebP 세 이미지 형식의 차이를 실측 데이터와 함께 정리했습니다.",
+    "inLanguage": "ko",
+    "datePublished": "2026-09-09"
+  }
+  </script>
+</head>
+<body>
+  <main class="container">
+    <h1>PNG vs JPG vs WebP, 언제 무엇을 써야 할까</h1>
+    <p class="subtitle">세 형식의 압축 방식 차이부터 실측 데이터까지 정리했습니다.</p>
+    <p class="tool-nav"><a href="guide.html">← 가이드 목록</a></p>
+
+    <section class="info-section">
+      <h2>압축 방식이 근본적으로 다릅니다</h2>
+      <p><strong>PNG</strong>는 무손실 압축 형식입니다. 원본 픽셀 정보를 그대로 유지한 채 파일 구조만 효율적으로 압축하기 때문에 화질 손상이 전혀 없습니다. 대신 사진처럼 색이 복잡한 이미지에서는 용량이 크게 나옵니다.</p>
+      <p><strong>JPG</strong>는 손실 압축 형식입니다. 사람 눈이 잘 구분하지 못하는 정보를 의도적으로 버려서 용량을 크게 줄입니다. 색이 복잡하고 경계가 부드러운 사진에는 효율적이지만, 단색과 선명한 경계가 많은 그래픽에는 오히려 불리합니다.</p>
+      <p><strong>WebP</strong>는 손실·무손실 모드를 모두 지원하는 비교적 최신 형식입니다. 이 사이트의 압축 도구는 WebP를 손실 모드로 출력하며, 같은 손실 압축이라도 JPG보다 더 작은 용량으로 비슷한 화질을 담아내는 경우가 많습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>투명도와 호환성</h2>
+      <p>투명 배경이 필요하다면 PNG나 WebP를 선택해야 합니다. JPG는 투명도를 지원하지 않습니다. WebP도 알파 채널(투명도)을 지원하지만, 오래된 프로그램이나 일부 이미지 편집 소프트웨어에서는 WebP 파일을 열지 못할 수 있어 호환성이 가장 중요한 상황이라면 PNG나 JPG가 더 안전합니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>실측 데이터로 보면</h2>
+      <p>이론상의 설명만으로는 감이 잘 안 올 수 있어서, 실제로 두 종류의 테스트 이미지(사진형, 그래픽형)를 이 사이트의 압축 도구로 직접 압축해 정확한 바이트 수를 측정했습니다. 전체 결과는 <a href="benchmark.html">실측 압축률 비교</a>에서 확인할 수 있고, 핵심만 요약하면 다음과 같습니다.</p>
+      <p>사진형 이미지에서는 JPG와 WebP 모두 80% 품질에서 원본 대비 90% 이상 용량이 줄었습니다. 반면 그래픽형(단색·UI) 이미지에서는 JPG 100% 품질이 오히려 원본 PNG보다 큰 파일로 나왔고, WebP는 100% 품질에서도 원본보다 73.6% 작았습니다. 즉 그래픽·스크린샷류에는 JPG가 잘 맞지 않는다는 것이 실측으로 확인됩니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>상황별 추천</h2>
+      <p><strong>사진</strong> — JPG 또는 WebP, 80% 품질 부근.</p>
+      <p><strong>투명 배경이 필요한 그래픽·로고</strong> — PNG(무손실 보장) 또는 WebP.</p>
+      <p><strong>스크린샷·UI처럼 단색이 많은 이미지</strong> — WebP(호환성이 걱정되면 PNG).</p>
+      <p><a class="btn" href="index.html">지금 형식 바꿔보기 →</a></p>
+    </section>
+
+    <section class="info-section">
+      <h2>자주 묻는 질문</h2>
+      <details>
+        <summary>WebP를 열 수 없다는 프로그램이 있는데 왜 그런가요?</summary>
+        <p>WebP는 비교적 최신 형식이라 오래된 이미지 편집 프로그램이나 일부 운영체제 기본 뷰어에서는 지원하지 않을 수 있습니다. 대부분의 최신 웹 브라우저는 문제없이 지원합니다.</p>
+      </details>
+      <details>
+        <summary>PNG를 JPG로 바꾸면 무조건 용량이 줄어드나요?</summary>
+        <p>대체로 그렇지만 항상은 아닙니다. 단색과 선명한 경계가 많은 이미지는 JPG로 바꿨을 때 오히려 원본 PNG보다 커질 수 있습니다. 자세한 실측 수치는 <a href="benchmark.html">실측 압축률 비교</a>를 참고하세요.</p>
+      </details>
+      <details>
+        <summary>화질 손상 없이 용량만 줄이고 싶으면 어떤 형식을 써야 하나요?</summary>
+        <p>완전한 무손실을 원한다면 PNG를 유지해야 합니다. PNG 자체는 품질 설정과 무관하게 용량이 줄지 않으므로, 용량을 줄이려면 가로세로 크기(해상도)를 줄이는 방법을 함께 고려해야 합니다.</p>
+      </details>
+    </section>
+
+    <section class="info-section">
+      <h2>관련 페이지</h2>
+      <p><a href="benchmark.html">실측 압축률 비교</a></p>
+      <p><a href="index.html">이미지 압축 도구</a></p>
+      <p><a href="guide.html">언제 어떤 도구가 필요할까? 가이드</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="privacy.html">개인정보처리방침</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">문의</a>
+  </footer>
+</body>
+</html>
