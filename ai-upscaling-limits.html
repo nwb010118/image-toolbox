@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>AI 업스케일링, 실제로 되는 것과 안 되는 것</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="AI 업스케일링이 실제로 개선해줄 수 있는 것과 할 수 없는 것을 과장 없이 정리했습니다. 원본에 없는 정보를 만들어내는 마법이 아닙니다.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/ai-upscaling-limits.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AI 업스케일링, 실제로 되는 것과 안 되는 것">
+  <meta property="og:description" content="AI 업스케일링이 실제로 개선해줄 수 있는 것과 할 수 없는 것을 과장 없이 정리했습니다.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/ai-upscaling-limits.html">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AI 업스케일링, 실제로 되는 것과 안 되는 것",
+    "url": "https://nwb010118.github.io/image-toolbox/ai-upscaling-limits.html",
+    "description": "AI 업스케일링이 실제로 개선해줄 수 있는 것과 할 수 없는 것을 과장 없이 정리했습니다.",
+    "inLanguage": "ko",
+    "datePublished": "2026-09-09"
+  }
+  </script>
+</head>
+<body>
+  <main class="container">
+    <h1>AI 업스케일링, 실제로 되는 것과 안 되는 것</h1>
+    <p class="subtitle">과장된 광고 문구가 아니라, 이 기술이 실제로 하는 일을 정직하게 설명합니다.</p>
+    <p class="tool-nav"><a href="guide.html">← 가이드 목록</a></p>
+
+    <section class="info-section">
+      <h2>AI 업스케일링이 하는 일</h2>
+      <p>이 사이트의 업스케일링 기능은 ESRGAN 계열의 경량 AI 모델을 브라우저 안에서 직접 실행합니다. 이 모델은 수많은 이미지를 학습하면서 "이런 저해상도 패턴은 보통 이런 고해상도 디테일에서 왔다"는 통계적 패턴을 익힌 상태입니다. 확대할 때 이 학습된 패턴을 참고해서 경계와 질감을 그럴듯하게 채워 넣기 때문에, 단순히 픽셀을 늘리는 것보다 훨씬 선명한 결과가 나옵니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>AI 업스케일링이 할 수 없는 일</h2>
+      <p>중요한 건, 이 과정이 원본에 없던 진짜 정보를 만들어내는 것이 아니라는 점입니다. AI는 "그럴듯한 디테일"을 추론해서 채우는 것이지, 사라진 원본 정보를 정확히 복원하는 것이 아닙니다. 그래서 다음과 같은 상황에서는 한계가 뚜렷합니다.</p>
+      <p><strong>초점이 심하게 나간 사진</strong> — 흔들리거나 초점이 안 맞아 형체 자체가 뭉개진 사진은 AI가 추론할 단서 자체가 부족해서 개선 폭이 작습니다.</p>
+      <p><strong>극단적으로 작은 원본</strong> — 원본이 너무 작아 픽셀 정보 자체가 거의 없는 경우, 확대해도 실제로 있었던 디테일이 아니라 AI가 그럴듯하게 지어낸 디테일에 가까워집니다.</p>
+      <p><strong>인물 얼굴 "복원"</strong> — 이 기능은 사람 얼굴을 다른 각도나 더 젊은 모습으로 재구성하는 것이 아닙니다. 원본 사진에 있는 얼굴의 경계와 질감을 더 선명하게 다듬어주는 것이지, 없던 표정이나 디테일을 만들어내는 게 아닙니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>언제 특히 효과적인가요</h2>
+      <p>원본이 어느 정도 선명하지만 해상도만 낮은 경우(초점은 맞았는데 작게 찍힌 사진, 오래돼서 저해상도로만 남은 사진 등)에 가장 효과가 좋습니다. 이런 경우 AI가 참고할 실제 패턴 정보가 충분히 남아 있기 때문입니다.</p>
+      <p><a href="upscale.html">이미지 업스케일링</a>에서 직접 확대해보고 결과를 확인해보세요.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>자주 묻는 질문</h2>
+      <details>
+        <summary>흐릿한 사진을 선명하게 "복원"할 수 있나요?</summary>
+        <p>어느 정도 개선은 되지만, 완전히 사라진 디테일을 원본 그대로 되살리는 것은 아닙니다. 흔들림이 심하거나 초점이 크게 나간 사진은 개선 폭이 제한적입니다.</p>
+      </details>
+      <details>
+        <summary>몇 배까지 확대해야 자연스러운가요?</summary>
+        <p>원본 해상도와 내용에 따라 다릅니다. 이 도구는 최대 4배(2배씩 두 번)까지 지원하며, 배율이 높아질수록 AI가 추론하는 비중이 커집니다.</p>
+      </details>
+      <details>
+        <summary>사람 얼굴도 다른 AI 도구처럼 재구성해주나요?</summary>
+        <p>아니요. 이 기능은 얼굴을 다른 모습으로 재구성하지 않습니다. 원본에 있는 경계와 질감을 더 선명하게 다듬는 역할만 합니다.</p>
+      </details>
+    </section>
+
+    <section class="info-section">
+      <h2>관련 페이지</h2>
+      <p><a href="upscale.html">이미지 업스케일링 도구</a></p>
+      <p><a href="guide.html">언제 어떤 도구가 필요할까? 가이드</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="privacy.html">개인정보처리방침</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">문의</a>
+  </footer>
+</body>
+</html>
