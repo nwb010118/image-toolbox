@@ -388,6 +388,7 @@ button:hover, #downloadBtn:hover, .btn:hover {
 .site-footer a {
   color: var(--color-text-secondary);
   text-decoration: none;
+  margin: 0 10px;
 }
 
 .site-footer a:hover {
