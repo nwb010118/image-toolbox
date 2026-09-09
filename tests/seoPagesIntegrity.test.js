@@ -100,3 +100,77 @@ test('sitemap.xml includes the 3 new pages', function () {
     assert.ok(xml.includes('/image-toolbox/' + page), 'sitemap.xml missing ' + page);
   });
 });
+
+const TRUST_PAGES = ['about.html', 'contact.html'];
+
+TRUST_PAGES.forEach(function (file) {
+  test(file + ' exists and has required <head> tags', function () {
+    const html = readRepoFile(file);
+    assert.ok(/<title>[^<]+<\/title>/.test(html), 'missing <title>');
+    assert.ok(html.includes('rel="canonical"'), 'missing canonical link');
+    assert.ok(html.includes('property="og:title"'), 'missing og:title');
+  });
+});
+
+test('about.html has valid AboutPage JSON-LD', function () {
+  const html = readRepoFile('about.html');
+  const types = extractJsonLdBlocks(html).map(function (b) { return b['@type']; });
+  assert.ok(types.includes('AboutPage'), 'missing AboutPage block');
+});
+
+test('contact.html has valid ContactPage JSON-LD', function () {
+  const html = readRepoFile('contact.html');
+  const types = extractJsonLdBlocks(html).map(function (b) { return b['@type']; });
+  assert.ok(types.includes('ContactPage'), 'missing ContactPage block');
+});
+
+test('contact.html includes a mailto link to the contact email', function () {
+  const html = readRepoFile('contact.html');
+  assert.ok(html.includes('mailto:nwb010118@gmail.com'), 'missing mailto link');
+});
+
+test('about.html links to contact.html', function () {
+  const html = readRepoFile('about.html');
+  assert.ok(html.includes('href="contact.html"'), 'about.html missing link to contact.html');
+});
+
+test('contact.html links to about.html', function () {
+  const html = readRepoFile('contact.html');
+  assert.ok(html.includes('href="about.html"'), 'contact.html missing link to about.html');
+});
+
+test('about.html and contact.html footers link to privacy.html', function () {
+  ['about.html', 'contact.html'].forEach(function (file) {
+    const html = readRepoFile(file);
+    assert.ok(html.includes('href="privacy.html"'), file + ' footer missing link to privacy.html');
+  });
+});
+
+const ALL_PAGES = [
+  'index.html', 'pdf.html', 'upscale.html', 'guide.html', 'privacy.html',
+  'photos-to-pdf.html', 'pdf-to-word.html', 'pdf-to-ppt.html', 'about.html', 'contact.html'
+];
+
+ALL_PAGES.forEach(function (file) {
+  test(file + ' footer links to About and 문의 (except its own page)', function () {
+    const html = readRepoFile(file);
+    if (file !== 'about.html') {
+      assert.ok(html.includes('href="about.html"'), file + ' footer missing link to about.html');
+    }
+    if (file !== 'contact.html') {
+      assert.ok(html.includes('href="contact.html"'), file + ' footer missing link to contact.html');
+    }
+  });
+});
+
+test('sitemap.xml includes about.html and contact.html', function () {
+  const xml = readRepoFile('sitemap.xml');
+  ['about.html', 'contact.html'].forEach(function (page) {
+    assert.ok(xml.includes('/image-toolbox/' + page), 'sitemap.xml missing ' + page);
+  });
+});
+
+test('privacy.html points to contact.html instead of GitHub Issues for policy inquiries', function () {
+  const html = readRepoFile('privacy.html');
+  assert.ok(html.includes('href="contact.html"'), 'privacy.html missing link to contact.html in its inquiry section');
+});
