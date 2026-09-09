@@ -174,3 +174,23 @@ test('privacy.html points to contact.html instead of GitHub Issues for policy in
   const html = readRepoFile('privacy.html');
   assert.ok(html.includes('href="contact.html"'), 'privacy.html missing link to contact.html in its inquiry section');
 });
+
+test('index.html has the compression-mechanics content sections', function () {
+  const html = readRepoFile('index.html');
+  assert.ok(html.includes('<h2>압축은 어떻게 동작하나요</h2>'), 'missing 압축은 어떻게 동작하나요 section');
+  assert.ok(html.includes('<h2>어떤 형식을 골라야 할까요</h2>'), 'missing 어떤 형식을 골라야 할까요 section');
+});
+
+test('upscale.html has the AI-upscaling mechanics content sections', function () {
+  const html = readRepoFile('upscale.html');
+  assert.ok(html.includes('<h2>AI 업스케일링은 어떻게 동작하나요</h2>'), 'missing AI 업스케일링은 어떻게 동작하나요 section');
+  assert.ok(html.includes('<h2>언제 필요한가요</h2>'), 'missing 언제 필요한가요 section');
+});
+
+test('pdf.html has the tool-overview content section linking to all 3 long-tail pages', function () {
+  const html = readRepoFile('pdf.html');
+  assert.ok(html.includes('<h2>이 도구로 무엇을 할 수 있나요</h2>'), 'missing 이 도구로 무엇을 할 수 있나요 section');
+  ['photos-to-pdf.html', 'pdf-to-word.html', 'pdf-to-ppt.html'].forEach(function (page) {
+    assert.ok(html.includes('href="' + page + '"'), 'pdf.html missing link to ' + page);
+  });
+});
