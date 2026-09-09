@@ -241,3 +241,75 @@ test('sitemap.xml includes benchmark.html', function () {
   const xml = readRepoFile('sitemap.xml');
   assert.ok(xml.includes('/image-toolbox/benchmark.html'), 'sitemap.xml missing benchmark.html');
 });
+
+const GUIDE_ARTICLES = [
+  'kakao-photo-quality.html',
+  'email-attachment-size.html',
+  'image-format-comparison.html',
+  'photo-id-resize.html',
+  'ai-upscaling-limits.html'
+];
+
+GUIDE_ARTICLES.forEach(function (file) {
+  test(file + ' exists and has required <head> tags', function () {
+    const html = readRepoFile(file);
+    assert.ok(/<title>[^<]+<\/title>/.test(html), 'missing <title>');
+    assert.ok(html.includes('rel="canonical"'), 'missing canonical link');
+    assert.ok(html.includes('property="og:title"'), 'missing og:title');
+  });
+
+  test(file + ' has valid Article JSON-LD', function () {
+    const html = readRepoFile(file);
+    const types = extractJsonLdBlocks(html).map(function (b) { return b['@type']; });
+    assert.ok(types.includes('Article'), 'missing Article block');
+  });
+
+  test(file + ' footer links to privacy/about/contact', function () {
+    const html = readRepoFile(file);
+    assert.ok(html.includes('href="privacy.html"'), file + ' footer missing privacy.html link');
+    assert.ok(html.includes('href="about.html"'), file + ' footer missing about.html link');
+    assert.ok(html.includes('href="contact.html"'), file + ' footer missing contact.html link');
+  });
+
+  test(file + ' is linked from guide.html', function () {
+    const guideHtml = readRepoFile('guide.html');
+    assert.ok(guideHtml.includes('href="' + file + '"'), 'guide.html missing link to ' + file);
+  });
+
+  test(file + ' is listed in sitemap.xml', function () {
+    const xml = readRepoFile('sitemap.xml');
+    assert.ok(xml.includes('/image-toolbox/' + file), 'sitemap.xml missing ' + file);
+  });
+});
+
+test('email-attachment-size.html contains the verified size limits', function () {
+  const html = readRepoFile('email-attachment-size.html');
+  assert.ok(html.includes('25MB'), 'missing Gmail 25MB limit');
+  assert.ok(html.includes('10MB'), 'missing Naver 10MB base limit');
+  assert.ok(html.includes('2GB'), 'missing Naver large-attachment 2GB limit');
+  assert.ok(html.includes('4GB'), 'missing Daum large-attachment 4GB limit');
+});
+
+test('photo-id-resize.html contains the verified photo spec numbers', function () {
+  const html = readRepoFile('photo-id-resize.html');
+  assert.ok(html.includes('35') && html.includes('45'), 'missing 35x45mm spec');
+  assert.ok(html.includes('413') && html.includes('531'), 'missing 413x531px spec');
+  assert.ok(html.includes('300'), 'missing 300DPI spec');
+});
+
+test('image-format-comparison.html cites benchmark.html data instead of duplicating measurement', function () {
+  const html = readRepoFile('image-format-comparison.html');
+  assert.ok(html.includes('href="benchmark.html"'), 'missing link to benchmark.html');
+});
+
+test('ai-upscaling-limits.html links to and from upscale.html', function () {
+  const article = readRepoFile('ai-upscaling-limits.html');
+  const upscalePage = readRepoFile('upscale.html');
+  assert.ok(article.includes('href="upscale.html"'), 'ai-upscaling-limits.html missing link to upscale.html');
+  assert.ok(upscalePage.includes('href="ai-upscaling-limits.html"'), 'upscale.html missing link to ai-upscaling-limits.html');
+});
+
+test('benchmark.html links to image-format-comparison.html', function () {
+  const html = readRepoFile('benchmark.html');
+  assert.ok(html.includes('href="image-format-comparison.html"'), 'benchmark.html missing link to image-format-comparison.html');
+});
