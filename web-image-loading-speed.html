@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>웹사이트 이미지 로딩 속도 개선하기 (Core Web Vitals LCP)</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="Core Web Vitals의 LCP 기준과, 이미지 용량 때문에 페이지 로딩이 느려지는 이유, 실질적으로 개선하는 방법을 정리했습니다.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/web-image-loading-speed.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="웹사이트 이미지 로딩 속도 개선하기 (Core Web Vitals LCP)">
+  <meta property="og:description" content="Core Web Vitals의 LCP 기준과 이미지 로딩 속도를 실질적으로 개선하는 방법을 정리했습니다.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/web-image-loading-speed.html">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "웹사이트 이미지 로딩 속도 개선하기 (Core Web Vitals LCP)",
+    "url": "https://nwb010118.github.io/image-toolbox/web-image-loading-speed.html",
+    "description": "Core Web Vitals의 LCP 기준과 이미지 로딩 속도를 실질적으로 개선하는 방법을 정리했습니다.",
+    "inLanguage": "ko",
+    "datePublished": "2026-09-10"
+  }
+  </script>
+</head>
+<body>
+  <main class="container">
+    <h1>웹사이트 이미지 로딩 속도, 왜 중요할까</h1>
+    <p class="subtitle">Core Web Vitals의 LCP 기준부터 실질적인 개선 방법까지 정리했습니다.</p>
+    <p class="tool-nav"><a href="guide.html">← 가이드 목록</a></p>
+
+    <section class="info-section">
+      <h2>LCP(Largest Contentful Paint)란</h2>
+      <p>구글이 검색 순위에 반영하는 페이지 경험 지표인 Core Web Vitals 중 하나로, 페이지에서 가장 큰 콘텐츠 요소가 화면에 그려지기까지 걸리는 시간을 측정합니다. 기준은 <strong>2.5초 이하면 양호, 2.5~4.0초는 개선 필요, 4.0초를 초과하면 나쁨</strong>으로 평가됩니다.</p>
+      <p>많은 웹페이지에서 가장 큰 콘텐츠 요소는 이미지입니다. 히어로 이미지, 대표 사진, 배경 이미지처럼 화면에서 넓은 면적을 차지하는 이미지가 LCP 요소로 측정되는 경우가 흔합니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>이미지 용량이 LCP를 늦추는 이유</h2>
+      <p>이미지 파일 용량이 클수록 브라우저가 다운로드를 완료하는 데 걸리는 시간이 늘어나고, 그만큼 화면에 그려지는 시점도 늦어집니다. 특히 모바일처럼 네트워크 속도가 느린 환경에서는 이 차이가 훨씬 크게 나타납니다. 카메라로 찍은 원본 사진을 리사이즈 없이 그대로 웹에 올리면 실제로 화면에 표시되는 크기보다 훨씬 큰 용량을 다운로드하게 되는 경우가 많습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>실질적인 개선 방법</h2>
+      <p><strong>이미지 용량 줄이기.</strong> 화질 손상이 크게 느껴지지 않는 수준에서 품질을 조절해 압축하면 다운로드 시간이 줄어듭니다. <a href="index.html">이미지 압축 도구</a>로 품질을 조절할 수 있고, 실제로 얼마나 줄어드는지는 <a href="benchmark.html">실측 압축률 비교</a>에서 확인할 수 있습니다.</p>
+      <p><strong>더 효율적인 형식 사용.</strong> 같은 화질이라면 WebP가 JPG보다 더 작은 용량으로 나오는 경우가 많습니다. 형식별 차이는 <a href="image-format-comparison.html">PNG vs JPG vs WebP 비교</a>에서 자세히 다룹니다.</p>
+      <p><strong>필요한 크기 이상으로 올리지 않기.</strong> 화면에 표시될 실제 크기보다 훨씬 큰 원본을 그대로 쓰면 불필요하게 큰 파일을 다운로드하게 됩니다. 가로/세로 픽셀 크기를 실제 표시 크기에 맞게 줄이는 것도 <a href="index.html">이미지 압축 도구</a>에서 함께 처리할 수 있습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>자주 묻는 질문</h2>
+      <details>
+        <summary>LCP가 정확히 몇 초여야 안전한가요?</summary>
+        <p>구글 기준으로는 2.5초 이하가 양호합니다. 2.5초에서 4.0초 사이는 개선이 필요한 상태이고, 4.0초를 넘으면 나쁨으로 평가됩니다.</p>
+      </details>
+      <details>
+        <summary>이미지를 압축하면 무조건 LCP가 좋아지나요?</summary>
+        <p>이미지 용량이 LCP에 영향을 주는 여러 요인 중 하나이므로, 압축만으로 항상 기준을 충족하지는 않습니다. 다만 이미지가 LCP 요소인 경우가 많아서 용량을 줄이는 것이 가장 효과가 큰 개선 방법 중 하나입니다.</p>
+      </details>
+      <details>
+        <summary>내 페이지의 LCP는 어떻게 확인하나요?</summary>
+        <p>이 사이트는 LCP 측정 기능을 제공하지 않습니다. 구글의 PageSpeed Insights나 Chrome 개발자 도구의 Lighthouse 기능으로 직접 측정할 수 있습니다.</p>
+      </details>
+    </section>
+
+    <section class="info-section">
+      <h2>관련 페이지</h2>
+      <p><a href="image-format-comparison.html">PNG vs JPG vs WebP 비교</a></p>
+      <p><a href="benchmark.html">실측 압축률 비교</a></p>
+      <p><a href="index.html">이미지 압축 도구</a></p>
+      <p><a href="guide.html">언제 어떤 도구가 필요할까? 가이드</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="privacy.html">개인정보처리방침</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">문의</a>
+  </footer>
+</body>
+</html>
