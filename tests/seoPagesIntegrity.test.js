@@ -394,7 +394,7 @@ test('favicon-og-image-size.html contains the verified favicon/touch-icon/og:ima
 
 test('guide.html section 1 is restructured as a list and keeps all round 1 + round 2 links', function () {
   const html = readRepoFile('guide.html');
-  assert.ok(/<h2>1\. [^<]*<\/h2>[\s\S]*?<ul>/.test(html), 'guide.html section 1 is not restructured as a list');
+  assert.ok(/<h2>1\. [^<]*<\/h2>[\s\S]*?<ul>[\s\S]*?<\/ul>[\s\S]*?<h2>2\. /.test(html), 'guide.html section 1 is not restructured as a list with a <ul> before section 2');
   const mustKeepLinks = [
     'kakao-photo-quality.html',
     'email-attachment-size.html',
