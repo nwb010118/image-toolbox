@@ -313,3 +313,100 @@ test('benchmark.html links to image-format-comparison.html', function () {
   const html = readRepoFile('benchmark.html');
   assert.ok(html.includes('href="image-format-comparison.html"'), 'benchmark.html missing link to image-format-comparison.html');
 });
+
+const GUIDE_ARTICLES_ROUND2 = [
+  'web-image-loading-speed.html',
+  'cloud-storage-photo-tips.html',
+  'pdf-file-size-reduction.html',
+  'sns-blog-image-size.html',
+  'favicon-og-image-size.html'
+];
+
+GUIDE_ARTICLES_ROUND2.forEach(function (file) {
+  test(file + ' exists and has required <head> tags', function () {
+    const html = readRepoFile(file);
+    assert.ok(/<title>[^<]+<\/title>/.test(html), 'missing <title>');
+    assert.ok(html.includes('rel="canonical"'), 'missing canonical link');
+    assert.ok(html.includes('property="og:title"'), 'missing og:title');
+  });
+
+  test(file + ' has valid Article JSON-LD', function () {
+    const html = readRepoFile(file);
+    const types = extractJsonLdBlocks(html).map(function (b) { return b['@type']; });
+    assert.ok(types.includes('Article'), 'missing Article block');
+  });
+
+  test(file + ' footer links to privacy/about/contact', function () {
+    const html = readRepoFile(file);
+    assert.ok(html.includes('href="privacy.html"'), file + ' footer missing privacy.html link');
+    assert.ok(html.includes('href="about.html"'), file + ' footer missing about.html link');
+    assert.ok(html.includes('href="contact.html"'), file + ' footer missing contact.html link');
+  });
+
+  test(file + ' is linked from guide.html', function () {
+    const guideHtml = readRepoFile('guide.html');
+    assert.ok(guideHtml.includes('href="' + file + '"'), 'guide.html missing link to ' + file);
+  });
+
+  test(file + ' is listed in sitemap.xml', function () {
+    const xml = readRepoFile('sitemap.xml');
+    assert.ok(xml.includes('/image-toolbox/' + file), 'sitemap.xml missing ' + file);
+  });
+});
+
+test('web-image-loading-speed.html contains the verified Core Web Vitals LCP thresholds', function () {
+  const html = readRepoFile('web-image-loading-speed.html');
+  assert.ok(html.includes('2.5'), 'missing LCP good threshold 2.5s');
+  assert.ok(html.includes('4.0') || html.includes('4초'), 'missing LCP poor threshold 4.0s');
+});
+
+test('cloud-storage-photo-tips.html contains the verified free storage capacities', function () {
+  const html = readRepoFile('cloud-storage-photo-tips.html');
+  assert.ok(html.includes('15GB'), 'missing Google Drive 15GB');
+  assert.ok(html.includes('30GB'), 'missing Naver MYBOX 30GB');
+  assert.ok(html.includes('5GB'), 'missing iCloud/OneDrive 5GB');
+});
+
+test('pdf-file-size-reduction.html honestly states the tool cannot compress PDF directly', function () {
+  const html = readRepoFile('pdf-file-size-reduction.html');
+  assert.ok(html.includes('PDF 자체') || html.includes('PDF 파일 자체'), 'missing honest disclosure about PDF compression limitation');
+  assert.ok(html.includes('href="index.html"'), 'missing link to image compression tool for the workaround');
+  assert.ok(html.includes('href="pdf.html"'), 'missing link to pdf.html for the workaround');
+});
+
+test('pdf-file-size-reduction.html is linked from pdf.html FAQ', function () {
+  const pdfHtml = readRepoFile('pdf.html');
+  assert.ok(pdfHtml.includes('href="pdf-file-size-reduction.html"'), 'pdf.html FAQ missing link to pdf-file-size-reduction.html');
+});
+
+test('sns-blog-image-size.html contains the verified Instagram and Naver Blog dimensions', function () {
+  const html = readRepoFile('sns-blog-image-size.html');
+  assert.ok(html.includes('1080') && html.includes('1350'), 'missing Instagram feed 1080x1350');
+  assert.ok(html.includes('1300') && html.includes('885'), 'missing Naver Blog thumbnail 1300x885');
+});
+
+test('favicon-og-image-size.html contains the verified favicon/touch-icon/og:image dimensions', function () {
+  const html = readRepoFile('favicon-og-image-size.html');
+  assert.ok(html.includes('180'), 'missing Apple touch icon 180x180');
+  assert.ok(html.includes('192') && html.includes('512'), 'missing Android/PWA 192/512');
+  assert.ok(html.includes('1200') && html.includes('630'), 'missing og:image 1200x630');
+});
+
+test('guide.html section 1 is restructured as a list and keeps all round 1 + round 2 links', function () {
+  const html = readRepoFile('guide.html');
+  assert.ok(/<h2>1\. [^<]*<\/h2>[\s\S]*?<ul>/.test(html), 'guide.html section 1 is not restructured as a list');
+  const mustKeepLinks = [
+    'kakao-photo-quality.html',
+    'email-attachment-size.html',
+    'image-format-comparison.html',
+    'photo-id-resize.html',
+    'ai-upscaling-limits.html',
+    'web-image-loading-speed.html',
+    'cloud-storage-photo-tips.html',
+    'sns-blog-image-size.html',
+    'favicon-og-image-size.html'
+  ];
+  mustKeepLinks.forEach(function (link) {
+    assert.ok(html.includes('href="' + link + '"'), 'guide.html missing link to ' + link);
+  });
+});
