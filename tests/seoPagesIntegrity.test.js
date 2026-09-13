@@ -410,3 +410,102 @@ test('guide.html section 1 is restructured as a list and keeps all round 1 + rou
     assert.ok(html.includes('href="' + link + '"'), 'guide.html missing link to ' + link);
   });
 });
+
+const GUIDE_ARTICLES_ROUND3 = [
+  'iphone-heic-photo-guide.html',
+  'monitor-resolution-wallpaper-size.html',
+  'youtube-thumbnail-size.html',
+  'old-photo-scan-digitize-workflow.html',
+  'print-resolution-dpi-guide.html',
+  'pdf-merge-multiple-files.html'
+];
+
+GUIDE_ARTICLES_ROUND3.forEach(function (file) {
+  test(file + ' exists and has required <head> tags', function () {
+    const html = readRepoFile(file);
+    assert.ok(/<title>[^<]+<\/title>/.test(html), 'missing <title>');
+    assert.ok(html.includes('rel="canonical"'), 'missing canonical link');
+    assert.ok(html.includes('property="og:title"'), 'missing og:title');
+  });
+
+  test(file + ' has valid Article JSON-LD', function () {
+    const html = readRepoFile(file);
+    const types = extractJsonLdBlocks(html).map(function (b) { return b['@type']; });
+    assert.ok(types.includes('Article'), 'missing Article block');
+  });
+
+  test(file + ' footer links to privacy/about/contact', function () {
+    const html = readRepoFile(file);
+    assert.ok(html.includes('href="privacy.html"'), file + ' footer missing privacy.html link');
+    assert.ok(html.includes('href="about.html"'), file + ' footer missing about.html link');
+    assert.ok(html.includes('href="contact.html"'), file + ' footer missing contact.html link');
+  });
+
+  test(file + ' is linked from guide.html', function () {
+    const guideHtml = readRepoFile('guide.html');
+    assert.ok(guideHtml.includes('href="' + file + '"'), 'guide.html missing link to ' + file);
+  });
+
+  test(file + ' is listed in sitemap.xml', function () {
+    const xml = readRepoFile('sitemap.xml');
+    assert.ok(xml.includes('/image-toolbox/' + file), 'sitemap.xml missing ' + file);
+  });
+});
+
+test('iphone-heic-photo-guide.html states the iPhone setting path and this site does not accept HEIC directly', function () {
+  const html = readRepoFile('iphone-heic-photo-guide.html');
+  assert.ok(html.includes('카메라') && html.includes('포맷') && html.includes('호환성 우선'), 'missing iPhone setting path (설정 → 카메라 → 포맷 → 호환성 우선)');
+  assert.ok(html.includes('HEIC'), 'missing HEIC mention');
+  assert.ok(html.includes('href="index.html"'), 'missing link to compression tool for the after-conversion step');
+});
+
+test('monitor-resolution-wallpaper-size.html contains the verified FHD/QHD/4K resolutions and the upscale reachability facts', function () {
+  const html = readRepoFile('monitor-resolution-wallpaper-size.html');
+  assert.ok(html.includes('1920') && html.includes('1080'), 'missing FHD 1920x1080');
+  assert.ok(html.includes('2560') && html.includes('1440'), 'missing QHD 2560x1440');
+  assert.ok(html.includes('3840') && html.includes('2160'), 'missing 4K 3840x2160');
+  assert.ok(html.includes('1000'), 'missing upscale tool input limit (1000px)');
+  assert.ok(html.includes('href="upscale.html"'), 'missing link to upscale.html');
+});
+
+test('youtube-thumbnail-size.html contains the official current spec, not the outdated 1280x720 folklore figure', function () {
+  const html = readRepoFile('youtube-thumbnail-size.html');
+  assert.ok(html.includes('3840') && html.includes('2160'), 'missing official recommended resolution 3840x2160');
+  assert.ok(html.includes('640'), 'missing minimum width 640px');
+  assert.ok(html.includes('16:9'), 'missing 16:9 aspect ratio');
+  assert.ok(html.includes('2MB'), 'missing mobile 2MB file size limit');
+  assert.ok(html.includes('50MB'), 'missing desktop 50MB file size limit');
+});
+
+test('old-photo-scan-digitize-workflow.html contains the verified scan DPI recommendations and links both tools', function () {
+  const html = readRepoFile('old-photo-scan-digitize-workflow.html');
+  assert.ok(html.includes('300') && html.includes('600'), 'missing 300/600 DPI scan recommendation');
+  assert.ok(html.includes('href="index.html"'), 'missing link to compression tool');
+  assert.ok(html.includes('href="upscale.html"'), 'missing link to upscale tool');
+});
+
+test('print-resolution-dpi-guide.html contains the DPI formula and both print-quality thresholds', function () {
+  const html = readRepoFile('print-resolution-dpi-guide.html');
+  assert.ok(html.includes('300'), 'missing 300DPI print standard');
+  assert.ok(html.includes('150') && html.includes('200'), 'missing 150-200DPI large-format threshold');
+  assert.ok(html.includes('2.54'), 'missing inch-to-cm conversion constant');
+});
+
+test('pdf-merge-multiple-files.html honestly states PDF+PDF merge is unsupported and names the 50-image bottleneck', function () {
+  const html = readRepoFile('pdf-merge-multiple-files.html');
+  assert.ok(html.includes('병합') && html.includes('없습니다'), 'missing honest disclosure that PDF+PDF merge is unsupported');
+  assert.ok(html.includes('href="pdf.html"'), 'missing link to pdf.html for the extraction step');
+  assert.ok(html.includes('href="photos-to-pdf.html"'), 'missing link to photos-to-pdf.html for the re-merge step');
+  assert.ok(html.includes('50'), 'missing mention of the 50-image batch limit bottleneck');
+});
+
+test('pdf-merge-multiple-files.html is linked from pdf.html FAQ', function () {
+  const pdfHtml = readRepoFile('pdf.html');
+  assert.ok(pdfHtml.includes('href="pdf-merge-multiple-files.html"'), 'pdf.html FAQ missing link to pdf-merge-multiple-files.html');
+});
+
+test('upscale.html links to monitor-resolution-wallpaper-size.html and old-photo-scan-digitize-workflow.html', function () {
+  const html = readRepoFile('upscale.html');
+  assert.ok(html.includes('href="monitor-resolution-wallpaper-size.html"'), 'upscale.html missing link to monitor-resolution-wallpaper-size.html');
+  assert.ok(html.includes('href="old-photo-scan-digitize-workflow.html"'), 'upscale.html missing link to old-photo-scan-digitize-workflow.html');
+});
