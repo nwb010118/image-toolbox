@@ -577,3 +577,11 @@ test('ai-upscaling-limits.html has before/after upscale screenshot', function ()
 test('images/upscale-before-after.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'upscale-before-after.png')), 'upscale-before-after.png missing from images/');
 });
+
+test('web-image-loading-speed.html has an inline LCP threshold chart', function () {
+  const html = readRepoFile('web-image-loading-speed.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg chart');
+  assert.ok(html.includes('그림으로 보는 LCP 구간: 2.5초까지 좋음, 4.0초까지 개선 필요, 4.0초 초과는 나쁨'), 'missing unique chart desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});

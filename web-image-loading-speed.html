@@ -36,6 +36,23 @@
     <section class="info-section">
       <h2>LCP(Largest Contentful Paint)란</h2>
       <p>구글이 검색 순위에 반영하는 페이지 경험 지표인 Core Web Vitals 중 하나로, 페이지에서 가장 큰 콘텐츠 요소가 화면에 그려지기까지 걸리는 시간을 측정합니다. 기준은 <strong>2.5초 이하면 양호, 2.5~4.0초는 개선 필요, 4.0초를 초과하면 나쁨</strong>으로 평가됩니다.</p>
+      <figure class="guide-image">
+        <svg viewBox="0 0 400 150" role="img" aria-labelledby="lcpChartTitle lcpChartDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="lcpChartTitle">Core Web Vitals LCP 판정 구간</title>
+          <desc id="lcpChartDesc">그림으로 보는 LCP 구간: 2.5초까지 좋음, 4.0초까지 개선 필요, 4.0초 초과는 나쁨</desc>
+          <rect x="20" y="50" width="180" height="40" fill="#0cce6b"></rect>
+          <rect x="200" y="50" width="108" height="40" fill="#ffa400"></rect>
+          <rect x="308" y="50" width="72" height="40" fill="#ff4e42"></rect>
+          <text x="110" y="75" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="600" fill="#ffffff">좋음</text>
+          <text x="254" y="75" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="600" fill="#ffffff">개선 필요</text>
+          <text x="344" y="75" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="600" fill="#ffffff">나쁨</text>
+          <line x1="200" y1="45" x2="200" y2="95" stroke="var(--color-text-secondary)" stroke-width="1"></line>
+          <line x1="308" y1="45" x2="308" y2="95" stroke="var(--color-text-secondary)" stroke-width="1"></line>
+          <text x="200" y="112" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">2.5초</text>
+          <text x="308" y="112" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">4.0초</text>
+        </svg>
+        <figcaption>Core Web Vitals의 LCP 판정 구간 — 2.5초 이하는 좋음, 4.0초를 넘으면 나쁨으로 평가됩니다.</figcaption>
+      </figure>
       <p>많은 웹페이지에서 가장 큰 콘텐츠 요소는 이미지입니다. 히어로 이미지, 대표 사진, 배경 이미지처럼 화면에서 넓은 면적을 차지하는 이미지가 LCP 요소로 측정되는 경우가 흔합니다.</p>
     </section>
 
