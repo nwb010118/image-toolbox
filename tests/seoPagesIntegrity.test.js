@@ -593,3 +593,20 @@ test('cloud-storage-photo-tips.html has an inline storage capacity chart', funct
   assert.ok(html.includes('서비스별 무료 저장공간 막대그래프: 구글 드라이브 15기가바이트, 아이클라우드 5기가바이트, 원드라이브 5기가바이트, 네이버 마이박스 30기가바이트'), 'missing unique chart desc sentence');
   assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
 });
+
+test('pdf-file-size-reduction.html has the real PDF-to-image extraction screenshot', function () {
+  const html = readRepoFile('pdf-file-size-reduction.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-pdf-extract\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-pdf-extract.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="346"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="165"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-pdf-extract.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-pdf-extract.png')), 'tool-pdf-extract.png missing from images/');
+});
