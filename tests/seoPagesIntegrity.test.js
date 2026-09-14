@@ -638,3 +638,20 @@ test('sns-blog-image-size.html has the real 1080x1080 resize screenshot', functi
 test('images/tool-resize-1080x1080.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-resize-1080x1080.png')), 'tool-resize-1080x1080.png missing from images/');
 });
+
+test('iphone-heic-photo-guide.html has the empty upload area screenshot', function () {
+  const html = readRepoFile('iphone-heic-photo-guide.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-empty-upload\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-empty-upload.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="564"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="348"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-empty-upload.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-empty-upload.png')), 'tool-empty-upload.png missing from images/');
+});
