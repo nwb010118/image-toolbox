@@ -52,6 +52,35 @@
     <section class="info-section">
       <h2>브라우저에서 각 크기 만드는 법</h2>
       <p><a href="index.html">이미지 압축 도구</a>의 가로/세로 픽셀 입력란에 원하는 규격을 직접 입력해 필요한 크기로 만들 수 있습니다. 파비콘처럼 여러 크기가 필요하다면 원본 하나를 준비해두고 필요한 크기(16, 32, 48, 180, 192, 512px 등)마다 각각 리사이즈하면 됩니다. og:image는 사진 편집 프로그램으로 1200×630px 비율에 맞춰 미리 크롭한 뒤, 이 사이트의 도구로 정확한 픽셀 크기로 조정하는 것을 권장합니다.</p>
+      <figure class="guide-image">
+        <svg viewBox="0 0 460 560" role="img" aria-labelledby="faviconChartTitle faviconChartDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="faviconChartTitle">파비콘·앱 아이콘·OG 이미지 크기 비율 비교</title>
+          <desc id="faviconChartDesc">실제 픽셀 크기 비교 다이어그램: 파비콘 16·32·48픽셀, 앱 아이콘 180·192·512픽셀, OG 이미지 1200×630픽셀. 각 그룹 내부는 실제 비율 그대로이며 그룹 간 배율은 다릅니다.</desc>
+
+          <text x="20" y="20" font-size="15" font-weight="600" fill="var(--color-text)">파비콘 (16 / 32 / 48px)</text>
+          <line x1="20" y1="140" x2="440" y2="140" stroke="var(--color-border)" stroke-width="1"></line>
+          <rect x="40" y="108" width="32" height="32" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="56" y="155" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">16px</text>
+          <rect x="110" y="76" width="64" height="64" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="142" y="155" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">32px</text>
+          <rect x="210" y="44" width="96" height="96" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="258" y="155" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">48px</text>
+
+          <text x="20" y="200" font-size="15" font-weight="600" fill="var(--color-text)">앱 아이콘 (180 / 192 / 512px)</text>
+          <line x1="20" y1="350" x2="440" y2="350" stroke="var(--color-border)" stroke-width="1"></line>
+          <rect x="40" y="300" width="50" height="50" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="65" y="365" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">180px</text>
+          <rect x="120" y="296" width="54" height="54" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="147" y="365" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">192px</text>
+          <rect x="210" y="207" width="143" height="143" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="281" y="365" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">512px</text>
+
+          <text x="20" y="410" font-size="15" font-weight="600" fill="var(--color-text)">OG 이미지 (1200 × 630px, 1.91:1)</text>
+          <rect x="40" y="420" width="180" height="95" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="130" y="535" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">1200 × 630px</text>
+        </svg>
+        <figcaption>파비콘·앱 아이콘·OG 이미지의 실제 픽셀 크기를 그룹별로 정확한 비율로 비교했습니다(그룹 간 배율은 서로 다릅니다).</figcaption>
+      </figure>
     </section>
 
     <section class="info-section">

@@ -392,6 +392,14 @@ test('favicon-og-image-size.html contains the verified favicon/touch-icon/og:ima
   assert.ok(html.includes('1200') && html.includes('630'), 'missing og:image 1200x630');
 });
 
+test('favicon-og-image-size.html has the 3-panel proportion diagram', function () {
+  const html = readRepoFile('favicon-og-image-size.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg diagram');
+  assert.ok(html.includes('실제 픽셀 크기 비교 다이어그램: 파비콘 16·32·48픽셀, 앱 아이콘 180·192·512픽셀, OG 이미지 1200×630픽셀. 각 그룹 내부는 실제 비율 그대로이며 그룹 간 배율은 다릅니다.'), 'missing unique diagram desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
 test('guide.html section 1 is restructured as a list and keeps all round 1 + round 2 links', function () {
   const html = readRepoFile('guide.html');
   assert.ok(/<h2>1\. [^<]*<\/h2>[\s\S]*?<ul>[\s\S]*?<\/ul>[\s\S]*?<h2>2\. /.test(html), 'guide.html section 1 is not restructured as a list with a <ul> before section 2');
