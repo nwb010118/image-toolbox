@@ -517,3 +517,16 @@ test('css/style.css defines .guide-image classes', function () {
   assert.ok(css.includes('.guide-image svg'), 'missing .guide-image svg rule');
   assert.ok(css.includes('.guide-image figcaption'), 'missing .guide-image figcaption rule');
 });
+
+test('kakao-photo-quality.html has a guide image with alt text', function () {
+  const html = readRepoFile('kakao-photo-quality.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-quality-slider\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-quality-slider.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-quality-slider.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-quality-slider.png')), 'tool-quality-slider.png missing from images/');
+});
