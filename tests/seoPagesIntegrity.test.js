@@ -392,6 +392,14 @@ test('favicon-og-image-size.html contains the verified favicon/touch-icon/og:ima
   assert.ok(html.includes('1200') && html.includes('630'), 'missing og:image 1200x630');
 });
 
+test('favicon-og-image-size.html has the 3-panel proportion diagram', function () {
+  const html = readRepoFile('favicon-og-image-size.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg diagram');
+  assert.ok(html.includes('실제 픽셀 크기 비교 다이어그램: 파비콘 16·32·48픽셀, 앱 아이콘 180·192·512픽셀, OG 이미지 1200×630픽셀. 각 그룹 내부는 실제 비율 그대로이며 그룹 간 배율은 다릅니다.'), 'missing unique diagram desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
 test('guide.html groups article cards by topic and keeps all round 1 + round 2 links', function () {
   const html = readRepoFile('guide.html');
   ['compression', 'pdf-workflows', 'resolution'].forEach(function (id) {
@@ -579,4 +587,54 @@ test('ai-upscaling-limits.html has before/after upscale screenshot', function ()
 
 test('images/upscale-before-after.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'upscale-before-after.png')), 'upscale-before-after.png missing from images/');
+});
+
+test('web-image-loading-speed.html has an inline LCP threshold chart', function () {
+  const html = readRepoFile('web-image-loading-speed.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg chart');
+  assert.ok(html.includes('그림으로 보는 LCP 구간: 2.5초까지 좋음, 4.0초까지 개선 필요, 4.0초 초과는 나쁨'), 'missing unique chart desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('cloud-storage-photo-tips.html has an inline storage capacity chart', function () {
+  const html = readRepoFile('cloud-storage-photo-tips.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg chart');
+  assert.ok(html.includes('서비스별 무료 저장공간 막대그래프: 구글 드라이브 15기가바이트, 아이클라우드 5기가바이트, 원드라이브 5기가바이트, 네이버 마이박스 30기가바이트'), 'missing unique chart desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('pdf-file-size-reduction.html has the real PDF-to-image extraction screenshot', function () {
+  const html = readRepoFile('pdf-file-size-reduction.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-pdf-extract\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-pdf-extract.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="346"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="165"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-pdf-extract.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-pdf-extract.png')), 'tool-pdf-extract.png missing from images/');
+});
+
+test('sns-blog-image-size.html has the real 1080x1080 resize screenshot', function () {
+  const html = readRepoFile('sns-blog-image-size.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-resize-1080x1080\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-resize-1080x1080.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="768"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="341"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-resize-1080x1080.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-resize-1080x1080.png')), 'tool-resize-1080x1080.png missing from images/');
 });
