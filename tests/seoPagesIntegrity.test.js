@@ -564,3 +564,16 @@ test('image-format-comparison.html has inline SVG charts with exact benchmark fi
   const figureCount = (html.match(/<figure class="guide-image">/g) || []).length;
   assert.ok(figureCount >= 2, 'expected at least 2 guide-image figures, found ' + figureCount);
 });
+
+test('ai-upscaling-limits.html has before/after upscale screenshot', function () {
+  const html = readRepoFile('ai-upscaling-limits.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/upscale-before-after\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing img tag for upscale-before-after.png');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/upscale-before-after.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'upscale-before-after.png')), 'upscale-before-after.png missing from images/');
+});
