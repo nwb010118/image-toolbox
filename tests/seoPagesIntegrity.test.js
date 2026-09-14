@@ -392,9 +392,12 @@ test('favicon-og-image-size.html contains the verified favicon/touch-icon/og:ima
   assert.ok(html.includes('1200') && html.includes('630'), 'missing og:image 1200x630');
 });
 
-test('guide.html section 1 is restructured as a list and keeps all round 1 + round 2 links', function () {
+test('guide.html groups article cards by topic and keeps all round 1 + round 2 links', function () {
   const html = readRepoFile('guide.html');
-  assert.ok(/<h2>1\. [^<]*<\/h2>[\s\S]*?<ul>[\s\S]*?<\/ul>[\s\S]*?<h2>2\. /.test(html), 'guide.html section 1 is not restructured as a list with a <ul> before section 2');
+  ['compression', 'pdf-workflows', 'resolution'].forEach(function (id) {
+    const section = html.match(new RegExp('<section[^>]*id="' + id + '"[^>]*>([\\s\\S]*?)<\\/section>'));
+    assert.ok(section && section[1].includes('class="guide-card"'), 'missing article cards in ' + id);
+  });
   const mustKeepLinks = [
     'kakao-photo-quality.html',
     'email-attachment-size.html',

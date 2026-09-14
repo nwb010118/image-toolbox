@@ -15,6 +15,7 @@
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/benchmark.html">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/site.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -27,8 +28,21 @@
   }
   </script>
 </head>
-<body>
-  <main class="container">
+<body class="page-article">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox 홈"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href="index.html">이미지 압축</a>
+        <a href="pdf.html">PDF 변환</a>
+        <a href="upscale.html">업스케일링</a>
+        <a href="guide.html">가이드</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" id="main-content">
+    <p class="eyebrow">IMAGE TOOLBOX / GUIDE</p>
     <h1>이미지 압축, 실제로 얼마나 줄어들까</h1>
     <p class="subtitle">막연한 설명 대신, 실제로 압축 도구를 돌려서 얻은 숫자입니다.</p>
     <p class="tool-nav"><a href="index.html">← 이미지 압축 도구</a></p>
@@ -139,9 +153,10 @@
   </main>
 
   <footer class="site-footer">
-    <a href="privacy.html">개인정보처리방침</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">문의</a>
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">일상의 이미지 작업을, 간편하고 안전하게.</p></div>
+      <nav class="footer-links" aria-label="사이트 정보"><a href="about.html">서비스 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+    </div>
   </footer>
 </body>
 </html>

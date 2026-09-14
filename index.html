@@ -16,6 +16,7 @@
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/site.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -89,26 +90,40 @@
   }
   </script>
 </head>
-<body>
-  <main class="container">
-    <h1>이미지 압축 도구</h1>
-    <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p>
-    <p class="tool-nav"><a href="pdf.html">PDF 변환 도구 →</a></p>
-    <p class="tool-nav"><a href="upscale.html">이미지 업스케일링 →</a></p>
-    <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
+<body class="page-tool">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox 홈"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href="index.html" aria-current="page">이미지 압축</a>
+        <a href="pdf.html">PDF 변환</a>
+        <a href="upscale.html">업스케일링</a>
+        <a href="guide.html">가이드</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" id="main-content">
+    <p class="eyebrow">IMAGE TOOLS</p>
+    <h1>이미지 압축·변환,<br>더 간편하게.</h1>
+    <p class="subtitle">용량은 줄이고, 크기와 형식은 원하는 대로.<br>사진을 서버로 보내지 않고 브라우저에서 바로 처리하세요.</p>
 
-    <section class="upload-area" id="uploadArea">
+    <div class="tool-intro-grid">
+<section class="upload-area" id="uploadArea">
       <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
       <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12"></path>
         <path d="M7 8l5-5 5 5"></path>
         <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
       </svg>
+      <h2 class="upload-heading">이미지를 여기에 놓으세요</h2>
       <button type="button" class="upload-btn">파일 선택</button>
       <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
       <p class="upload-formats">JPG, PNG, WebP 지원 · 최대 20MB</p>
       <div id="errorMessage" class="error-message" hidden></div>
     </section>
+<aside class="tool-aside" aria-label="도구 안내"><span class="aside-label">MADE FOR YOUR PRIVACY</span><h2>내 사진은,<br>내 브라우저 안에.</h2><p>압축 품질, 가로세로 크기, 출력 형식을 한 번에 조절하세요. 파일 처리는 기기 안에서 이루어집니다.</p><ul><li>이미지 서버 전송 없음</li><li>회원가입 없이 무료</li><li>설치 없이 바로 사용</li></ul></aside>
+    </div>
 
     <section class="controls" id="controls" hidden>
       <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
@@ -204,9 +219,10 @@
   </main>
 
   <footer class="site-footer">
-    <a href="privacy.html">개인정보처리방침</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">문의</a>
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">일상의 이미지 작업을, 간편하고 안전하게.</p></div>
+      <nav class="footer-links" aria-label="사이트 정보"><a href="about.html">서비스 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+    </div>
   </footer>
 
   <script src="js/imageTools.js"></script>

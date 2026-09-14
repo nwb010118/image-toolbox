@@ -15,6 +15,7 @@
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/guide.html">
   <meta property="og:locale" content="ko_KR">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/site.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -27,53 +28,159 @@
   }
   </script>
 </head>
-<body>
-  <main class="container">
-    <h1>이미지 압축·PDF 변환·업스케일링, 언제 왜 필요할까</h1>
-    <p class="subtitle">상황별로 어떤 도구가 필요한지 정리했습니다. 전부 서버 전송 없이 브라우저에서 무료로 바로 처리할 수 있습니다.</p>
-    <p class="tool-nav"><a href="index.html">← 이미지 압축 도구</a></p>
-    <p class="tool-nav"><a href="pdf.html">PDF 변환 도구</a></p>
-    <p class="tool-nav"><a href="upscale.html">이미지 업스케일링</a></p>
-
-    <section class="info-section">
-      <h2>1. 사진 용량을 줄여야 할 때</h2>
-      <p>웹사이트에 이미지를 그대로 올리면 페이지 로딩이 느려지고, 이는 방문자 이탈뿐 아니라 검색엔진 SEO 순위에도 불리하게 작용합니다. 이메일에 사진을 첨부할 때 용량 제한에 걸리는 경우, 클라우드 저장공간을 아끼고 싶은 경우에도 압축이 필요합니다. <a href="index.html">이미지 압축 도구</a>에서 품질과 가로세로 크기를 조절해 용량을 줄일 수 있습니다. 실제로 얼마나 줄어드는지는 <a href="benchmark.html">실측 압축률 비교</a>에서 확인할 수 있습니다.</p>
-      <p>상황별로 더 자세히 알아보려면:</p>
-      <ul>
-        <li><a href="email-attachment-size.html">이메일 서비스별 첨부 용량 제한 정리</a></li>
-        <li><a href="kakao-photo-quality.html">카카오톡 사진 화질 저하 이유와 원본으로 보내는 법</a></li>
-        <li><a href="image-format-comparison.html">PNG vs JPG vs WebP, 언제 무엇을 써야 할까</a></li>
-        <li><a href="photo-id-resize.html">여권사진·증명사진 규격에 맞게 리사이즈하는 법</a></li>
-        <li><a href="web-image-loading-speed.html">웹사이트 이미지 로딩 속도 개선하기</a></li>
-        <li><a href="cloud-storage-photo-tips.html">클라우드 저장공간 아끼는 사진 압축 팁</a></li>
-        <li><a href="sns-blog-image-size.html">인스타그램·네이버 블로그 이미지 최적 크기</a></li>
-        <li><a href="favicon-og-image-size.html">파비콘·OG 이미지 정확한 크기</a></li>
-        <li><a href="iphone-heic-photo-guide.html">아이폰 HEIC 사진이 안 열릴 때 대처법</a></li>
-        <li><a href="youtube-thumbnail-size.html">유튜브 썸네일 크기, 공식 기준 정리</a></li>
-        <li><a href="print-resolution-dpi-guide.html">인쇄용 사진 해상도(DPI) 완전정리</a></li>
-      </ul>
+<body class="page-guide">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox 홈"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href="index.html">이미지 압축</a>
+        <a href="pdf.html">PDF 변환</a>
+        <a href="upscale.html">업스케일링</a>
+        <a href="guide.html" aria-current="page">가이드</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" id="main-content">
+    <p class="eyebrow">THE KNOWLEDGE LIBRARY</p>
+    <h1>이미지 작업 가이드</h1>
+    <p class="subtitle">용량을 줄이고, 문서를 정리하고, 해상도를 맞추는 일. 작업에 필요한 기준과 방법을 주제별로 살펴보세요.</p>
+    <nav class="category-nav" aria-label="가이드 주제 바로가기">
+      <a href="#compression">압축·포맷·공유</a>
+      <a href="#pdf-workflows">PDF 작업</a>
+      <a href="#resolution">업스케일·해상도</a>
+    </nav>
+    <section class="info-section" id="compression" aria-labelledby="compression-title">
+      <h2 id="compression-title">압축·포맷·공유</h2>
+      <p>사진을 보내고, 웹에 올리고, 보관할 때 필요한 파일 형식과 용량·크기 기준을 살펴보세요.</p>
+      <div class="guide-grid">
+        <a class="guide-card" href="email-attachment-size.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">이메일 첨부파일 용량 제한 정리</h3>
+          <p class="card-description">Gmail, 네이버메일, 다음메일의 첨부파일 용량 제한을 정리하고, 제한에 걸렸을 때 사진 용량을 줄이거나 여러 장을 하나로 묶어 보내는 방법을 안내합니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="kakao-photo-quality.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">카카오톡 사진, 왜 화질이 떨어질까</h3>
+          <p class="card-description">카카오톡으로 사진을 보내면 화질이 떨어지는 이유와 원본 그대로 전송하는 방법, 반대로 용량을 줄여서 안정적으로 보내는 방법을 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="image-format-comparison.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">PNG vs JPG vs WebP, 언제 무엇을 써야 할까</h3>
+          <p class="card-description">PNG, JPG, WebP 세 이미지 형식의 압축 방식·투명도·호환성 차이를 정리하고, 실측 데이터를 근거로 상황별 추천 형식을 안내합니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="photo-id-resize.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">여권사진·증명사진 규격에 맞게 리사이즈하는 법</h3>
+          <p class="card-description">여권, 주민등록증, 운전면허증 사진의 정확한 규격(35×45mm, 413×531px)과 브라우저에서 바로 리사이즈하는 방법을 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="web-image-loading-speed.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">웹사이트 이미지 로딩 속도, 왜 중요할까</h3>
+          <p class="card-description">Core Web Vitals의 LCP 기준과, 이미지 용량 때문에 페이지 로딩이 느려지는 이유, 실질적으로 개선하는 방법을 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="cloud-storage-photo-tips.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">클라우드 저장공간, 사진 압축으로 더 오래 쓰는 법</h3>
+          <p class="card-description">구글 드라이브, 아이클라우드, 원드라이브, 네이버 마이박스의 무료 저장공간 용량을 정리하고, 사진 압축으로 같은 용량에 더 많은 사진을 보관하는 방법을 안내합니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="sns-blog-image-size.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">인스타그램·네이버 블로그, 이미지 몇 픽셀이 적당할까</h3>
+          <p class="card-description">인스타그램 피드·정사각·스토리, 네이버 블로그 썸네일·모바일 커버 이미지의 정확한 픽셀 규격과 브라우저에서 맞추는 방법을 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="favicon-og-image-size.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">파비콘부터 OG 이미지까지, 정확한 크기는 몇 픽셀일까</h3>
+          <p class="card-description">파비콘, Apple Touch Icon, Android/PWA 아이콘, og:image의 정확한 픽셀 규격과 브라우저에서 각 크기를 만드는 방법을 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="iphone-heic-photo-guide.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">아이폰 HEIC 사진, 왜 안 열릴까</h3>
+          <p class="card-description">아이폰 HEIC 사진이 다른 기기나 웹사이트에서 안 열리는 이유와, 아이폰 설정으로 앞으로 찍을 사진을 JPG로 저장하는 방법, 이미 찍은 사진을 변환하는 방법을 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="youtube-thumbnail-size.html">
+          <span class="card-category">이미지 활용</span>
+          <h3 class="card-title">유튜브 썸네일, 정확한 크기는 몇 픽셀일까</h3>
+          <p class="card-description">유튜브 공식 고객센터 문서 기준 맞춤 썸네일 권장 해상도, 비율, 파일 형식, 용량 제한을 정리했습니다. 흔히 알려진 1280x720이 아닌 현재 공식 기준입니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <p class="tool-nav"><a href="index.html">이미지 압축 도구 →</a> <a href="benchmark.html">실측 압축률 비교 →</a></p>
     </section>
-
-    <section class="info-section">
-      <h2>2. 여러 장의 이미지를 PDF로 합쳐야 할 때</h2>
-      <p>서류 제출, 스캔한 문서 정리, 포트폴리오 공유처럼 여러 장의 사진을 순서대로 하나의 파일로 묶어야 하는 상황이 있습니다. 반대로 PDF 안에 있는 페이지를 개별 이미지로 꺼내야 할 때도 있고요. <a href="pdf.html">PDF 변환 도구</a>에서 이미지→PDF, PDF→이미지 양방향 변환을 할 수 있습니다. 여러 장의 사진을 PDF로 합치는 자세한 방법은 <a href="photos-to-pdf.html">이 안내</a>를 참고하세요. PDF 파일 자체의 용량을 줄이는 방법은 <a href="pdf-file-size-reduction.html">이 글</a>을 참고하세요. 이미 만들어진 PDF 파일 여러 개를 하나로 합치고 싶다면 <a href="pdf-merge-multiple-files.html">이 글</a>을 참고하세요.</p>
+    <section class="info-section" id="pdf-workflows" aria-labelledby="pdf-workflows-title">
+      <h2 id="pdf-workflows-title">PDF 작업</h2>
+      <p>사진을 한 문서로 묶는 방법부터 PDF 용량 줄이기와 여러 파일 정리의 한계까지 안내합니다.</p>
+      <div class="guide-grid">
+        <a class="guide-card" href="photos-to-pdf.html">
+          <span class="card-category">PDF 가이드</span>
+          <h3 class="card-title">여러 장 사진을 하나의 PDF로 합치는 방법</h3>
+          <p class="card-description">JPG, PNG, WebP 사진 여러 장을 순서대로 하나의 PDF 파일로 합치는 방법을 단계별로 설명합니다. 서버 전송 없이 브라우저에서 무료로 바로 처리합니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="pdf-file-size-reduction.html">
+          <span class="card-category">PDF 가이드</span>
+          <h3 class="card-title">PDF 파일 용량, 어떻게 줄일 수 있을까</h3>
+          <p class="card-description">PDF 파일 용량을 줄이는 방법을 정리했습니다. 이미지로 추출해 압축한 뒤 다시 PDF로 합치는 방법이 스캔본류 PDF에 효과적인 이유와, 텍스트 위주 PDF에는 효과가 적은 이유를 설명합니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="pdf-merge-multiple-files.html">
+          <span class="card-category">PDF 가이드</span>
+          <h3 class="card-title">PDF 파일 여러 개, 하나로 합칠 수 있을까</h3>
+          <p class="card-description">이미 만들어진 PDF 파일 여러 개를 하나로 합치는 방법을 정리했습니다. 이 사이트는 PDF+PDF 병합 기능이 없지만, 이미지로 추출해 다시 합치는 우회법과 그 한계를 정직하게 안내합니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <p class="tool-nav"><a href="pdf.html">PDF 변환 도구 →</a></p>
     </section>
-
-    <section class="info-section">
-      <h2>3. 저해상도 이미지를 확대해야 할 때</h2>
-      <p>오래된 사진, 작게 찍힌 사진, 원본을 잃어버린 저해상도 이미지를 인쇄하거나 크게 써야 할 때 단순히 크기만 늘리면 화질이 뭉개집니다. AI 업스케일링은 픽셀 정보를 분석해 디테일을 추론하며 확대하기 때문에 결과물이 더 선명합니다. <a href="upscale.html">이미지 업스케일링</a>에서 2배·4배 확대나 1440p·4K 해상도로 키울 수 있습니다. 실제로 가능한 것과 안 되는 것은 <a href="ai-upscaling-limits.html">이 글</a>에서 정직하게 정리했습니다. 모니터 해상도에 맞는 배경화면을 만들고 싶다면 <a href="monitor-resolution-wallpaper-size.html">이 글</a>을, 오래된 사진을 스캔해서 정리하는 전체 과정이 궁금하다면 <a href="old-photo-scan-digitize-workflow.html">이 글</a>을 참고하세요.</p>
+    <section class="info-section" id="resolution" aria-labelledby="resolution-title">
+      <h2 id="resolution-title">업스케일·해상도</h2>
+      <p>화면과 인쇄에 필요한 해상도를 이해하고, 사진 확대와 오래된 사진 정리에 적합한 방법을 찾아보세요.</p>
+      <div class="guide-grid">
+        <a class="guide-card" href="ai-upscaling-limits.html">
+          <span class="card-category">해상도 가이드</span>
+          <h3 class="card-title">AI 업스케일링, 실제로 되는 것과 안 되는 것</h3>
+          <p class="card-description">AI 업스케일링이 실제로 개선해줄 수 있는 것과 할 수 없는 것을 과장 없이 정리했습니다. 원본에 없는 정보를 만들어내는 마법이 아닙니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="print-resolution-dpi-guide.html">
+          <span class="card-category">해상도 가이드</span>
+          <h3 class="card-title">인쇄하면 깨지지 않는 사진, 몇 픽셀이 필요할까</h3>
+          <p class="card-description">DPI가 무엇인지, 인쇄할 크기(cm)에 맞는 픽셀 수를 계산하는 공식, 인쇄물 종류별 권장 DPI를 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="monitor-resolution-wallpaper-size.html">
+          <span class="card-category">해상도 가이드</span>
+          <h3 class="card-title">내 모니터에 딱 맞는 배경화면 크기는</h3>
+          <p class="card-description">FHD, QHD, 4K 모니터 해상도별 배경화면 픽셀 크기와, 작은 원본 사진을 AI 업스케일링으로 각 해상도까지 키울 수 있는지 정직하게 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="guide-card" href="old-photo-scan-digitize-workflow.html">
+          <span class="card-category">해상도 가이드</span>
+          <h3 class="card-title">옛날 사진, 스캔부터 보관까지</h3>
+          <p class="card-description">오래된 인화 사진을 스캔할 때 권장 DPI, 스캔한 사진을 압축해서 저장하는 법, 흐릿하거나 작은 사진을 AI로 확대하는 법, 여러 장을 한 파일로 정리하는 법까지 순서대로 정리했습니다.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <p class="tool-nav"><a href="upscale.html">이미지 업스케일링 →</a></p>
     </section>
-
-    <section class="info-section">
-      <h2>공통점: 전부 브라우저 안에서 처리됩니다</h2>
-      <p>세 도구 모두 파일을 서버로 전송하지 않고 브라우저 안에서만 처리합니다. 회원가입이나 프로그램 설치도 필요 없습니다. 개인정보 처리 방식이 궁금하다면 <a href="privacy.html">개인정보처리방침</a>을 참고해주세요.</p>
-    </section>
+    <p>파일 처리와 개인정보에 관한 안내는 <a href="privacy.html">개인정보처리방침</a>에서 확인하세요.</p>
   </main>
 
   <footer class="site-footer">
-    <a href="privacy.html">개인정보처리방침</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">문의</a>
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">일상의 이미지 작업을, 간편하고 안전하게.</p></div>
+      <nav class="footer-links" aria-label="사이트 정보"><a href="about.html">서비스 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+    </div>
   </footer>
 </body>
 </html>
