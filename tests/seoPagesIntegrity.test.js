@@ -543,3 +543,13 @@ test('photo-id-resize.html has a guide image with alt text', function () {
 test('images/tool-resize-413x531.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-resize-413x531.png')), 'tool-resize-413x531.png missing from images/');
 });
+
+test('email-attachment-size.html has an inline SVG chart with correct capacity figures', function () {
+  const html = readRepoFile('email-attachment-size.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg chart');
+  ['25MB', '10MB'].forEach(function (val) {
+    assert.ok(html.includes(val), 'chart missing value ' + val);
+  });
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
