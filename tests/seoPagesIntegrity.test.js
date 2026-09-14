@@ -585,3 +585,11 @@ test('web-image-loading-speed.html has an inline LCP threshold chart', function 
   assert.ok(html.includes('그림으로 보는 LCP 구간: 2.5초까지 좋음, 4.0초까지 개선 필요, 4.0초 초과는 나쁨'), 'missing unique chart desc sentence');
   assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
 });
+
+test('cloud-storage-photo-tips.html has an inline storage capacity chart', function () {
+  const html = readRepoFile('cloud-storage-photo-tips.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg chart');
+  assert.ok(html.includes('서비스별 무료 저장공간 막대그래프: 구글 드라이브 15기가바이트, 아이클라우드 5기가바이트, 원드라이브 5기가바이트, 네이버 마이박스 30기가바이트'), 'missing unique chart desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
