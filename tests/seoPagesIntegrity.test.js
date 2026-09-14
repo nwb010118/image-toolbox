@@ -509,3 +509,11 @@ test('upscale.html links to monitor-resolution-wallpaper-size.html and old-photo
   assert.ok(html.includes('href="monitor-resolution-wallpaper-size.html"'), 'upscale.html missing link to monitor-resolution-wallpaper-size.html');
   assert.ok(html.includes('href="old-photo-scan-digitize-workflow.html"'), 'upscale.html missing link to old-photo-scan-digitize-workflow.html');
 });
+
+test('css/style.css defines .guide-image classes', function () {
+  const css = readRepoFile('css/style.css');
+  assert.ok(css.includes('.guide-image {'), 'missing .guide-image rule');
+  assert.ok(css.includes('.guide-image img'), 'missing .guide-image img rule');
+  assert.ok(css.includes('.guide-image svg'), 'missing .guide-image svg rule');
+  assert.ok(css.includes('.guide-image figcaption'), 'missing .guide-image figcaption rule');
+});

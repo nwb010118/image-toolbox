@@ -379,6 +379,27 @@ button:hover, #downloadBtn:hover, .btn:hover {
   margin: 10px 0 0;
 }
 
+.guide-image {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.guide-image img,
+.guide-image svg {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  display: block;
+  margin: 0 auto;
+  background: var(--color-surface);
+}
+
+.guide-image figcaption {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+}
+
 .site-footer {
   text-align: center;
   padding: 24px 0;
