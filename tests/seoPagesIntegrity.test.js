@@ -553,3 +553,14 @@ test('email-attachment-size.html has an inline SVG chart with correct capacity f
   });
   assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
 });
+
+test('image-format-comparison.html has inline SVG charts with exact benchmark figures', function () {
+  const html = readRepoFile('image-format-comparison.html');
+  const svgCount = (html.match(/<svg/g) || []).length;
+  assert.ok(svgCount >= 2, 'expected at least 2 inline SVG charts, found ' + svgCount);
+  ['22,791', '35,171', '6,010', '93.6%', '93.2%'].forEach(function (val) {
+    assert.ok(html.includes(val), 'missing figure value ' + val);
+  });
+  const figureCount = (html.match(/<figure class="guide-image">/g) || []).length;
+  assert.ok(figureCount >= 2, 'expected at least 2 guide-image figures, found ' + figureCount);
+});
