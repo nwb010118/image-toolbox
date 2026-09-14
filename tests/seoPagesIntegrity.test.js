@@ -530,3 +530,16 @@ test('kakao-photo-quality.html has a guide image with alt text', function () {
 test('images/tool-quality-slider.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-quality-slider.png')), 'tool-quality-slider.png missing from images/');
 });
+
+test('photo-id-resize.html has a guide image with alt text', function () {
+  const html = readRepoFile('photo-id-resize.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-resize-413x531\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-resize-413x531.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-resize-413x531.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-resize-413x531.png')), 'tool-resize-413x531.png missing from images/');
+});
