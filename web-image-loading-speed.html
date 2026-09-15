@@ -80,6 +80,7 @@
       <p><strong>이미지 용량 줄이기.</strong> 화질 손상이 크게 느껴지지 않는 수준에서 품질을 조절해 압축하면 다운로드 시간이 줄어듭니다. <a href="index.html">이미지 압축 도구</a>로 품질을 조절할 수 있고, 실제로 얼마나 줄어드는지는 <a href="benchmark.html">실측 압축률 비교</a>에서 확인할 수 있습니다.</p>
       <p><strong>더 효율적인 형식 사용.</strong> 같은 화질이라면 WebP가 JPG보다 더 작은 용량으로 나오는 경우가 많습니다. 형식별 차이는 <a href="image-format-comparison.html">PNG vs JPG vs WebP 비교</a>에서 자세히 다룹니다.</p>
       <p><strong>필요한 크기 이상으로 올리지 않기.</strong> 화면에 표시될 실제 크기보다 훨씬 큰 원본을 그대로 쓰면 불필요하게 큰 파일을 다운로드하게 됩니다. 가로/세로 픽셀 크기를 실제 표시 크기에 맞게 줄이는 것도 <a href="index.html">이미지 압축 도구</a>에서 함께 처리할 수 있습니다.</p>
+      <p><strong>지연 로딩(lazy loading)은 위치를 가려서 써야 합니다.</strong> 화면 아래에 있어 바로 안 보이는 이미지에는 지연 로딩을 적용하면 초기 로딩 부담을 줄일 수 있지만, 반대로 LCP 요소가 되는 이미지(예: 히어로 이미지)에 지연 로딩을 적용하면 오히려 화면에 그려지는 시점이 늦춰져 LCP가 나빠질 수 있습니다. 화면에 바로 보이는 대표 이미지는 지연 로딩 없이 최대한 빨리 불러오고, 스크롤해야 보이는 이미지에만 지연 로딩을 적용하는 것이 정석입니다.</p>
     </section>
 
     <section class="info-section">
@@ -95,6 +96,18 @@
       <details>
         <summary>내 페이지의 LCP는 어떻게 확인하나요?</summary>
         <p>이 사이트는 LCP 측정 기능을 제공하지 않습니다. 구글의 PageSpeed Insights나 Chrome 개발자 도구의 Lighthouse 기능으로 직접 측정할 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>CSS 배경 이미지(background-image)도 LCP에 영향을 주나요?</summary>
+        <p>네. url()로 불러오는 CSS 배경 이미지도 LCP 후보로 측정됩니다. 다만 배경 이미지는 브라우저가 CSS를 해석한 뒤에야 요청을 시작해서 &lt;img&gt; 태그보다 발견이 늦어지는 경향이 있어 LCP에 불리하게 작용할 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>모바일과 데스크톱 기준이 다른가요?</summary>
+        <p>평가 기준(2.5초/4.0초)은 동일하지만, 모바일은 네트워크와 기기 성능이 상대적으로 떨어지는 경우가 많아 같은 이미지라도 LCP가 더 느리게 나오는 경향이 있습니다.</p>
+      </details>
+      <details>
+        <summary>동영상이 히어로 이미지 자리에 있으면 어떻게 처리하나요?</summary>
+        <p>동영상의 포스터 이미지(재생 전 미리보기)가 LCP 요소로 측정될 수 있습니다. 포스터 이미지도 일반 이미지와 마찬가지로 용량을 줄이고 필요한 크기 이상으로 올리지 않는 것이 좋습니다.</p>
       </details>
     </section>
 
