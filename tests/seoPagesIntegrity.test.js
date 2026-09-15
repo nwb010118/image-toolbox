@@ -655,3 +655,20 @@ test('iphone-heic-photo-guide.html has the empty upload area screenshot', functi
 test('images/tool-empty-upload.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-empty-upload.png')), 'tool-empty-upload.png missing from images/');
 });
+
+test('monitor-resolution-wallpaper-size.html has the disabled-options screenshot', function () {
+  const html = readRepoFile('monitor-resolution-wallpaper-size.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-upscale-disabled-options\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-upscale-disabled-options.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="858"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="350"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-upscale-disabled-options.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-upscale-disabled-options.png')), 'tool-upscale-disabled-options.png missing from images/');
+});
