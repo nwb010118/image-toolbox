@@ -488,6 +488,14 @@ test('youtube-thumbnail-size.html contains the official current spec, not the ou
   assert.ok(html.includes('50MB'), 'missing desktop 50MB file size limit');
 });
 
+test('youtube-thumbnail-size.html has the upload-limit spec cards', function () {
+  const html = readRepoFile('youtube-thumbnail-size.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg');
+  assert.ok(html.includes('업로드 용량 한도: 모바일 2메가바이트, 데스크톱 50메가바이트'), 'missing unique chart desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
 test('old-photo-scan-digitize-workflow.html contains the verified scan DPI recommendations and links both tools', function () {
   const html = readRepoFile('old-photo-scan-digitize-workflow.html');
   assert.ok(html.includes('300') && html.includes('600'), 'missing 300/600 DPI scan recommendation');
