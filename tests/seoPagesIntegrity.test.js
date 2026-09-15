@@ -531,6 +531,23 @@ test('pdf-merge-multiple-files.html is linked from pdf.html FAQ', function () {
   assert.ok(pdfHtml.includes('href="pdf-merge-multiple-files.html"'), 'pdf.html FAQ missing link to pdf-merge-multiple-files.html');
 });
 
+test('pdf-merge-multiple-files.html has the multi-file selection screenshot', function () {
+  const html = readRepoFile('pdf-merge-multiple-files.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-pdf-multi-file-select\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-pdf-multi-file-select.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="858"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="639"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-pdf-multi-file-select.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-pdf-multi-file-select.png')), 'tool-pdf-multi-file-select.png missing from images/');
+});
+
 test('upscale.html links to monitor-resolution-wallpaper-size.html and old-photo-scan-digitize-workflow.html', function () {
   const html = readRepoFile('upscale.html');
   assert.ok(html.includes('href="monitor-resolution-wallpaper-size.html"'), 'upscale.html missing link to monitor-resolution-wallpaper-size.html');
