@@ -722,3 +722,36 @@ test('old-photo-scan-digitize-workflow.html has the sepia upscale before/after s
 test('images/tool-sepia-upscale-before-after.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-sepia-upscale-before-after.png')), 'tool-sepia-upscale-before-after.png missing from images/');
 });
+
+test('round 1 images have width/height/loading/decoding attributes', function () {
+  const kakao = readRepoFile('kakao-photo-quality.html');
+  const kakaoImg = kakao.match(/<img[^>]*src="images\/tool-quality-slider\.png"[^>]*>/)[0];
+  assert.ok(kakaoImg.includes('width="768"') && kakaoImg.includes('height="341"'), 'kakao image missing correct width/height');
+  assert.ok(kakaoImg.includes('loading="lazy"') && kakaoImg.includes('decoding="async"'), 'kakao image missing loading/decoding attributes');
+
+  const photoId = readRepoFile('photo-id-resize.html');
+  const photoIdImg = photoId.match(/<img[^>]*src="images\/tool-resize-413x531\.png"[^>]*>/)[0];
+  assert.ok(photoIdImg.includes('width="768"') && photoIdImg.includes('height="341"'), 'photo-id-resize image missing correct width/height');
+  assert.ok(photoIdImg.includes('loading="lazy"') && photoIdImg.includes('decoding="async"'), 'photo-id-resize image missing loading/decoding attributes');
+
+  const upscale = readRepoFile('ai-upscaling-limits.html');
+  const upscaleImg = upscale.match(/<img[^>]*src="images\/upscale-before-after\.png"[^>]*>/)[0];
+  assert.ok(upscaleImg.includes('width="768"') && upscaleImg.includes('height="428"'), 'ai-upscaling-limits image missing correct width/height');
+  assert.ok(upscaleImg.includes('loading="lazy"') && upscaleImg.includes('decoding="async"'), 'ai-upscaling-limits image missing loading/decoding attributes');
+});
+
+test('round 1 SVG charts use CSS variable colors, not hardcoded hex', function () {
+  const email = readRepoFile('email-attachment-size.html');
+  const emailSvgMatch = email.match(/<svg[^>]*role="img"[\s\S]*?<\/svg>/);
+  assert.ok(emailSvgMatch, 'email-attachment-size.html missing inline svg');
+  assert.ok(!/#[0-9a-fA-F]{6}/.test(emailSvgMatch[0]), 'email-attachment-size.html svg still has hardcoded hex color');
+  assert.ok(emailSvgMatch[0].includes('var(--color-'), 'email-attachment-size.html svg missing CSS variable colors');
+
+  const format = readRepoFile('image-format-comparison.html');
+  const formatSvgMatches = format.match(/<svg[^>]*role="img"[\s\S]*?<\/svg>/g);
+  assert.ok(formatSvgMatches && formatSvgMatches.length >= 2, 'image-format-comparison.html missing both inline svgs');
+  formatSvgMatches.forEach(function (svg) {
+    assert.ok(!/#[0-9a-fA-F]{6}/.test(svg), 'image-format-comparison.html svg still has hardcoded hex color');
+    assert.ok(svg.includes('var(--color-'), 'image-format-comparison.html svg missing CSS variable colors');
+  });
+});
