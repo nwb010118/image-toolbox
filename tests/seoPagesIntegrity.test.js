@@ -680,3 +680,20 @@ test('monitor-resolution-wallpaper-size.html has the disabled-options screenshot
 test('images/tool-upscale-disabled-options.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-upscale-disabled-options.png')), 'tool-upscale-disabled-options.png missing from images/');
 });
+
+test('old-photo-scan-digitize-workflow.html has the sepia upscale before/after screenshot', function () {
+  const html = readRepoFile('old-photo-scan-digitize-workflow.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  const imgMatch = html.match(/<img[^>]*src="images\/tool-sepia-upscale-before-after\.png"[^>]*>/);
+  assert.ok(imgMatch, 'missing tool-sepia-upscale-before-after.png image tag');
+  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
+  assert.ok(imgMatch[0].includes('width="858"'), 'missing correct width attribute');
+  assert.ok(imgMatch[0].includes('height="443"'), 'missing correct height attribute');
+  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
+  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
+test('images/tool-sepia-upscale-before-after.png exists on disk', function () {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-sepia-upscale-before-after.png')), 'tool-sepia-upscale-before-after.png missing from images/');
+});
