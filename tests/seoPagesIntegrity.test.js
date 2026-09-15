@@ -755,3 +755,88 @@ test('round 1 SVG charts use CSS variable colors, not hardcoded hex', function (
     assert.ok(svg.includes('var(--color-'), 'image-format-comparison.html svg missing CSS variable colors');
   });
 });
+
+const BATCH_A_MIN_LENGTH = {
+  'kakao-photo-quality.html': 1700,
+  'email-attachment-size.html': 1680,
+  'image-format-comparison.html': 2450,
+  'photo-id-resize.html': 1620,
+  'ai-upscaling-limits.html': 1850,
+  'web-image-loading-speed.html': 2150,
+  'cloud-storage-photo-tips.html': 1770,
+  'pdf-file-size-reduction.html': 1870
+};
+
+function mainTextLength(html) {
+  const main = html.match(/<main[\s\S]*?<\/main>/);
+  const text = (main ? main[0] : html)
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/<style[\s\S]*?<\/style>/g, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.length;
+}
+
+Object.keys(BATCH_A_MIN_LENGTH).forEach(function (file) {
+  test(file + ' body text has grown past the batch-A minimum length', function () {
+    const html = readRepoFile(file);
+    const len = mainTextLength(html);
+    assert.ok(len >= BATCH_A_MIN_LENGTH[file], file + ' body text is ' + len + ' chars, expected >= ' + BATCH_A_MIN_LENGTH[file]);
+  });
+
+  test(file + ' has 6 FAQ items (3 original + 3 new)', function () {
+    const html = readRepoFile(file);
+    const count = (html.match(/<details>/g) || []).length;
+    assert.strictEqual(count, 6, file + ' has ' + count + ' <details> items, expected 6');
+  });
+});
+
+test('kakao-photo-quality.html new FAQ covers original-send storage size, open chat, and video difference', function () {
+  const html = readRepoFile('kakao-photo-quality.html');
+  assert.ok(html.includes('오픈채팅'), 'missing open chat FAQ');
+  assert.ok(html.includes('동영상'), 'missing video-transfer-difference FAQ');
+});
+
+test('email-attachment-size.html new FAQ covers Daum limits, zip compression, and cloud-link accessibility', function () {
+  const html = readRepoFile('email-attachment-size.html');
+  assert.ok(html.includes('다음메일') && html.includes('4GB'), 'missing Daum mail 4GB large-attachment fact');
+  assert.ok(html.includes('zip'), 'missing zip compression FAQ');
+});
+
+test('image-format-comparison.html new FAQ covers AVIF, old-browser WebP support, and icon/logo format advice', function () {
+  const html = readRepoFile('image-format-comparison.html');
+  assert.ok(html.includes('AVIF'), 'missing AVIF FAQ');
+  assert.ok(html.includes('아이콘') || html.includes('로고'), 'missing icon/logo format FAQ');
+});
+
+test('photo-id-resize.html new FAQ covers background color rule, 6-month rule basis, and studio-vs-selfie', function () {
+  const html = readRepoFile('photo-id-resize.html');
+  assert.ok(html.includes('발급 신청'), 'missing 6-month-rule-is-based-on-application-date fact');
+  assert.ok(html.includes('스튜디오'), 'missing studio-vs-selfie FAQ');
+});
+
+test('ai-upscaling-limits.html new FAQ covers illustrations, repeated upscaling, and processing time', function () {
+  const html = readRepoFile('ai-upscaling-limits.html');
+  assert.ok(html.includes('일러스트'), 'missing illustration FAQ');
+  assert.ok(html.includes('반복해서'), 'missing repeated-upscaling FAQ');
+});
+
+test('web-image-loading-speed.html new content covers lazy loading nuance, CSS background images, and video poster images', function () {
+  const html = readRepoFile('web-image-loading-speed.html');
+  assert.ok(html.includes('지연 로딩') || html.includes('lazy'), 'missing lazy loading nuance');
+  assert.ok(html.includes('배경 이미지'), 'missing CSS background image FAQ');
+  assert.ok(html.includes('포스터'), 'missing video poster image FAQ');
+});
+
+test('cloud-storage-photo-tips.html new content covers concrete photo-count math and Google One pricing', function () {
+  const html = readRepoFile('cloud-storage-photo-tips.html');
+  assert.ok(html.includes('2,400원') || html.includes('Google One') || html.includes('원(Google One)'), 'missing Google One pricing fact');
+  assert.ok(html.includes('되돌릴 수 없'), 'missing irreversibility FAQ');
+});
+
+test('pdf-file-size-reduction.html new content covers per-page-limit, non-guaranteed shrink, and mixed-content pages without repeating the existing text-search disclosure verbatim', function () {
+  const html = readRepoFile('pdf-file-size-reduction.html');
+  assert.ok(html.includes('300페이지'), 'missing 300-page extraction limit FAQ');
+  assert.ok(html.includes('WebP'), 'missing WebP-alternative-for-graphic-scans mention');
+});
