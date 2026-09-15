@@ -546,32 +546,38 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 Run: `node tests/seoPagesIntegrity.test.js > /tmp/batch_a_final.txt 2>&1; echo "EXIT=$?"; grep -c "^PASS" /tmp/batch_a_final.txt; grep -c "^FAIL" /tmp/batch_a_final.txt`
 Expected: `EXIT=0`, PASS 카운트가 기존 175 + 이번에 추가한 테스트 수(8×2 + 8 = 24) = 199, FAIL 0.
 
-- [ ] **Step 2: 배치 A 8개 글이 서로, 그리고 기존 배포된 8개 글(배치 A 대상이 아닌 나머지 가이드 글)과 문장 단위로 준중복이 아닌지 확인**
+- [ ] **Step 2: 배치 A 8개 글의 신규 추가분이, 서로는 물론 기존에 이미 배포된 나머지 15개 가이드 글(배치 B 대상 8개 포함)과도 문장 단위로 준중복이 아닌지 확인**
 
 Run:
 ```bash
 node -e "
 const fs = require('fs');
-const files = ['kakao-photo-quality.html','email-attachment-size.html','image-format-comparison.html','photo-id-resize.html','ai-upscaling-limits.html','web-image-loading-speed.html','cloud-storage-photo-tips.html','pdf-file-size-reduction.html'];
+const batchA = ['kakao-photo-quality.html','email-attachment-size.html','image-format-comparison.html','photo-id-resize.html','ai-upscaling-limits.html','web-image-loading-speed.html','cloud-storage-photo-tips.html','pdf-file-size-reduction.html'];
+const others = ['favicon-og-image-size.html','iphone-heic-photo-guide.html','monitor-resolution-wallpaper-size.html','old-photo-scan-digitize-workflow.html','pdf-merge-multiple-files.html','print-resolution-dpi-guide.html','sns-blog-image-size.html','youtube-thumbnail-size.html'];
+const allFiles = batchA.concat(others);
 const sentences = {};
-files.forEach(f => {
+allFiles.forEach(f => {
   const html = fs.readFileSync(f, 'utf8');
   const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const sents = text.split(/(?<=[.?!다요])\s+/).map(s => s.trim()).filter(s => s.length > 20);
   sentences[f] = sents;
 });
-for (let i = 0; i < files.length; i++) {
-  for (let j = i + 1; j < files.length; j++) {
-    const common = sentences[files[i]].filter(s => sentences[files[j]].includes(s));
+let found = false;
+for (let i = 0; i < batchA.length; i++) {
+  for (let j = 0; j < allFiles.length; j++) {
+    if (allFiles[j] === batchA[i]) continue;
+    if (j < i && batchA.includes(allFiles[j])) continue;
+    const common = sentences[batchA[i]].filter(s => sentences[allFiles[j]].includes(s));
     if (common.length > 0) {
-      console.log('DUPLICATE between ' + files[i] + ' and ' + files[j] + ':', common);
+      found = true;
+      console.log('DUPLICATE between ' + batchA[i] + ' and ' + allFiles[j] + ':', common);
     }
   }
 }
-console.log('done');
+console.log(found ? 'FOUND DUPLICATES' : 'done');
 "
 ```
-Expected: `done`만 출력되고 `DUPLICATE` 줄이 없어야 한다. 만약 나오면 해당 두 파일의 문장을 서로 다른 표현으로 고쳐 쓴다(복사한 문장 그대로 재사용 금지).
+Expected: `done`만 출력되고 `DUPLICATE` 줄이 없어야 한다. 만약 나오면 배치 A 쪽 파일의 문장을 서로 다른 표현으로 고쳐 쓴다(복사한 문장 그대로 재사용 금지). 이 검사는 새로 추가한 문장뿐 아니라 각 글의 기존 본문 전체를 대상으로 하므로, 1~3차 라운드에서 이미 의도적으로 재사용한 공통 안내 문구(예: 표준 footer 링크 문구)가 있다면 20자 이상 조건과 정확 일치 조건 때문에 짧은 공통구는 걸리지 않는다 — 만약 짧지 않은 공통 문장이 걸린다면 실제 준중복 여부를 사람이 판단한다.
 
 - [ ] **Step 3: 최종 글자 수 리포트로 배치 A 전체 개선 폭 확인**
 
