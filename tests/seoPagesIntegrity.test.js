@@ -510,6 +510,14 @@ test('print-resolution-dpi-guide.html contains the DPI formula and both print-qu
   assert.ok(html.includes('2.54'), 'missing inch-to-cm conversion constant');
 });
 
+test('print-resolution-dpi-guide.html has the DPI formula diagram', function () {
+  const html = readRepoFile('print-resolution-dpi-guide.html');
+  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
+  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg diagram');
+  assert.ok(html.includes('필요 픽셀 계산 공식과 실제 비율로 비교한 두 예시: 10×15cm 300DPI는 1200×1800픽셀, A4 포스터 200DPI는 1660×2340픽셀'), 'missing unique diagram desc sentence');
+  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+});
+
 test('pdf-merge-multiple-files.html honestly states PDF+PDF merge is unsupported and names the 50-image bottleneck', function () {
   const html = readRepoFile('pdf-merge-multiple-files.html');
   assert.ok(html.includes('병합') && html.includes('없습니다'), 'missing honest disclosure that PDF+PDF merge is unsupported');

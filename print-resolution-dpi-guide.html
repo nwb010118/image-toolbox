@@ -60,6 +60,21 @@
     <section class="info-section">
       <h2>계산 예시</h2>
       <p>10cm × 15cm(약 4×6인치) 사진을 300DPI로 인쇄하려면, 4 × 300 = 1200px, 6 × 300 = 1800px, 즉 약 1200×1800px가 필요합니다. A4 크기(약 8.3×11.7인치) 포스터를 200DPI로 인쇄한다면 약 1660×2340px면 충분합니다.</p>
+      <figure class="guide-image">
+        <svg viewBox="0 0 420 330" role="img" aria-labelledby="dpiChartTitle dpiChartDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="dpiChartTitle">DPI 계산 공식과 예시 두 가지</title>
+          <desc id="dpiChartDesc">필요 픽셀 계산 공식과 실제 비율로 비교한 두 예시: 10×15cm 300DPI는 1200×1800픽셀, A4 포스터 200DPI는 1660×2340픽셀</desc>
+          <text x="210" y="20" text-anchor="middle" font-size="17" font-weight="700" fill="var(--color-text)">필요 픽셀 = DPI × 인치</text>
+          <text x="110" y="95" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">10×15cm · 300DPI</text>
+          <rect x="50" y="108" width="120" height="180" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <text x="303" y="42" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">A4 포스터 · 200DPI</text>
+          <rect x="220" y="54" width="166" height="234" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
+          <line x1="30" y1="288" x2="400" y2="288" stroke="var(--color-border)" stroke-width="2"></line>
+          <text x="110" y="308" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">1200 × 1800px</text>
+          <text x="303" y="308" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">1660 × 2340px</text>
+        </svg>
+        <figcaption>두 예시를 같은 비율(1/10 축소)로 그려 실제 크기 차이를 그대로 비교할 수 있습니다.</figcaption>
+      </figure>
     </section>
 
     <section class="info-section">
