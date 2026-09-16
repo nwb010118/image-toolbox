@@ -86,6 +86,17 @@
     return { width: calculateAspectRatioWidth(width, height, MAX_DIMENSION), height: MAX_DIMENSION };
   }
 
+  function describeSizeChange(originalBytes, resultBytes) {
+    if (originalBytes <= 0) return '원본 용량을 비교할 수 없습니다.';
+    var difference = originalBytes - resultBytes;
+    if (difference === 0) return '용량 변화 없음';
+    var percent = Math.abs(difference) / originalBytes * 100;
+    var percentage = percent < 0.1 ? '0.1% 미만' : percent.toFixed(1) + '%';
+    return '약 ' + percentage + (difference > 0 ? ' 감소 · ' : ' 증가 · ')
+      + formatBytes(Math.abs(difference)) + (difference > 0 ? ' 절약' : ' 증가');
+  }
+
+  exports.describeSizeChange = describeSizeChange;
   exports.formatBytes = formatBytes;
   exports.isSupportedImageType = isSupportedImageType;
   exports.getOutputMimeType = getOutputMimeType;

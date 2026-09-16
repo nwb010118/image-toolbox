@@ -135,3 +135,68 @@ select, #formatSelect { min-height: 44px; border: 1px solid var(--color-border);
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }
 }
+
+/* Compact home and illustrated guide cards. */
+.page-compress .container { padding-top: 28px; }
+.page-compress .container > h1 { font-size: clamp(28px, 3.2vw, 40px); margin: 8px 0 10px; }
+.page-compress .eyebrow { margin-bottom: 6px; }
+.page-compress .container > .subtitle { margin-bottom: 22px; }
+.page-compress .tool-intro-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; margin-bottom: 12px; }
+.page-compress .tool-intro-grid .upload-area { min-height: 270px; padding: 24px; }
+.compression-example { padding: 22px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-accent-soft); }
+.example-label { font-size: 12px; font-weight: 700; color: var(--color-accent); }
+.compression-example h2 { font-size: 19px; margin: 6px 0 18px; }
+.example-sizes { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.example-sizes div { display: flex; flex-direction: column; gap: 3px; }
+.example-sizes span { font-size: 12px; color: var(--color-text-secondary); }
+.example-sizes strong { font-size: 28px; line-height: 1.3; letter-spacing: -.04em; }
+.example-sizes div:last-child strong { color: var(--color-accent); }
+.example-sizes small { font-size: 14px; }
+.compression-example .example-saving { display: inline-block; margin: 12px 0 8px; padding: 3px 10px; border-radius: 5px; background: white; color: var(--color-accent); font-size: 13px; font-weight: 700; }
+.compression-example .example-caption { margin: 0 0 10px; font-size: 12px; line-height: 1.7; color: var(--color-text-secondary); }
+.compression-example > a { font-size: 12px; font-weight: 600; }
+.privacy-strip { margin: 0 0 26px; font-size: 12px; color: var(--color-text-secondary); }
+.page-guide .container { padding-top: 30px; }
+.page-guide .category-nav { margin-bottom: 20px; }
+.page-guide .guide-card { padding: 0 20px 18px; overflow: hidden; }
+.card-visual { align-self: stretch; margin: 0 -20px 18px; height: 144px; background: var(--color-accent-soft); border-bottom: 1px solid var(--color-border); overflow: hidden; }
+.card-visual img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 10px; box-sizing: border-box; }
+.card-illustration { display: flex; align-items: center; justify-content: center; gap: 18px; color: var(--color-accent); }
+.card-illustration svg { width: 80px; height: 80px; flex: none; }
+.card-illustration span { font-size: 16px; font-weight: 700; }
+.illustration-mail, .illustration-cloud { background: #edf3fa; color: #365b82; }
+.illustration-video, .illustration-sizes { background: #fbf0e8; color: #96542e; }
+.illustration-document, .illustration-print { background: #f0edf8; color: #69548c; }
+.page-guide .card-category { margin-bottom: 8px; }
+.page-guide .card-title { font-size: 17px; margin-bottom: 10px; }
+.page-guide .guide-card .card-description { font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
+@media (max-width: 700px) {
+ .page-compress .tool-intro-grid { display: flex; flex-direction: column; }
+ .page-compress .container { padding-top: 24px; }
+ .page-compress .tool-intro-grid .upload-area { min-height: 240px; }
+ .compression-example { padding: 20px; }
+ .example-sizes { justify-content: flex-start; gap: 24px; }
+ .card-visual { height: 160px; }
+}
+
+/* Keep examples out of the active editing flow. */
+.page-compress:has(#controls:not([hidden])) .compression-example { display: none; }
+.page-compress:has(#controls:not([hidden])) .tool-intro-grid { grid-template-columns: minmax(0, 1fr); }
+.page-compress:has(#controls:not([hidden])) .tool-intro-grid .upload-area { min-height: 0; padding: 16px 20px; }
+.page-compress:has(#controls:not([hidden])) .upload-icon,
+.page-compress:has(#controls:not([hidden])) .upload-hint { display: none; }
+.page-compress:has(#controls:not([hidden])) .upload-heading { font-size: 15px; margin-bottom: 8px; }
+.page-compress:has(#controls:not([hidden])) .upload-btn { padding: 8px 20px; margin-bottom: 4px; }
+.page-compress:has(#controls:not([hidden])) .upload-formats { margin-top: 4px; }
+.page-guide #compression .card-illustration { background: #edf3fa; color: #365b82; }
+.page-guide #pdf-workflows .card-illustration { background: #f0edf8; color: #69548c; }
+.page-guide #resolution .card-illustration { background: var(--color-accent-soft); color: var(--color-accent); }
+
+/* Selected file summary and result savings. */
+.page-compress .tool-intro-grid .upload-area.has-file { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 12px; }
+.page-compress .upload-area.has-file .upload-heading { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0; text-align: left; }
+.page-compress .upload-area.has-file .upload-btn { flex: none; margin: 0; font-size: 13px; padding: 8px 12px; }
+.page-compress .upload-area.has-file .upload-formats { display: none; }
+.preview-box .compression-savings { font-size: 16px; font-weight: 700; color: var(--color-accent); background: var(--color-accent-soft); padding: 10px 14px; border-radius: 6px; }
+.preview-box .compression-savings.size-increased { color: #8a431b; background: #fff1e8; }
+.page-guide .card-visual { margin-bottom: 16px; }

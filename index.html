@@ -90,7 +90,7 @@
   }
   </script>
 </head>
-<body class="page-tool">
+<body class="page-tool page-compress">
   <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
   <header class="site-header">
     <div class="header-inner">
@@ -105,8 +105,8 @@
   </header>
   <main class="container" id="main-content">
     <p class="eyebrow">IMAGE TOOLS</p>
-    <h1>이미지 압축·변환,<br>더 간편하게.</h1>
-    <p class="subtitle">용량은 줄이고, 크기와 형식은 원하는 대로.<br>사진을 서버로 보내지 않고 브라우저에서 바로 처리하세요.</p>
+    <h1>이미지 압축·변환</h1>
+    <p class="subtitle">용량, 크기, 형식을 한 번에. 내 브라우저에서 무료로 처리하세요.</p>
 
     <div class="tool-intro-grid">
 <section class="upload-area" id="uploadArea">
@@ -119,13 +119,22 @@
       <h2 class="upload-heading">이미지를 여기에 놓으세요</h2>
       <button type="button" class="upload-btn">파일 선택</button>
       <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
-      <p class="upload-formats">JPG, PNG, WebP 지원 · 최대 20MB</p>
+      <p class="upload-formats">JPG, PNG, WebP · 한 번에 1장 · 최대 20MB</p>
       <div id="errorMessage" class="error-message" hidden></div>
     </section>
-<aside class="tool-aside" aria-label="도구 안내"><span class="aside-label">MADE FOR YOUR PRIVACY</span><h2>내 사진은,<br>내 브라우저 안에.</h2><p>압축 품질, 가로세로 크기, 출력 형식을 한 번에 조절하세요. 파일 처리는 기기 안에서 이루어집니다.</p><ul><li>이미지 서버 전송 없음</li><li>회원가입 없이 무료</li><li>설치 없이 바로 사용</li></ul></aside>
+<aside class="compression-example" aria-labelledby="example-title">
+  <span class="example-label">실측 결과 예시</span>
+  <h2 id="example-title">얼마나 줄어들까요?</h2>
+  <div class="example-sizes"><div><span>원본 PNG</span><strong>1.72 <small>MB</small></strong></div><span aria-hidden="true">→</span><div><span>변환 후 JPG</span><strong>113 <small>KB</small></strong></div></div>
+  <p class="example-saving">용량 93.6% 감소</p>
+  <p class="example-caption">합성 사진형 이미지 · JPG 품질 80%<br>파일과 브라우저에 따라 결과가 달라집니다.</p>
+  <a href="benchmark.html">측정 조건과 전체 결과 보기 →</a>
+</aside>
     </div>
 
-    <section class="controls" id="controls" hidden>
+    <p class="privacy-strip">서버 전송 없음 · 회원가입·설치 없이 사용</p>
+
+    <section class="controls" id="controls" tabindex="-1" aria-label="이미지 압축 설정" hidden>
       <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
       <input type="range" id="qualitySlider" min="10" max="100" value="80">
 
@@ -170,6 +179,7 @@
         <h2>결과</h2>
         <img id="compressedPreview" alt="압축된 이미지 미리보기">
         <p id="compressedSize"></p>
+        <p id="compressionSavings" class="compression-savings" role="status" hidden></p>
         <p id="compressWarning" class="compress-warning" hidden>⚠ 압축 결과가 원본보다 커요. 품질을 낮추거나 다운로드하지 않는 걸 권장해요.</p>
         <a id="downloadBtn" href="#" download="compressed-image.jpg" hidden>다운로드</a>
       </div>

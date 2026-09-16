@@ -12,6 +12,9 @@ var originalPreview = document.getElementById('originalPreview');
 var compressedPreview = document.getElementById('compressedPreview');
 var originalSize = document.getElementById('originalSize');
 var compressedSize = document.getElementById('compressedSize');
+var compressionSavings = document.getElementById('compressionSavings');
+var uploadHeading = uploadArea.querySelector('.upload-heading');
+var uploadButton = uploadArea.querySelector('.upload-btn');
 var compressWarning = document.getElementById('compressWarning');
 var downloadBtn = document.getElementById('downloadBtn');
 
@@ -91,6 +94,11 @@ function clearError() {
 
 function handleFile(file) {
   clearError();
+  compressionSavings.hidden = true;
+  compressionSavings.textContent = '';
+  uploadArea.classList.remove('has-file');
+  uploadHeading.textContent = '이미지를 여기에 놓으세요';
+  uploadButton.textContent = '파일 선택';
   controls.hidden = true;
   previewArea.hidden = true;
   selectedFile = null;
@@ -120,7 +128,7 @@ function handleFile(file) {
   selectedFile = file;
   originalPreview.src = URL.createObjectURL(file);
   originalSize.textContent = '원본 크기: ' + formatBytes(file.size);
-  controls.hidden = false;
+  // Show editing controls only after the image has decoded.
   previewArea.hidden = false;
   compressedPreview.src = '';
   compressedSize.textContent = '';
@@ -138,6 +146,21 @@ originalPreview.addEventListener('load', function () {
   var prefill = clampDimensionsToMax(originalImageWidth, originalImageHeight);
   resizeWidth.value = prefill.width;
   resizeHeight.value = prefill.height;
+  uploadHeading.textContent = selectedFile.name;
+  uploadHeading.title = selectedFile.name;
+  uploadButton.textContent = '다른 이미지 선택';
+  uploadArea.classList.add('has-file');
+  controls.hidden = false;
+  controls.focus({ preventScroll: true });
+  controls.scrollIntoView({ behavior: 'instant', block: 'start' });
+});
+
+originalPreview.addEventListener('error', function () {
+  if (!selectedFile) return;
+  selectedFile = null;
+  controls.hidden = true;
+  previewArea.hidden = true;
+  showError('이미지를 불러올 수 없습니다. 다른 파일을 선택해주세요.');
 });
 
 fileInput.addEventListener('change', function (e) {
@@ -228,6 +251,9 @@ compressBtn.addEventListener('click', function () {
       lastResultUrl = result.url;
       compressedPreview.src = result.url;
       compressedSize.textContent = '결과 크기: ' + formatBytes(result.blob.size) + ' (' + result.width + '×' + result.height + ')';
+      compressionSavings.textContent = describeSizeChange(selectedFile.size, result.blob.size);
+      compressionSavings.classList.toggle('size-increased', result.blob.size > selectedFile.size);
+      compressionSavings.hidden = false;
       compressWarning.hidden = result.blob.size <= selectedFile.size;
       downloadBtn.href = result.url;
       downloadBtn.download = 'processed-image.' + getExtensionForMimeType(result.blob.type);
