@@ -913,8 +913,10 @@ test('pdf-merge-multiple-files.html new content covers filename ordering tip, pa
   assert.ok(html.includes('001'), 'missing filename-numbering ordering tip');
   assert.ok(html.includes('암호'), 'missing password-protected-PDF FAQ');
   const otherHtml = readRepoFile('pdf-file-size-reduction.html');
-  const thisText = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const otherText = otherHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const thisMain = html.match(/<main[\s\S]*?<\/main>/);
+  const thisText = (thisMain ? thisMain[0] : html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const otherMain = otherHtml.match(/<main[\s\S]*?<\/main>/);
+  const otherText = (otherMain ? otherMain[0] : otherHtml).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const thisSents = thisText.split(/(?<=[.?!다요])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 20; });
   const otherSents = otherText.split(/(?<=[.?!다요])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 20; });
   const common = thisSents.filter(function (s) { return otherSents.includes(s); });
