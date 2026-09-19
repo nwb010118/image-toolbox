@@ -59,6 +59,7 @@
         <img src="images/tool-pdf-multi-file-select.png" alt="이미지→PDF 섹션에서 이미지 3장이 선택되어 파일 목록에 표시되고 PDF로 변환 버튼이 나타난 실제 화면" width="858" height="639" loading="lazy" decoding="async">
         <figcaption>3단계 중 마지막 단계 — 정렬한 이미지 여러 장을 한 번에 올리면 이렇게 목록으로 표시되고, 이 순서 그대로 하나의 PDF가 만들어집니다.</figcaption>
       </figure>
+      <p>순서를 정확히 맞추려면 추출한 이미지 파일명에 001, 002처럼 앞자리에 번호를 붙여두는 것이 편합니다. 파일 탐색기나 갤러리 앱에서 파일명 기준으로 정렬하면 의도한 순서 그대로 나열되고, 이 순서대로 이미지→PDF에 업로드하면 됩니다.</p>
     </section>
 
     <section class="info-section">
@@ -80,6 +81,18 @@
         <summary>페이지 순서가 뒤바뀌지 않게 하려면 어떻게 하나요?</summary>
         <p>이미지로 추출한 뒤, 최종적으로 원하는 순서에 맞게 파일명을 정리하거나 업로드 순서를 맞춰서 이미지→PDF에 넣으면 그 순서 그대로 PDF 페이지가 만들어집니다.</p>
       </details>
+      <details>
+        <summary>재합친 PDF도 텍스트를 검색하거나 복사할 수 있나요?</summary>
+        <p>아니요. 이 우회법은 PDF 페이지를 이미지로 바꿔서 다시 합치는 방식이라, 결과물은 텍스트 레이어가 없는 이미지 기반 PDF가 됩니다. 원본에 있던 글자를 검색하거나 마우스로 선택하는 기능은 사라집니다.</p>
+      </details>
+      <details>
+        <summary>암호가 걸린 PDF도 합칠 수 있나요?</summary>
+        <p>먼저 암호를 풀어야 이미지로 추출할 수 있습니다. 이 사이트는 PDF 암호 해제 기능을 제공하지 않으므로, 별도 프로그램으로 암호를 해제한 뒤 이 방법을 이용해야 합니다.</p>
+      </details>
+      <details>
+        <summary>페이지 방향(회전)이 다른 PDF끼리도 합쳐지나요?</summary>
+        <p>이미지로 추출된 각 페이지는 원본 PDF에 표시된 방향 그대로 이미지가 됩니다. 방향이 제각각이면 합친 뒤에도 그대로 제각각으로 보이므로, 필요하면 이미지 편집 프로그램으로 방향을 맞춘 뒤 합치는 것이 좋습니다.</p>
+      </details>
     </section>
 
     <section class="info-section">
@@ -93,7 +106,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">일상의 이미지 작업을, 간편하고 안전하게.</p></div>
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">PDF 병합부터 용량 줄이기까지, 필요한 만큼만.</p></div>
       <nav class="footer-links" aria-label="사이트 정보"><a href="about.html">서비스 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
     </div>
   </footer>
