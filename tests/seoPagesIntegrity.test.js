@@ -840,3 +840,83 @@ test('pdf-file-size-reduction.html new content covers per-page-limit, non-guaran
   assert.ok(html.includes('300페이지'), 'missing 300-page extraction limit FAQ');
   assert.ok(html.includes('WebP'), 'missing WebP-alternative-for-graphic-scans mention');
 });
+
+const BATCH_B_MIN_LENGTH = {
+  'sns-blog-image-size.html': 1780,
+  'favicon-og-image-size.html': 2030,
+  'iphone-heic-photo-guide.html': 1870,
+  'monitor-resolution-wallpaper-size.html': 1970,
+  'youtube-thumbnail-size.html': 1750,
+  'old-photo-scan-digitize-workflow.html': 1700,
+  'print-resolution-dpi-guide.html': 2050,
+  'pdf-merge-multiple-files.html': 1550
+};
+
+Object.keys(BATCH_B_MIN_LENGTH).forEach(function (file) {
+  test(file + ' body text has grown past the batch-B minimum length', function () {
+    const html = readRepoFile(file);
+    const len = mainTextLength(html);
+    assert.ok(len >= BATCH_B_MIN_LENGTH[file], file + ' body text is ' + len + ' chars, expected >= ' + BATCH_B_MIN_LENGTH[file]);
+  });
+
+  test(file + ' has 6 FAQ items (3 original + 3 new)', function () {
+    const html = readRepoFile(file);
+    const count = (html.match(/<details>/g) || []).length;
+    assert.strictEqual(count, 6, file + ' has ' + count + ' <details> items, expected 6');
+  });
+});
+
+test('sns-blog-image-size.html new FAQ covers X/Twitter similarity, single-file limitation, and no-auto-crop honesty', function () {
+  const html = readRepoFile('sns-blog-image-size.html');
+  assert.ok(html.includes('트위터') || html.includes('X('), 'missing X/Twitter FAQ');
+  assert.ok(html.includes('한 번에 한 장씩'), 'missing single-file-processing honesty');
+});
+
+test('favicon-og-image-size.html new FAQ covers missing og:image behavior, favicon format flexibility, and dark mode', function () {
+  const html = readRepoFile('favicon-og-image-size.html');
+  assert.ok(html.includes('og:image가 없으면'), 'missing og:image-absent FAQ');
+  assert.ok(html.includes('다크모드'), 'missing dark mode favicon FAQ');
+});
+
+test('iphone-heic-photo-guide.html new FAQ covers iCloud download options, Mac native support, and metadata', function () {
+  const html = readRepoFile('iphone-heic-photo-guide.html');
+  assert.ok(html.includes('아이클라우드') || html.includes('iCloud'), 'missing iCloud FAQ');
+  assert.ok(html.includes('메타데이터'), 'missing metadata FAQ');
+});
+
+test('monitor-resolution-wallpaper-size.html new FAQ covers laptop resolution, dual monitor sizing, and vertical wallpaper', function () {
+  const html = readRepoFile('monitor-resolution-wallpaper-size.html');
+  assert.ok(html.includes('노트북'), 'missing laptop resolution FAQ');
+  assert.ok(html.includes('듀얼모니터'), 'missing dual monitor FAQ');
+});
+
+test('youtube-thumbnail-size.html new content covers phone verification, thumbnail re-editing, and Shorts thumbnails', function () {
+  const html = readRepoFile('youtube-thumbnail-size.html');
+  assert.ok(html.includes('전화번호 인증'), 'missing phone verification requirement');
+  assert.ok(html.includes('Shorts'), 'missing Shorts thumbnail FAQ');
+});
+
+test('old-photo-scan-digitize-workflow.html new content covers scanner types and honestly discloses no color-fade restoration', function () {
+  const html = readRepoFile('old-photo-scan-digitize-workflow.html');
+  assert.ok(html.includes('필름스캐너'), 'missing scanner type distinction');
+  assert.ok(html.includes('색 보정 기능을 제공하지 않습니다'), 'missing honest color-fade-restoration disclosure');
+});
+
+test('print-resolution-dpi-guide.html new content covers business-card/banner examples and PPI-vs-DPI distinction', function () {
+  const html = readRepoFile('print-resolution-dpi-guide.html');
+  assert.ok(html.includes('명함'), 'missing business card DPI example');
+  assert.ok(html.includes('PPI'), 'missing PPI-vs-DPI FAQ');
+});
+
+test('pdf-merge-multiple-files.html new content covers filename ordering tip, password-protected PDFs, and page rotation, phrased distinctly from pdf-file-size-reduction.html', function () {
+  const html = readRepoFile('pdf-merge-multiple-files.html');
+  assert.ok(html.includes('001'), 'missing filename-numbering ordering tip');
+  assert.ok(html.includes('암호'), 'missing password-protected-PDF FAQ');
+  const otherHtml = readRepoFile('pdf-file-size-reduction.html');
+  const thisText = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const otherText = otherHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const thisSents = thisText.split(/(?<=[.?!다요])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 20; });
+  const otherSents = otherText.split(/(?<=[.?!다요])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 20; });
+  const common = thisSents.filter(function (s) { return otherSents.includes(s); });
+  assert.strictEqual(common.length, 0, 'pdf-merge-multiple-files.html shares a verbatim sentence with pdf-file-size-reduction.html: ' + JSON.stringify(common));
+});
