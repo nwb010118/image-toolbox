@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>PDF를 워드·엑셀로 변환하면 표는 어떻게 될까 (실제 테스트)</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="문단과 표가 있는 PDF를 실제로 Word·Excel로 변환해본 결과를 정리했습니다. 문단은 잘 옮겨지지만 표는 구조가 무너집니다.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/pdf-conversion-accuracy.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="PDF를 워드·엑셀로 변환하면 표는 어떻게 될까 (실제 테스트)">
+  <meta property="og:description" content="문단과 표가 있는 PDF를 실제로 Word·Excel로 변환해본 결과를 정리했습니다.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/pdf-conversion-accuracy.html">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "PDF를 워드·엑셀로 변환하면 표는 어떻게 될까 (실제 테스트)",
+    "url": "https://nwb010118.github.io/image-toolbox/pdf-conversion-accuracy.html",
+    "description": "문단과 표가 있는 PDF를 실제로 Word·Excel로 변환해본 결과를 정리했습니다.",
+    "inLanguage": "ko",
+    "datePublished": "2026-09-28",
+    "dateModified": "2026-09-28",
+    "author": {
+      "@type": "Organization",
+      "name": "image toolbox"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "표가 있는 PDF는 변환하면 안 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "변환은 되지만 표 구조(행과 열의 구분)는 사라집니다. 표 안의 텍스트 자체는 남아있으니 내용을 검색하거나 복사하는 용도로는 쓸 수 있지만, 표 형태 그대로 편집하려는 목적이라면 이 방법으로는 원하는 결과를 얻기 어렵습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "표를 제대로 옮기려면 어떻게 해야 하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "이 도구는 표 구조를 인식하지 못하므로, 표가 중요한 문서라면 변환된 결과를 열어서 수동으로 표를 다시 만들거나, 원본 PDF를 그대로 유지하면서 필요한 부분만 옮겨 적는 것을 권장합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "표가 없는 일반 문서는 안전하게 변환되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 줄 간격이 일반적인 문단 형태의 텍스트는 실제 테스트에서 문단 구분과 내용 모두 정확하게 옮겨졌습니다. 문제가 되는 쪽은 여러 줄이 표처럼 촘촘하게 배치된 경우입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "몇 페이지짜리로 테스트한 결과인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "직접 만든 1페이지짜리 테스트 PDF(문단 하나 + 3x3 표 하나)로 변환 결과를 확인했습니다. 표가 여러 개이거나 더 복잡한 문서에서도 같은 원리(좌표 기반 줄 인식)로 처리되므로 결과 양상은 비슷할 것으로 예상됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PowerPoint(.pptx) 변환도 표가 깨지나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. PowerPoint 변환은 텍스트를 추출하는 방식이 아니라 PDF 페이지 전체를 이미지로 캡처해 슬라이드에 넣는 방식이라, 표를 포함한 페이지 전체의 시각적 모양이 그대로 보존됩니다. 대신 텍스트를 편집하거나 복사할 수는 없습니다."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="page-article">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox 홈"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href="index.html">이미지 압축</a>
+        <a href="pdf.html">PDF 변환</a>
+        <a href="upscale.html">업스케일링</a>
+        <a href="guide.html">가이드</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" id="main-content">
+    <p class="eyebrow">IMAGE TOOLBOX / GUIDE</p>
+    <h1>PDF를 워드·엑셀로 변환하면 표는 어떻게 될까</h1>
+    <p class="subtitle">직접 테스트 PDF를 만들어 변환해본 실제 결과를 정리했습니다.</p>
+    <p class="tool-nav"><a href="guide.html">← 가이드 목록</a></p>
+
+    <section class="info-section">
+      <h2>직접 테스트해봤습니다</h2>
+      <p>문단 텍스트 하나와 3×3 표 하나가 들어간 1페이지짜리 PDF를 만들어, 이 사이트의 PDF→문서 변환 기능으로 실제 Word(.docx)와 Excel(.xlsx) 결과물을 열어봤습니다. 결과는 텍스트 종류에 따라 크게 갈렸습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>일반 문단은 정확하게 옮겨집니다</h2>
+      <p>여러 줄로 나눠 쓴 문단 텍스트는 Word 변환에서 하나의 문단으로 정확하게 합쳐졌습니다. 실제 변환 결과에 담긴 문장입니다.</p>
+      <p style="padding:12px 16px; background:var(--color-accent-soft); border-radius:8px; font-size:14px;">"This is a sample paragraph for testing PDF to Word conversion. It spans multiple lines that should be grouped into one paragraph because the vertical gap between them is small."</p>
+      <p>원본 PDF에서는 이 문장이 3줄에 걸쳐 나뉘어 있었지만, 줄 사이 간격이 좁아서 하나의 문단으로 잘 합쳐졌습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>표는 구조가 완전히 무너집니다</h2>
+      <p>같은 PDF에 있던 3×3 표(이름·점수·등급, 3명분)를 변환한 결과는 이렇습니다. Word에서는 표 전체가 줄바꿈도 없이 하나의 문단으로 뭉쳐졌습니다.</p>
+      <p style="padding:12px 16px; background:var(--color-accent-soft); border-radius:8px; font-size:14px;">"Name Score Grade Alice 92 A Bob 81 B Carol 76 C"</p>
+      <p>Excel에서는 그나마 원래 줄 단위로는 나뉘었지만, 열 구분 없이 한 줄 전체가 A열 한 칸에 그대로 들어갔습니다 — 즉 "Alice", "92", "A"가 각각 다른 셀이 아니라 A5 셀 하나에 "Alice 92 A"로 합쳐진 텍스트로 저장됐습니다. 헤더 행("Name Score Grade")도 데이터 행과 구분 없이 똑같은 방식으로 처리됐습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>왜 이런 일이 일어나나요</h2>
+      <p>PDF 파일에는 애초에 "표"라는 개념이 없습니다. 화면에 보이는 표는 사실 특정 좌표에 텍스트를 하나하나 배치해서 만든 것일 뿐입니다. 이 도구는 텍스트의 Y좌표(세로 위치)가 비슷하면 같은 줄로, 줄 사이 간격이 좁으면 같은 문단으로 묶는 방식으로 동작합니다. 문단처럼 세로로 줄바꿈되는 텍스트는 이 방식이 잘 맞지만, 표처럼 가로로 여러 칸이 나열된 구조는 애초에 "칸"이라는 개념을 인식하지 못하고 같은 줄 안의 텍스트를 왼쪽부터 순서대로 이어붙이기만 합니다. 결과적으로 칸 사이의 구분이 사라지고 텍스트만 한 줄로 합쳐집니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>자주 묻는 질문</h2>
+      <details>
+        <summary>표가 있는 PDF는 변환하면 안 되나요?</summary>
+        <p>변환은 되지만 표 구조(행과 열의 구분)는 사라집니다. 표 안의 텍스트 자체는 남아있으니 내용을 검색하거나 복사하는 용도로는 쓸 수 있지만, 표 형태 그대로 편집하려는 목적이라면 이 방법으로는 원하는 결과를 얻기 어렵습니다.</p>
+      </details>
+      <details>
+        <summary>표를 제대로 옮기려면 어떻게 해야 하나요?</summary>
+        <p>이 도구는 표 구조를 인식하지 못하므로, 표가 중요한 문서라면 변환된 결과를 열어서 수동으로 표를 다시 만들거나, 원본 PDF를 그대로 유지하면서 필요한 부분만 옮겨 적는 것을 권장합니다.</p>
+      </details>
+      <details>
+        <summary>표가 없는 일반 문서는 안전하게 변환되나요?</summary>
+        <p>네. 줄 간격이 일반적인 문단 형태의 텍스트는 실제 테스트에서 문단 구분과 내용 모두 정확하게 옮겨졌습니다. 문제가 되는 쪽은 여러 줄이 표처럼 촘촘하게 배치된 경우입니다.</p>
+      </details>
+      <details>
+        <summary>몇 페이지짜리로 테스트한 결과인가요?</summary>
+        <p>직접 만든 1페이지짜리 테스트 PDF(문단 하나 + 3x3 표 하나)로 변환 결과를 확인했습니다. 표가 여러 개이거나 더 복잡한 문서에서도 같은 원리(좌표 기반 줄 인식)로 처리되므로 결과 양상은 비슷할 것으로 예상됩니다.</p>
+      </details>
+      <details>
+        <summary>PowerPoint(.pptx) 변환도 표가 깨지나요?</summary>
+        <p>아니요. PowerPoint 변환은 텍스트를 추출하는 방식이 아니라 PDF 페이지 전체를 이미지로 캡처해 슬라이드에 넣는 방식이라, 표를 포함한 페이지 전체의 시각적 모양이 그대로 보존됩니다. 대신 텍스트를 편집하거나 복사할 수는 없습니다.</p>
+      </details>
+    </section>
+
+    <section class="info-section">
+      <h2>관련 페이지</h2>
+      <p><a href="pdf-to-word.html">PDF를 워드로 변환하는 방법</a></p>
+      <p><a href="pdf-to-image.html">PDF를 이미지로 변환하는 방법</a></p>
+      <p><a href="pdf.html">PDF 변환 도구</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">일상의 이미지 작업을, 간편하고 안전하게.</p></div>
+      <nav class="footer-links" aria-label="사이트 정보"><a href="about.html">서비스 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+    </div>
+  </footer>
+</body>
+</html>
