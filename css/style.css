@@ -129,8 +129,8 @@ h1 {
 }
 
 .compress-warning {
-  color: #9a6700;
-  background: #fff8e5;
+  color: var(--color-warning-text, #9a6700);
+  background: var(--color-warning-bg, #fff8e5);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 13px;
@@ -138,7 +138,7 @@ h1 {
 }
 
 .error-message {
-  color: #d70015;
+  color: var(--color-error-text, #d70015);
   margin-top: 12px;
 }
 
@@ -154,7 +154,7 @@ h1 {
 
 button, #downloadBtn, .btn {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent, #fff);
   border: none;
   border-radius: 8px;
   padding: 10px 20px;
