@@ -7,6 +7,8 @@ var pdfConvertControls = document.getElementById('pdfConvertControls');
 var pdfConvertBtn = document.getElementById('pdfConvertBtn');
 var pdfConvertProgress = document.getElementById('pdfConvertProgress');
 var pdfConvertDownloadBtn = document.getElementById('pdfConvertDownloadBtn');
+var pdfConvertShareBtn = document.getElementById('pdfConvertShareBtn');
+var pdfConvertShareStatus = document.getElementById('pdfConvertShareStatus');
 
 var selectedPdfConvertFile = null;
 var lastPdfConvertUrl = null;
@@ -34,6 +36,9 @@ function handlePdfConvertFile(file) {
   }
   pdfConvertControls.hidden = true;
   pdfConvertDownloadBtn.hidden = true;
+  pdfConvertShareBtn.hidden = true;
+  pdfConvertShareStatus.hidden = true;
+  pdfConvertShareStatus.textContent = '';
   if (lastPdfConvertUrl) {
     URL.revokeObjectURL(lastPdfConvertUrl);
     lastPdfConvertUrl = null;
@@ -289,6 +294,8 @@ pdfConvertBtn.addEventListener('click', function () {
       pdfConvertDownloadBtn.href = lastPdfConvertUrl;
       pdfConvertDownloadBtn.download = getConvertedFilename(baseName, format);
       pdfConvertDownloadBtn.hidden = false;
+      pdfConvertShareBtn.hidden = false;
+      pdfConvertShareStatus.hidden = true;
     })
     .catch(function (err) {
       showPdfConvertError(err.message);
@@ -299,4 +306,12 @@ pdfConvertBtn.addEventListener('click', function () {
       pdfConvertBtn.textContent = '변환하기';
       pdfConvertProgress.hidden = true;
     });
+});
+
+wireShareButton(pdfConvertShareBtn, pdfConvertShareStatus, function () {
+  return {
+    title: 'image toolbox - 브라우저에서 바로 처리하는 PDF 변환',
+    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 PDF를 Word/PPT/Excel로 바꾸는 도구예요.',
+    url: 'https://nwb010118.github.io/image-toolbox/pdf.html'
+  };
 });

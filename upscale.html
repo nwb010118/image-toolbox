@@ -166,7 +166,11 @@
       <div class="preview-box">
         <h2 id="upscaleResultHeading">결과</h2>
         <img id="upscaleResultPreview" alt="업스케일링된 이미지 미리보기" hidden>
-        <a id="upscaleDownloadBtn" class="btn" href="#" download="upscaled.png" hidden>다운로드</a>
+        <div class="result-actions">
+          <a id="upscaleDownloadBtn" class="btn" href="#" download="upscaled.png" hidden>다운로드</a>
+          <button type="button" id="upscaleShareBtn" class="btn btn-outline" hidden>사이트 공유하기</button>
+        </div>
+        <p id="upscaleShareStatus" class="share-status" role="status" hidden></p>
       </div>
     </section>
 
@@ -222,6 +226,7 @@
   <script src="https://cdn.jsdelivr.net/npm/upscaler@1.0.0/dist/browser/umd/upscaler.min.js" integrity="sha384-QMCS4oRU0yhc/triRbY4mcIreg38XzA/8NNuZfTWWvv/km8cX/L63yLb3hh0IaA3" crossorigin="anonymous"></script>
   <script src="js/imageTools.js"></script>
   <script src="js/upscaleTools.js"></script>
+  <script src="js/shareUtil.js"></script>
   <script src="js/upscaleApp.js"></script>
 </body>
 </html>

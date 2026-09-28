@@ -6,6 +6,8 @@ var imgToPdfError = document.getElementById('imgToPdfError');
 var imgToPdfFileList = document.getElementById('imgToPdfFileList');
 var imgToPdfBtn = document.getElementById('imgToPdfBtn');
 var imgToPdfDownloadBtn = document.getElementById('imgToPdfDownloadBtn');
+var imgToPdfShareBtn = document.getElementById('imgToPdfShareBtn');
+var imgToPdfShareStatus = document.getElementById('imgToPdfShareStatus');
 
 var selectedImageFiles = [];
 var lastPdfUrl = null;
@@ -33,6 +35,9 @@ function handleImageFiles(files) {
   clearImgToPdfError();
   imgToPdfBtn.hidden = true;
   imgToPdfDownloadBtn.hidden = true;
+  imgToPdfShareBtn.hidden = true;
+  imgToPdfShareStatus.hidden = true;
+  imgToPdfShareStatus.textContent = '';
   if (lastPdfUrl) {
     URL.revokeObjectURL(lastPdfUrl);
     lastPdfUrl = null;
@@ -180,6 +185,8 @@ imgToPdfBtn.addEventListener('click', function () {
       imgToPdfDownloadBtn.href = lastPdfUrl;
       imgToPdfDownloadBtn.download = getPdfOutputFilename();
       imgToPdfDownloadBtn.hidden = false;
+      imgToPdfShareBtn.hidden = false;
+      imgToPdfShareStatus.hidden = true;
     })
     .catch(function (err) {
       showImgToPdfError(err.message);
@@ -379,4 +386,12 @@ pdfToImgUploadArea.addEventListener('drop', function (e) {
   pdfToImgUploadArea.classList.remove('drag-over');
   pdfToImgFileInput.value = '';
   handlePdfFile(e.dataTransfer.files[0]);
+});
+
+wireShareButton(imgToPdfShareBtn, imgToPdfShareStatus, function () {
+  return {
+    title: 'image toolbox - 브라우저에서 바로 처리하는 PDF 변환',
+    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 PDF로 합치는 도구예요.',
+    url: 'https://nwb010118.github.io/image-toolbox/pdf.html'
+  };
 });

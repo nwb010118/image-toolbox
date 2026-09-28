@@ -12,6 +12,8 @@ var upscaleOriginalSize = document.getElementById('upscaleOriginalSize');
 var upscaleResultHeading = document.getElementById('upscaleResultHeading');
 var upscaleResultPreview = document.getElementById('upscaleResultPreview');
 var upscaleDownloadBtn = document.getElementById('upscaleDownloadBtn');
+var upscaleShareBtn = document.getElementById('upscaleShareBtn');
+var upscaleShareStatus = document.getElementById('upscaleShareStatus');
 var upscaleModeRadios = document.querySelectorAll('input[name="upscaleMode"]');
 
 var UPSCALE_MODE_LABELS = { '2x': '2배', '4x': '4배', '1440p': '1440p', '4K': '4K' };
@@ -104,6 +106,9 @@ function handleUpscaleFile(file) {
   upscalePreviewArea.hidden = true;
   upscaleResultPreview.hidden = true;
   upscaleDownloadBtn.hidden = true;
+  upscaleShareBtn.hidden = true;
+  upscaleShareStatus.hidden = true;
+  upscaleShareStatus.textContent = '';
   upscaleResultHeading.textContent = '결과';
   selectedUpscaleFile = null;
   selectedUpscaleDataUrl = null;
@@ -278,6 +283,8 @@ upscaleBtn.addEventListener('click', function () {
       upscaleDownloadBtn.href = finalDataUrl;
       upscaleDownloadBtn.download = getUpscaledFilename(runFileName, mode);
       upscaleDownloadBtn.hidden = false;
+      upscaleShareBtn.hidden = false;
+      upscaleShareStatus.hidden = true;
     })
     .catch(function (err) {
       console.error('Upscale failed:', err);
@@ -288,4 +295,12 @@ upscaleBtn.addEventListener('click', function () {
       upscaleBtn.textContent = '확대하기';
       upscaleProgress.hidden = true;
     });
+});
+
+wireShareButton(upscaleShareBtn, upscaleShareStatus, function () {
+  return {
+    title: 'image toolbox - 브라우저에서 바로 처리하는 AI 업스케일링',
+    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 AI 업스케일링하는 도구예요.',
+    url: 'https://nwb010118.github.io/image-toolbox/upscale.html'
+  };
 });

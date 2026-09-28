@@ -50,11 +50,16 @@
     <p class="eyebrow">THE KNOWLEDGE LIBRARY</p>
     <h1>이미지 작업 가이드</h1>
     <p class="subtitle">용량을 줄이고, 문서를 정리하고, 해상도를 맞추는 일. 작업에 필요한 기준과 방법을 주제별로 살펴보세요.</p>
+    <div class="guide-search">
+      <label for="guideSearch" class="visually-hidden">가이드 글 검색</label>
+      <input type="search" id="guideSearch" placeholder="가이드 글 검색 (예: 카카오톡, PDF 용량, 유튜브)">
+    </div>
     <nav class="category-nav" aria-label="가이드 주제 바로가기">
       <a href="#compression">압축·포맷·공유</a>
       <a href="#pdf-workflows">PDF 작업</a>
       <a href="#resolution">업스케일·해상도</a>
     </nav>
+    <p id="guideSearchEmpty" class="subtitle" hidden>검색 결과가 없습니다. 다른 키워드로 시도해보세요.</p>
     <section class="info-section" id="compression" aria-labelledby="compression-title">
       <h2 id="compression-title">압축·포맷·공유</h2>
       <p>사진을 보내고, 웹에 올리고, 보관할 때 필요한 파일 형식과 용량·크기 기준을 살펴보세요.</p>
@@ -199,5 +204,6 @@
       <nav class="footer-links" aria-label="사이트 정보"><a href="about.html">서비스 소개</a><a href="contact.html">문의</a><a href="privacy.html">개인정보처리방침</a></nav>
     </div>
   </footer>
+  <script src="js/guideSearch.js"></script>
 </body>
 </html>

@@ -157,7 +157,11 @@
         </svg>
         서버 전송 없음 · 브라우저에서만 처리
       </p>
-      <a id="imgToPdfDownloadBtn" class="btn" href="#" download="images.pdf" hidden>PDF 다운로드</a>
+      <div class="result-actions">
+        <a id="imgToPdfDownloadBtn" class="btn" href="#" download="images.pdf" hidden>PDF 다운로드</a>
+        <button type="button" id="imgToPdfShareBtn" class="btn btn-outline" hidden>사이트 공유하기</button>
+      </div>
+      <p id="imgToPdfShareStatus" class="share-status" role="status" hidden></p>
     </section>
 
     <section class="pdf-section">
@@ -232,7 +236,11 @@
       </section>
 
       <p id="pdfConvertProgress" class="pdf-progress" hidden></p>
-      <a id="pdfConvertDownloadBtn" class="btn" href="#" download hidden>변환된 파일 다운로드</a>
+      <div class="result-actions">
+        <a id="pdfConvertDownloadBtn" class="btn" href="#" download hidden>변환된 파일 다운로드</a>
+        <button type="button" id="pdfConvertShareBtn" class="btn btn-outline" hidden>사이트 공유하기</button>
+      </div>
+      <p id="pdfConvertShareStatus" class="share-status" role="status" hidden></p>
     </section>
 
     <section class="info-section">
@@ -294,6 +302,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
   <script src="js/imageTools.js"></script>
   <script src="js/pdfTools.js"></script>
+  <script src="js/shareUtil.js"></script>
   <script src="js/pdfApp.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js" integrity="sha384-qb0Xhi7LLYpvW1HCK6oMrmDLSY9sy7vwm6ZlV6KjtrlL9yg30+YN4neTwnmX+Kp8" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js" integrity="sha384-9OH56uLhIvkZkwF0jWNlfpcK3gPuSy5DfEMNqKe156wCpkND+MDdtaRyd05kwpG0" crossorigin="anonymous"></script>

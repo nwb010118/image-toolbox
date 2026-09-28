@@ -17,6 +17,9 @@ var uploadHeading = uploadArea.querySelector('.upload-heading');
 var uploadButton = uploadArea.querySelector('.upload-btn');
 var compressWarning = document.getElementById('compressWarning');
 var downloadBtn = document.getElementById('downloadBtn');
+var pngSizeHint = document.getElementById('pngSizeHint');
+var shareBtn = document.getElementById('shareBtn');
+var shareStatus = document.getElementById('shareStatus');
 
 var resizeWidth = document.getElementById('resizeWidth');
 var resizeHeight = document.getElementById('resizeHeight');
@@ -92,6 +95,15 @@ function clearError() {
   errorMessage.hidden = true;
 }
 
+function updatePngSizeHint() {
+  if (!selectedFile) {
+    pngSizeHint.hidden = true;
+    return;
+  }
+  var outputMimeType = resolveOutputMimeType(selectedFile.type, formatSelect.value);
+  pngSizeHint.hidden = outputMimeType !== 'image/png';
+}
+
 function handleFile(file) {
   clearError();
   compressionSavings.hidden = true;
@@ -106,6 +118,10 @@ function handleFile(file) {
   originalImageHeight = 0;
   resizeWidth.value = '';
   resizeHeight.value = '';
+  pngSizeHint.hidden = true;
+  shareBtn.hidden = true;
+  shareStatus.hidden = true;
+  shareStatus.textContent = '';
   if (lastResultUrl) {
     URL.revokeObjectURL(lastResultUrl);
     lastResultUrl = null;
@@ -134,6 +150,7 @@ function handleFile(file) {
   compressedSize.textContent = '';
   compressWarning.hidden = true;
   downloadBtn.hidden = true;
+  updatePngSizeHint();
 }
 
 originalPreview.addEventListener('load', function () {
@@ -258,6 +275,8 @@ compressBtn.addEventListener('click', function () {
       downloadBtn.href = result.url;
       downloadBtn.download = 'processed-image.' + getExtensionForMimeType(result.blob.type);
       downloadBtn.hidden = false;
+      shareBtn.hidden = false;
+      shareStatus.hidden = true;
     })
     .catch(function (err) {
       showError(err.message);
@@ -297,4 +316,14 @@ resizeHeight.addEventListener('input', function () {
     return;
   }
   resizeWidth.value = calculateAspectRatioWidth(originalImageWidth, originalImageHeight, h);
+});
+
+formatSelect.addEventListener('change', updatePngSizeHint);
+
+wireShareButton(shareBtn, shareStatus, function () {
+  return {
+    title: 'image toolbox - 브라우저에서 바로 처리하는 이미지 압축',
+    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 압축·변환하는 도구예요.',
+    url: 'https://nwb010118.github.io/image-toolbox/'
+  };
 });
