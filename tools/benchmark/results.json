@@ -1,0 +1,159 @@
+{
+  "generated_at": "2026-09-28T10:24:16+0900",
+  "encoder": "Pillow 12.3.0",
+  "note": "이 결과는 Python Pillow 인코더로 측정한 값이며, 사이트의 실제 압축 도구가 쓰는 브라우저 Canvas API(toBlob) 결과와 바이트 단위로 다를 수 있습니다. 형식/품질별 압축 경향을 보여주는 참고 자료입니다.",
+  "image_dimensions": {
+    "width": 1200,
+    "height": 800
+  },
+  "samples": {
+    "photo_like": {
+      "formats": {
+        "PNG": {
+          "quality": null,
+          "size_bytes": 1372380,
+          "encode_time_ms": 182.57,
+          "reduction_vs_png_percent": 0.0
+        },
+        "JPEG": {
+          "q100": {
+            "quality": 100,
+            "size_bytes": 678868,
+            "encode_time_ms": 13.78,
+            "reduction_vs_png_percent": 50.5
+          },
+          "q90": {
+            "quality": 90,
+            "size_bytes": 277792,
+            "encode_time_ms": 8.83,
+            "reduction_vs_png_percent": 79.8
+          },
+          "q80": {
+            "quality": 80,
+            "size_bytes": 148325,
+            "encode_time_ms": 6.18,
+            "reduction_vs_png_percent": 89.2
+          },
+          "q60": {
+            "quality": 60,
+            "size_bytes": 67052,
+            "encode_time_ms": 5.02,
+            "reduction_vs_png_percent": 95.1
+          },
+          "q40": {
+            "quality": 40,
+            "size_bytes": 36979,
+            "encode_time_ms": 4.56,
+            "reduction_vs_png_percent": 97.3
+          }
+        },
+        "WEBP": {
+          "q100": {
+            "quality": 100,
+            "size_bytes": 464680,
+            "encode_time_ms": 234.97,
+            "reduction_vs_png_percent": 66.1
+          },
+          "q90": {
+            "quality": 90,
+            "size_bytes": 281730,
+            "encode_time_ms": 235.82,
+            "reduction_vs_png_percent": 79.5
+          },
+          "q80": {
+            "quality": 80,
+            "size_bytes": 169172,
+            "encode_time_ms": 205.8,
+            "reduction_vs_png_percent": 87.7
+          },
+          "q60": {
+            "quality": 60,
+            "size_bytes": 89414,
+            "encode_time_ms": 185.82,
+            "reduction_vs_png_percent": 93.5
+          },
+          "q40": {
+            "quality": 40,
+            "size_bytes": 44448,
+            "encode_time_ms": 137.14,
+            "reduction_vs_png_percent": 96.8
+          }
+        }
+      }
+    },
+    "graphic_like": {
+      "formats": {
+        "PNG": {
+          "quality": null,
+          "size_bytes": 5387,
+          "encode_time_ms": 17.43,
+          "reduction_vs_png_percent": 0.0
+        },
+        "JPEG": {
+          "q100": {
+            "quality": 100,
+            "size_bytes": 176563,
+            "encode_time_ms": 5.18,
+            "reduction_vs_png_percent": -3177.6
+          },
+          "q90": {
+            "quality": 90,
+            "size_bytes": 106108,
+            "encode_time_ms": 5.75,
+            "reduction_vs_png_percent": -1869.7
+          },
+          "q80": {
+            "quality": 80,
+            "size_bytes": 85750,
+            "encode_time_ms": 4.09,
+            "reduction_vs_png_percent": -1491.8
+          },
+          "q60": {
+            "quality": 60,
+            "size_bytes": 68020,
+            "encode_time_ms": 4.6,
+            "reduction_vs_png_percent": -1162.7
+          },
+          "q40": {
+            "quality": 40,
+            "size_bytes": 57469,
+            "encode_time_ms": 5.46,
+            "reduction_vs_png_percent": -966.8
+          }
+        },
+        "WEBP": {
+          "q100": {
+            "quality": 100,
+            "size_bytes": 23084,
+            "encode_time_ms": 80.54,
+            "reduction_vs_png_percent": -328.5
+          },
+          "q90": {
+            "quality": 90,
+            "size_bytes": 19274,
+            "encode_time_ms": 101.62,
+            "reduction_vs_png_percent": -257.8
+          },
+          "q80": {
+            "quality": 80,
+            "size_bytes": 17300,
+            "encode_time_ms": 86.99,
+            "reduction_vs_png_percent": -221.1
+          },
+          "q60": {
+            "quality": 60,
+            "size_bytes": 14388,
+            "encode_time_ms": 93.82,
+            "reduction_vs_png_percent": -167.1
+          },
+          "q40": {
+            "quality": 40,
+            "size_bytes": 12434,
+            "encode_time_ms": 96.28,
+            "reduction_vs_png_percent": -130.8
+          }
+        }
+      }
+    }
+  }
+}
