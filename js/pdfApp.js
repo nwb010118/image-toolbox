@@ -110,6 +110,26 @@ imgToPdfUploadArea.addEventListener('drop', function (e) {
   handleImageFiles(e.dataTransfer.files);
 });
 
+window.addEventListener('paste', function (e) {
+  var items = e.clipboardData && e.clipboardData.items;
+  if (!items) {
+    return;
+  }
+  var pastedImages = [];
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image/') === 0) {
+      var file = items[i].getAsFile();
+      if (file) {
+        pastedImages.push(file);
+      }
+    }
+  }
+  if (pastedImages.length > 0) {
+    imgToPdfFileInput.value = '';
+    handleImageFiles(pastedImages);
+  }
+});
+
 function imageFileToJpegDataUrl(file) {
   return new Promise(function (resolve, reject) {
     var img = new Image();

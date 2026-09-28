@@ -219,6 +219,23 @@ uploadArea.addEventListener('drop', function (e) {
   handleFile(file);
 });
 
+window.addEventListener('paste', function (e) {
+  var items = e.clipboardData && e.clipboardData.items;
+  if (!items) {
+    return;
+  }
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image/') === 0) {
+      var file = items[i].getAsFile();
+      if (file) {
+        fileInput.value = '';
+        handleFile(file);
+      }
+      break;
+    }
+  }
+});
+
 qualitySlider.addEventListener('input', function () {
   qualityValue.textContent = qualitySlider.value;
 });

@@ -189,6 +189,23 @@ upscaleUploadArea.addEventListener('drop', function (e) {
   handleUpscaleFile(e.dataTransfer.files[0]);
 });
 
+window.addEventListener('paste', function (e) {
+  var items = e.clipboardData && e.clipboardData.items;
+  if (!items) {
+    return;
+  }
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image/') === 0) {
+      var file = items[i].getAsFile();
+      if (file) {
+        upscaleFileInput.value = '';
+        handleUpscaleFile(file);
+      }
+      break;
+    }
+  }
+});
+
 function chainOneUpscalePass(chain, passIndex, passCount, onProgress) {
   return chain.then(function (inputDataUrl) {
     return upscaler.upscale(inputDataUrl, {
