@@ -1,0 +1,25 @@
+{
+  "name": "image toolbox - 이미지 압축·PDF 변환·AI 업스케일링",
+  "short_name": "image toolbox",
+  "description": "사진 압축, PDF 변환, AI 업스케일링을 브라우저에서만 처리하는 무료 도구",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f5",
+  "theme_color": "#116b5d",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
