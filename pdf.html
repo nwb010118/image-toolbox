@@ -24,6 +24,7 @@
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/toolStudio.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -140,7 +141,12 @@
     <h1>PDF 변환 도구</h1>
     <p class="subtitle">사진이 서버로 전송되지 않고, 이 브라우저 안에서만 처리됩니다.</p></div><svg class="studio-art" viewBox="0 0 340 180" fill="none" aria-hidden="true"><circle cx="185" cy="90" r="84" fill="var(--color-accent-soft)"/><g transform="rotate(-9 110 90)"><rect x="34" y="30" width="140" height="112" rx="14" fill="var(--color-surface)" stroke="var(--color-border-strong)"/><rect x="46" y="42" width="116" height="74" rx="8" fill="var(--color-chip-blue-bg)"/><circle cx="132" cy="60" r="10" fill="var(--color-chip-orange-fg)"/><path d="m46 106 34-39 29 27 20-17 33 39H46Z" fill="var(--color-accent)" opacity=".7"/><path d="M48 129h44" stroke="var(--color-border-strong)" stroke-width="5" stroke-linecap="round"/></g><g transform="rotate(7 248 98)"><rect x="202" y="45" width="100" height="112" rx="14" fill="var(--color-accent)"/><path d="M224 72h56M224 85h40M224 98h30" stroke="var(--color-on-accent)" stroke-width="5" stroke-linecap="round"/><circle cx="271" cy="132" r="16" fill="var(--color-surface)"/><path d="m263 132 5 5 10-11" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M168 91h30m-9-9 9 9-9 9" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M291 18v14m-7-7h14M18 134v10m-5-5h10" stroke="var(--color-chip-orange-fg)" stroke-width="2" stroke-linecap="round"/></svg></div>
 
-    <section class="pdf-section">
+    <nav class="task-picker" aria-label="PDF 작업 선택">
+      <a href="#images-to-pdf" aria-current="true">사진 → PDF</a>
+      <a href="#pdf-to-images">PDF → 이미지</a>
+      <a href="#pdf-to-document">PDF → Word·PPT·Excel</a>
+    </nav>
+    <section class="pdf-section" id="images-to-pdf">
       <h2>이미지 → PDF</h2>
       <p class="tool-nav"><a href="photos-to-pdf.html">여러 장 사진 PDF로 합치는 법 자세히 보기 →</a></p>
       <section class="upload-area" id="imgToPdfUploadArea">
@@ -153,9 +159,10 @@
         <button type="button" class="upload-btn">파일 선택 (여러 장 가능)</button>
         <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
         <p class="upload-formats">JPG, PNG, WebP 지원 · 파일당 최대 20MB · 최대 50장</p>
-        <div id="imgToPdfError" class="error-message" hidden></div>
+        <div id="imgToPdfError" class="error-message" role="alert" hidden></div>
       </section>
 
+      <p class="upload-hint">파일을 추가한 뒤 위·아래 버튼으로 페이지 순서를 조정하세요.</p>
       <ul id="imgToPdfFileList" class="file-list"></ul>
 
       <button id="imgToPdfBtn" hidden>PDF로 변환</button>
@@ -173,9 +180,10 @@
       <p id="imgToPdfShareStatus" class="share-status" role="status" hidden></p>
     </section>
 
-    <section class="pdf-section">
+    <section class="pdf-section" id="pdf-to-images">
       <h2>PDF → 이미지</h2>
       <p class="tool-nav"><a href="pdf-to-image.html">PDF→이미지 자세히 보기 →</a></p>
+      <div class="pdf-options"><label>시작 페이지 <input id="pdfPageStart" type="number" min="1" max="300" value="1"></label><label>끝 페이지 <input id="pdfPageEnd" type="number" min="1" max="300" placeholder="마지막 페이지"></label><label>이미지 해상도 <select id="pdfRenderScale"><option value="1">기본 (1배)</option><option value="2">고해상도 (2배)</option></select></label></div><p class="upload-hint">범위와 해상도를 고른 뒤 PDF를 선택하세요. 한 번에 최대 50페이지를 처리합니다.</p>
       <section class="upload-area" id="pdfToImgUploadArea">
         <input type="file" id="pdfToImgFileInput" class="visually-hidden" accept="application/pdf,.pdf">
         <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -186,7 +194,7 @@
         <button type="button" class="upload-btn">PDF 파일 선택</button>
         <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
         <p class="upload-formats">PDF 지원 · 최대 20MB · 최대 300페이지</p>
-        <div id="pdfToImgError" class="error-message" hidden></div>
+        <div id="pdfToImgError" class="error-message" role="alert" hidden></div>
       </section>
 
       <p class="offline-badge">
@@ -197,12 +205,14 @@
         서버 전송 없음 · 브라우저에서만 처리
       </p>
 
-      <p id="pdfToImgProgress" class="pdf-progress" hidden></p>
+      <p id="pdfToImgProgress" class="pdf-progress" role="status" hidden></p>
+      <button type="button" id="pdfImagesCancel" hidden>현재 페이지 후 중단</button> <button type="button" id="pdfZipDownload" hidden>생성된 이미지 ZIP 다운로드</button>
       <div id="pdfToImgPages" class="pdf-page-list"></div>
     </section>
 
-    <section class="pdf-section">
+    <section class="pdf-section" id="pdf-to-document">
       <h2>PDF → 문서 변환</h2>
+      <div class="conversion-notice"><strong>변환 결과를 먼저 확인하세요</strong><ul><li>PPT: 페이지를 이미지로 넣습니다. 슬라이드 안의 글자는 직접 편집할 수 없습니다.</li><li>Word: 텍스트를 추출합니다. 표·서식·이미지는 원본처럼 유지되지 않습니다.</li><li>Excel: 텍스트 한 줄을 한 셀에 넣습니다. 표의 열 구조를 복원하지 않습니다.</li></ul><p>스캔 PDF의 글자를 읽는 OCR은 지원하지 않습니다. <a href="pdf-conversion-accuracy.html">실제 변환 결과 보기 →</a></p></div>
       <p class="tool-nav"><a href="pdf-to-word.html">PDF→Word 자세히 보기 →</a></p>
       <p class="tool-nav"><a href="pdf-to-ppt.html">PDF→PPT 자세히 보기 →</a></p>
       <section class="upload-area" id="pdfConvertUploadArea">
@@ -215,7 +225,7 @@
         <button type="button" class="upload-btn">PDF 파일 선택</button>
         <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
         <p class="upload-formats">PDF 지원 · 최대 20MB · 최대 300페이지</p>
-        <div id="pdfConvertError" class="error-message" hidden></div>
+        <div id="pdfConvertError" class="error-message" role="alert" hidden></div>
       </section>
 
       <section class="controls" id="pdfConvertControls" hidden>
@@ -244,7 +254,8 @@
         </p>
       </section>
 
-      <p id="pdfConvertProgress" class="pdf-progress" hidden></p>
+      <button type="button" id="pdfDocumentCancel" hidden>현재 페이지 후 중단</button>
+      <p id="pdfConvertProgress" class="pdf-progress" role="status" hidden></p>
       <div class="result-actions">
         <a id="pdfConvertDownloadBtn" class="btn" href="#" download hidden>변환된 파일 다운로드</a>
         <button type="button" id="pdfConvertShareBtn" class="btn btn-outline" hidden>사이트 공유하기</button>
@@ -311,7 +322,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
   <script src="js/imageTools.js"></script>
   <script src="js/pdfTools.js"></script>
+  <script src="js/uploadUtil.js"></script>
   <script src="js/shareUtil.js"></script>
+  <script src="js/workflowTools.js"></script>
+  <script src="js/pdfNavigation.js"></script>
   <script src="js/pdfApp.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js" integrity="sha384-qb0Xhi7LLYpvW1HCK6oMrmDLSY9sy7vwm6ZlV6KjtrlL9yg30+YN4neTwnmX+Kp8" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js" integrity="sha384-9OH56uLhIvkZkwF0jWNlfpcK3gPuSy5DfEMNqKe156wCpkND+MDdtaRyd05kwpG0" crossorigin="anonymous"></script>

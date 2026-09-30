@@ -11,6 +11,15 @@ var imgToPdfShareStatus = document.getElementById('imgToPdfShareStatus');
 
 var selectedImageFiles = [];
 var lastPdfUrl = null;
+var isBuildingPdf = false;
+function invalidateImagePdf() {
+  if (lastPdfUrl) URL.revokeObjectURL(lastPdfUrl);
+  lastPdfUrl = null;
+  imgToPdfDownloadBtn.hidden = true;
+  imgToPdfDownloadBtn.removeAttribute('href');
+  imgToPdfShareBtn.hidden = true;
+  imgToPdfShareStatus.hidden = true;
+}
 
 function showImgToPdfError(message) {
   imgToPdfError.textContent = message;
@@ -24,33 +33,34 @@ function clearImgToPdfError() {
 
 function renderImgToPdfFileList() {
   imgToPdfFileList.innerHTML = '';
-  selectedImageFiles.forEach(function (file) {
+  selectedImageFiles.forEach(function (file, index) {
     var li = document.createElement('li');
     li.textContent = file.name + ' (' + formatBytes(file.size) + ')';
+    [['위', -1], ['아래', 1], ['삭제', 0]].forEach(function (action) {
+      var button = document.createElement('button');
+      button.type = 'button'; button.textContent = action[0];
+      button.setAttribute('aria-label', file.name + ' ' + action[0]);
+      button.disabled = isBuildingPdf || (action[1] === -1 && index === 0) || (action[1] === 1 && index === selectedImageFiles.length - 1);
+      button.addEventListener('click', function () {
+        if (isBuildingPdf) return;
+        if (action[1] === 0) selectedImageFiles.splice(index, 1);
+        else { var other = index + action[1]; var tmp = selectedImageFiles[other]; selectedImageFiles[other] = selectedImageFiles[index]; selectedImageFiles[index] = tmp; }
+        invalidateImagePdf(); renderImgToPdfFileList(); imgToPdfBtn.hidden = selectedImageFiles.length === 0;
+      });
+      li.appendChild(button);
+    });
     imgToPdfFileList.appendChild(li);
   });
 }
 
 function handleImageFiles(files) {
+  if (isBuildingPdf) { showImgToPdfError('변환 중에는 파일 목록을 바꿀 수 없습니다.'); return; }
   clearImgToPdfError();
-  imgToPdfBtn.hidden = true;
-  imgToPdfDownloadBtn.hidden = true;
-  imgToPdfShareBtn.hidden = true;
-  imgToPdfShareStatus.hidden = true;
-  imgToPdfShareStatus.textContent = '';
-  if (lastPdfUrl) {
-    URL.revokeObjectURL(lastPdfUrl);
-    lastPdfUrl = null;
-  }
-  imgToPdfDownloadBtn.removeAttribute('href');
-  selectedImageFiles = [];
-  renderImgToPdfFileList();
-
   if (!files || files.length === 0) {
     return;
   }
 
-  if (!isValidImageCount(files.length)) {
+  if (!isValidImageCount(selectedImageFiles.length + files.length)) {
     showImgToPdfError('이미지는 최대 ' + MAX_IMAGE_COUNT + '장까지 선택할 수 있습니다.');
     return;
   }
@@ -67,48 +77,13 @@ function handleImageFiles(files) {
     }
   }
 
-  selectedImageFiles = Array.prototype.slice.call(files);
+  invalidateImagePdf();
+  selectedImageFiles = selectedImageFiles.concat(Array.prototype.slice.call(files));
   renderImgToPdfFileList();
   imgToPdfBtn.hidden = false;
 }
 
-imgToPdfFileInput.addEventListener('change', function (e) {
-  handleImageFiles(e.target.files);
-});
-
-imgToPdfUploadArea.addEventListener('click', function (e) {
-  if (e.target !== imgToPdfFileInput) {
-    imgToPdfFileInput.click();
-  }
-});
-
-var imgToPdfDragCounter = 0;
-
-imgToPdfUploadArea.addEventListener('dragenter', function (e) {
-  e.preventDefault();
-  imgToPdfDragCounter = imgToPdfDragCounter + 1;
-  imgToPdfUploadArea.classList.add('drag-over');
-});
-
-imgToPdfUploadArea.addEventListener('dragover', function (e) {
-  e.preventDefault();
-});
-
-imgToPdfUploadArea.addEventListener('dragleave', function () {
-  imgToPdfDragCounter = imgToPdfDragCounter - 1;
-  if (imgToPdfDragCounter <= 0) {
-    imgToPdfDragCounter = 0;
-    imgToPdfUploadArea.classList.remove('drag-over');
-  }
-});
-
-imgToPdfUploadArea.addEventListener('drop', function (e) {
-  e.preventDefault();
-  imgToPdfDragCounter = 0;
-  imgToPdfUploadArea.classList.remove('drag-over');
-  imgToPdfFileInput.value = '';
-  handleImageFiles(e.dataTransfer.files);
-});
+wireFileUpload(imgToPdfUploadArea, imgToPdfFileInput, function (files) { handleImageFiles(files); });
 
 window.addEventListener('paste', function (e) {
   var items = e.clipboardData && e.clipboardData.items;
@@ -193,10 +168,12 @@ imgToPdfBtn.addEventListener('click', function () {
     return;
   }
 
+  isBuildingPdf = true;
+  renderImgToPdfFileList();
   imgToPdfBtn.disabled = true;
   imgToPdfBtn.textContent = '변환 중...';
 
-  buildPdfFromImages(selectedImageFiles)
+  buildPdfFromImages(selectedImageFiles.slice())
     .then(function (blob) {
       if (lastPdfUrl) {
         URL.revokeObjectURL(lastPdfUrl);
@@ -212,6 +189,8 @@ imgToPdfBtn.addEventListener('click', function () {
       showImgToPdfError(err.message);
     })
     .then(function () {
+      isBuildingPdf = false;
+      renderImgToPdfFileList();
       imgToPdfBtn.disabled = false;
       imgToPdfBtn.textContent = 'PDF로 변환';
     });
@@ -229,6 +208,18 @@ var pdfToImgPages = document.getElementById('pdfToImgPages');
 
 var pdfPageUrls = [];
 var isProcessingPdf = false;
+var cancelPdfImages = false;
+var pdfImageEntries = [];
+var pdfImageScale = 1;
+var pdfImagesCancel = document.getElementById('pdfImagesCancel');
+var pdfZipDownload = document.getElementById('pdfZipDownload');
+pdfImagesCancel.addEventListener('click', function () { cancelPdfImages = true; pdfImagesCancel.disabled = true; });
+pdfZipDownload.addEventListener('click', function () {
+  pdfZipDownload.disabled = true;
+  createStoredZip(pdfImageEntries.slice()).then(function (blob) {
+    var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'pdf-images.zip'; a.click(); setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+  }).catch(function (err) { showPdfToImgError(err.message); }).then(function () { pdfZipDownload.disabled = false; });
+});
 
 function showPdfToImgError(message) {
   pdfToImgError.textContent = message;
@@ -246,10 +237,13 @@ function clearPdfPages() {
   });
   pdfPageUrls = [];
   pdfToImgPages.innerHTML = '';
+  pdfImageEntries = [];
+  pdfZipDownload.hidden = true;
 }
 
 function renderPdfPage(blob, pageNumber, baseName, totalPages) {
   var url = URL.createObjectURL(blob);
+  pdfImageEntries.push({name: getPageImageFilename(baseName, pageNumber, totalPages), blob: blob});
   pdfPageUrls.push(url);
 
   var item = document.createElement('div');
@@ -272,7 +266,8 @@ function renderPdfPage(blob, pageNumber, baseName, totalPages) {
 
 function renderPdfPageToBlob(pdfDoc, pageNumber) {
   return pdfDoc.getPage(pageNumber).then(function (page) {
-    var viewport = page.getViewport({ scale: 2 });
+    var viewport = page.getViewport({ scale: pdfImageScale });
+    if (viewport.width * viewport.height > 16000000) throw new Error('페이지 해상도가 너무 큽니다. 기본 해상도로 다시 시도해주세요.');
     var canvas = document.createElement('canvas');
     canvas.width = viewport.width;
     canvas.height = viewport.height;
@@ -287,6 +282,7 @@ function renderPdfPageToBlob(pdfDoc, pageNumber) {
             reject(new Error('페이지 ' + pageNumber + ' 이미지를 만들지 못했습니다.'));
             return;
           }
+          canvas.width = 0; canvas.height = 0; page.cleanup();
           resolve(blob);
         }, 'image/png');
       });
@@ -303,12 +299,14 @@ function processPdfFile(file) {
   var baseName = getBaseFileName(file.name);
   var objectUrl = URL.createObjectURL(file);
 
+  var loadedPdf;
   return pdfjsLib.getDocument(objectUrl).promise
     .catch(function () {
       URL.revokeObjectURL(objectUrl);
       throw new Error('PDF 파일을 읽을 수 없습니다.');
     })
     .then(function (pdfDoc) {
+      loadedPdf = pdfDoc;
       URL.revokeObjectURL(objectUrl);
 
       if (!isValidPageCount(pdfDoc.numPages)) {
@@ -316,20 +314,18 @@ function processPdfFile(file) {
       }
 
       var totalPages = pdfDoc.numPages;
-      var pageNumbers = [];
-      for (var i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
+      var pageNumbers = parsePageRange(document.getElementById('pdfPageStart').value, document.getElementById('pdfPageEnd').value, totalPages);
 
       return pageNumbers.reduce(function (promise, pageNumber) {
         return promise.then(function () {
+          if (cancelPdfImages) throw new Error('작업을 중단했습니다. 생성된 페이지는 다운로드할 수 있습니다.');
           pdfToImgProgress.textContent = '처리 중... (' + pageNumber + '/' + totalPages + ')';
           return renderPdfPageToBlob(pdfDoc, pageNumber);
         }).then(function (blob) {
           renderPdfPage(blob, pageNumber, baseName, totalPages);
         });
       }, Promise.resolve());
-    });
+    }).finally(function () { if (loadedPdf) return loadedPdf.destroy(); });
 }
 
 function handlePdfFile(file) {
@@ -356,6 +352,11 @@ function handlePdfFile(file) {
   }
 
   isProcessingPdf = true;
+  cancelPdfImages = false;
+  pdfImageScale = Number(document.getElementById('pdfRenderScale').value);
+  pdfImagesCancel.hidden = false; pdfImagesCancel.disabled = false;
+  pdfZipDownload.hidden = true;
+  ['pdfPageStart', 'pdfPageEnd', 'pdfRenderScale'].forEach(function (id) { document.getElementById(id).disabled = true; });
 
   processPdfFile(file)
     .then(function () {
@@ -367,46 +368,13 @@ function handlePdfFile(file) {
     })
     .then(function () {
       isProcessingPdf = false;
+      pdfImagesCancel.hidden = true;
+      pdfZipDownload.hidden = pdfImageEntries.length === 0;
+      ['pdfPageStart', 'pdfPageEnd', 'pdfRenderScale'].forEach(function (id) { document.getElementById(id).disabled = false; });
     });
 }
 
-pdfToImgFileInput.addEventListener('change', function (e) {
-  handlePdfFile(e.target.files[0]);
-});
-
-pdfToImgUploadArea.addEventListener('click', function (e) {
-  if (e.target !== pdfToImgFileInput) {
-    pdfToImgFileInput.click();
-  }
-});
-
-var pdfToImgDragCounter = 0;
-
-pdfToImgUploadArea.addEventListener('dragenter', function (e) {
-  e.preventDefault();
-  pdfToImgDragCounter = pdfToImgDragCounter + 1;
-  pdfToImgUploadArea.classList.add('drag-over');
-});
-
-pdfToImgUploadArea.addEventListener('dragover', function (e) {
-  e.preventDefault();
-});
-
-pdfToImgUploadArea.addEventListener('dragleave', function () {
-  pdfToImgDragCounter = pdfToImgDragCounter - 1;
-  if (pdfToImgDragCounter <= 0) {
-    pdfToImgDragCounter = 0;
-    pdfToImgUploadArea.classList.remove('drag-over');
-  }
-});
-
-pdfToImgUploadArea.addEventListener('drop', function (e) {
-  e.preventDefault();
-  pdfToImgDragCounter = 0;
-  pdfToImgUploadArea.classList.remove('drag-over');
-  pdfToImgFileInput.value = '';
-  handlePdfFile(e.dataTransfer.files[0]);
-});
+wireFileUpload(pdfToImgUploadArea, pdfToImgFileInput, function (files) { handlePdfFile(files[0]); });
 
 wireShareButton(imgToPdfShareBtn, imgToPdfShareStatus, function () {
   return {

@@ -24,6 +24,7 @@
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/toolStudio.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -128,7 +129,7 @@
       <button type="button" class="upload-btn">파일 선택</button>
       <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
       <p class="upload-formats">JPG, PNG, WebP 지원 · 최대 20MB · 가로세로 각 1000px 이하</p>
-      <div id="upscaleError" class="error-message" hidden></div>
+      <div id="upscaleError" class="error-message" role="alert" hidden></div>
     </section>
 <aside class="tool-aside" aria-label="도구 안내"><span class="aside-label">MADE FOR YOUR PRIVACY</span><h2>내 사진은,<br>내 브라우저 안에.</h2><p>작은 이미지를 AI로 확대하고, 원본과 결과를 나란히 확인하세요. 파일 처리는 기기 안에서 이루어집니다.</p><ul><li>이미지 서버 전송 없음</li><li>회원가입 없이 무료</li><li>설치 없이 바로 사용</li></ul></aside>
     </div>
@@ -164,7 +165,7 @@
         서버 전송 없음 · 브라우저에서만 처리
       </p>
     </section>
-    <p id="upscaleProgress" class="pdf-progress" hidden>처리 중...</p>
+    <p role="status" id="upscaleProgress" class="pdf-progress" role="status" hidden>처리 중...</p>
 
     <section class="preview-area" id="upscalePreviewArea" hidden>
       <div class="preview-box">
@@ -235,6 +236,7 @@
   <script src="https://cdn.jsdelivr.net/npm/upscaler@1.0.0/dist/browser/umd/upscaler.min.js" integrity="sha384-QMCS4oRU0yhc/triRbY4mcIreg38XzA/8NNuZfTWWvv/km8cX/L63yLb3hh0IaA3" crossorigin="anonymous"></script>
   <script src="js/imageTools.js"></script>
   <script src="js/upscaleTools.js"></script>
+  <script src="js/uploadUtil.js"></script>
   <script src="js/shareUtil.js"></script>
   <script src="js/upscaleApp.js"></script>
 </body>

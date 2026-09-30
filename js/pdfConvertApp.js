@@ -13,6 +13,10 @@ var pdfConvertShareStatus = document.getElementById('pdfConvertShareStatus');
 var selectedPdfConvertFile = null;
 var lastPdfConvertUrl = null;
 var isConvertingPdf = false;
+var cancelPdfDocument = false;
+var pdfDocumentCancel = document.getElementById('pdfDocumentCancel');
+pdfDocumentCancel.addEventListener('click', function () { cancelPdfDocument = true; pdfDocumentCancel.disabled = true; });
+function checkDocumentCancellation() { if (cancelPdfDocument) throw new Error('문서 변환을 중단했습니다.'); }
 
 function showPdfConvertError(message) {
   pdfConvertError.textContent = message;
@@ -63,43 +67,7 @@ function handlePdfConvertFile(file) {
   pdfConvertControls.hidden = false;
 }
 
-pdfConvertFileInput.addEventListener('change', function (e) {
-  handlePdfConvertFile(e.target.files[0]);
-});
-
-pdfConvertUploadArea.addEventListener('click', function (e) {
-  if (e.target !== pdfConvertFileInput) {
-    pdfConvertFileInput.click();
-  }
-});
-
-var pdfConvertDragCounter = 0;
-
-pdfConvertUploadArea.addEventListener('dragenter', function (e) {
-  e.preventDefault();
-  pdfConvertDragCounter = pdfConvertDragCounter + 1;
-  pdfConvertUploadArea.classList.add('drag-over');
-});
-
-pdfConvertUploadArea.addEventListener('dragover', function (e) {
-  e.preventDefault();
-});
-
-pdfConvertUploadArea.addEventListener('dragleave', function () {
-  pdfConvertDragCounter = pdfConvertDragCounter - 1;
-  if (pdfConvertDragCounter <= 0) {
-    pdfConvertDragCounter = 0;
-    pdfConvertUploadArea.classList.remove('drag-over');
-  }
-});
-
-pdfConvertUploadArea.addEventListener('drop', function (e) {
-  e.preventDefault();
-  pdfConvertDragCounter = 0;
-  pdfConvertUploadArea.classList.remove('drag-over');
-  pdfConvertFileInput.value = '';
-  handlePdfConvertFile(e.dataTransfer.files[0]);
-});
+wireFileUpload(pdfConvertUploadArea, pdfConvertFileInput, function (files) { handlePdfConvertFile(files[0]); });
 
 function renderPdfConvertPageToImage(pdfDoc, pageNumber, renderScale) {
   return pdfDoc.getPage(pageNumber).then(function (page) {
@@ -131,6 +99,7 @@ function convertPdfToPptx(pdfDoc, totalPages) {
 
   return pageNumbers.reduce(function (promise, pageNumber) {
     return promise.then(function () {
+      checkDocumentCancellation();
       pdfConvertProgress.textContent = '처리 중... (' + pageNumber + '/' + totalPages + ')';
       return renderPdfConvertPageToImage(pdfDoc, pageNumber, 2);
     }).then(function (page) {
@@ -166,6 +135,7 @@ function extractPdfConvertPagesLines(pdfDoc, totalPages) {
 
   return pageNumbers.reduce(function (promise, pageNumber) {
     return promise.then(function () {
+      checkDocumentCancellation();
       pdfConvertProgress.textContent = '텍스트를 읽는 중... (' + pageNumber + '/' + totalPages + ')';
       return extractPdfConvertPageLines(pdfDoc, pageNumber);
     }).then(function (lines) {
@@ -260,6 +230,8 @@ pdfConvertBtn.addEventListener('click', function () {
   }
 
   isConvertingPdf = true;
+  cancelPdfDocument = false;
+  pdfDocumentCancel.hidden = false; pdfDocumentCancel.disabled = false;
   pdfConvertBtn.disabled = true;
   pdfConvertBtn.textContent = '변환 중...';
   pdfConvertProgress.hidden = false;
@@ -269,12 +241,15 @@ pdfConvertBtn.addEventListener('click', function () {
   var baseName = getBaseFileName(selectedPdfConvertFile.name);
   var objectUrl = URL.createObjectURL(selectedPdfConvertFile);
 
+  var loadedDocument;
   pdfjsLib.getDocument(objectUrl).promise
     .catch(function () {
       URL.revokeObjectURL(objectUrl);
       throw new Error('PDF 파일을 읽을 수 없습니다.');
     })
     .then(function (pdfDoc) {
+      loadedDocument = pdfDoc;
+      checkDocumentCancellation();
       URL.revokeObjectURL(objectUrl);
 
       if (!isValidPageCount(pdfDoc.numPages)) {
@@ -287,6 +262,7 @@ pdfConvertBtn.addEventListener('click', function () {
       return runPdfConversion(pdfDoc, pdfDoc.numPages, format);
     })
     .then(function (blob) {
+      checkDocumentCancellation();
       if (lastPdfConvertUrl) {
         URL.revokeObjectURL(lastPdfConvertUrl);
       }
@@ -301,7 +277,10 @@ pdfConvertBtn.addEventListener('click', function () {
       showPdfConvertError(err.message);
     })
     .then(function () {
+      if (loadedDocument) loadedDocument.destroy();
+      URL.revokeObjectURL(objectUrl);
       isConvertingPdf = false;
+      pdfDocumentCancel.hidden = true;
       pdfConvertBtn.disabled = false;
       pdfConvertBtn.textContent = '변환하기';
       pdfConvertProgress.hidden = true;

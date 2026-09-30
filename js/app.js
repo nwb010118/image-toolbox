@@ -105,6 +105,8 @@ function updatePngSizeHint() {
 }
 
 function handleFile(file) {
+  if (compressBtn.disabled) { showError('처리 중에는 파일을 바꿀 수 없습니다. 완료 후 다시 선택해주세요.'); return; }
+  if (originalPreview.src && originalPreview.src.indexOf('blob:') === 0) URL.revokeObjectURL(originalPreview.src);
   clearError();
   compressionSavings.hidden = true;
   compressionSavings.textContent = '';
@@ -180,44 +182,7 @@ originalPreview.addEventListener('error', function () {
   showError('이미지를 불러올 수 없습니다. 다른 파일을 선택해주세요.');
 });
 
-fileInput.addEventListener('change', function (e) {
-  handleFile(e.target.files[0]);
-});
-
-uploadArea.addEventListener('click', function (e) {
-  if (e.target !== fileInput) {
-    fileInput.click();
-  }
-});
-
-var dragCounter = 0;
-
-uploadArea.addEventListener('dragenter', function (e) {
-  e.preventDefault();
-  dragCounter = dragCounter + 1;
-  uploadArea.classList.add('drag-over');
-});
-
-uploadArea.addEventListener('dragover', function (e) {
-  e.preventDefault();
-});
-
-uploadArea.addEventListener('dragleave', function () {
-  dragCounter = dragCounter - 1;
-  if (dragCounter <= 0) {
-    dragCounter = 0;
-    uploadArea.classList.remove('drag-over');
-  }
-});
-
-uploadArea.addEventListener('drop', function (e) {
-  e.preventDefault();
-  dragCounter = 0;
-  uploadArea.classList.remove('drag-over');
-  var file = e.dataTransfer.files[0];
-  fileInput.value = '';
-  handleFile(file);
-});
+wireFileUpload(uploadArea, fileInput, function (files) { handleFile(files[0]); });
 
 window.addEventListener('paste', function (e) {
   var items = e.clipboardData && e.clipboardData.items;
@@ -272,7 +237,8 @@ compressBtn.addEventListener('click', function () {
 
   var quality = Number(qualitySlider.value) / 100;
 
-  processImage(selectedFile, {
+  var runFile = selectedFile;
+  processImage(runFile, {
     quality: quality,
     targetWidth: widthInput,
     targetHeight: heightInput,
@@ -285,10 +251,10 @@ compressBtn.addEventListener('click', function () {
       lastResultUrl = result.url;
       compressedPreview.src = result.url;
       compressedSize.textContent = '결과 크기: ' + formatBytes(result.blob.size) + ' (' + result.width + '×' + result.height + ')';
-      compressionSavings.textContent = describeSizeChange(selectedFile.size, result.blob.size);
-      compressionSavings.classList.toggle('size-increased', result.blob.size > selectedFile.size);
+      compressionSavings.textContent = describeSizeChange(runFile.size, result.blob.size);
+      compressionSavings.classList.toggle('size-increased', result.blob.size > runFile.size);
       compressionSavings.hidden = false;
-      compressWarning.hidden = result.blob.size <= selectedFile.size;
+      compressWarning.hidden = result.blob.size <= runFile.size;
       downloadBtn.href = result.url;
       downloadBtn.download = 'processed-image.' + getExtensionForMimeType(result.blob.type);
       downloadBtn.hidden = false;

@@ -1,0 +1,62 @@
+/* Mint studio: a visual identity for the three interactive tools. */
+.studio-page { background: radial-gradient(ellipse at 90% 5%, var(--color-accent-soft), transparent 48%), var(--color-bg); }
+.studio-page .container { padding-top: 28px; }
+.studio-hero { display: grid; grid-template-columns: minmax(0, 1fr) 200px; align-items: center; gap: 24px; margin-bottom: 24px; }
+.studio-hero h1 { font-size: clamp(28px, 3vw, 38px); line-height: 1.22; margin: 10px 0 14px; }
+.studio-hero h1 span { color: var(--color-accent); }
+.studio-tool-label { font-size: 14px; font-weight: 700; margin: 0 0 6px; color: var(--color-text); }
+.studio-hero .subtitle { font-size: 14px; margin: 0; }
+.studio-art { display: block; width: 100%; height: auto; }
+.studio-page .site-header { border-top: 3px solid var(--color-accent); }
+.studio-page .upload-area { border-radius: 20px; background: var(--color-surface); box-shadow: 0 10px 30px #093e2e08; border-color: var(--color-border-strong); }
+.studio-page .upload-icon { box-sizing: content-box; padding: 14px; border-radius: 18px; background: var(--color-accent-soft); color: var(--color-accent); }
+.studio-page .upload-btn { border-radius: 12px; box-shadow: 0 5px 12px #093e2e18; }
+.studio-page .upload-btn:hover { box-shadow: 0 7px 18px #093e2e28; }
+.studio-page .compression-example, .studio-page .tool-aside { border-radius: 20px; border-top: 4px solid var(--color-accent); }
+.size-bars { display: grid; gap: 7px; margin: 14px 0 0; }
+.size-bars div { display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 8px; }
+.size-bars span { font-size: 10px; color: var(--color-text-secondary); }
+.size-bars i { display: block; height: 7px; border-radius: 8px; background: var(--color-border-strong); }
+.size-bars div:last-child i { width: 6.4%; min-width: 5px; background: var(--color-accent); }
+.studio-page .privacy-strip { display: inline-block; border: 1px solid var(--color-border); border-radius: 24px; background: var(--color-surface); padding: 6px 14px; }
+.studio-page .info-section { border-radius: 16px; }
+.studio-page .info-section h2 { display: flex; align-items: center; gap: 10px; }
+.studio-page .info-section h2::before { content: ''; width: 4px; height: 20px; border-radius: 3px; background: var(--color-accent); flex: none; }
+.format-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.info-section .format-card { margin: 0; padding: 20px; border-radius: 14px; background: var(--color-chip-blue-bg); font-size: 13px; line-height: 1.8; }
+.format-card:nth-child(2) { background: var(--color-chip-orange-bg); }
+.format-card:nth-child(3) { background: var(--color-accent-soft); }
+.format-card strong { display: block; font-size: 19px; margin-bottom: 8px; }
+.format-symbol { display: block; font-size: 28px; color: var(--color-text); margin-bottom: 8px; }
+.studio-pdf .pdf-section { border-radius: 20px; border-top: 4px solid var(--color-chip-purple-fg); }
+.studio-pdf .pdf-section:nth-of-type(2) { border-top-color: var(--color-chip-blue-fg); }
+.studio-pdf .pdf-section:nth-of-type(3) { border-top-color: var(--color-chip-orange-fg); }
+.studio-upscale .tool-aside { background: var(--color-chip-purple-bg); border-top-color: var(--color-chip-purple-fg); }
+@media (max-width: 700px) {
+ .studio-hero { grid-template-columns: minmax(0, 1fr) 130px; gap: 8px; }
+ .studio-hero h1 { font-size: 30px; }
+ .studio-hero .subtitle { font-size: 13px; }
+ .format-grid { grid-template-columns: 1fr; }
+ .studio-page .tool-intro-grid .upload-area { min-height: 240px; }
+}
+@media (max-width: 420px) {
+ .studio-hero { grid-template-columns: 1fr; position: relative; }
+ .studio-art { position: absolute; width: 94px; right: -4px; top: -10px; }
+ .studio-hero .eyebrow { padding-right: 92px; min-height: 40px; }
+ .studio-hero h1 { font-size: 32px; }
+}
+@media (prefers-color-scheme: dark) {
+ .studio-page .upload-area, .studio-page .upload-btn { box-shadow: none; }
+}
+
+.task-picker { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 22px; }
+.task-picker a { padding: 10px 16px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface); text-decoration: none; font-size: 14px; font-weight: 600; }
+.task-picker a[aria-current] { background: var(--color-accent); color: var(--color-on-accent); }
+.conversion-notice { padding: 16px 20px; border-radius: 12px; background: var(--color-warning-bg); color: var(--color-text); font-size: 14px; margin-bottom: 20px; }
+.conversion-notice p { margin-bottom: 0; }
+.pdf-options { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; }
+.pdf-options label { display: flex; flex-direction: column; gap: 5px; font-size: 14px; }
+.pdf-options input { width: 150px; min-height: 44px; border: 1px solid var(--color-border); border-radius: 7px; padding: 8px; }
+.file-list li { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 10px 0; overflow-wrap: anywhere; }
+.file-list button { padding: 5px 12px; font-size: 13px; }
+.studio-pdf .studio-art { color: var(--color-chip-purple-fg); }

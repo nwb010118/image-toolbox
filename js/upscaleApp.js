@@ -151,43 +151,7 @@ function handleUpscaleFile(file) {
     });
 }
 
-upscaleFileInput.addEventListener('change', function (e) {
-  handleUpscaleFile(e.target.files[0]);
-});
-
-upscaleUploadArea.addEventListener('click', function (e) {
-  if (e.target !== upscaleFileInput) {
-    upscaleFileInput.click();
-  }
-});
-
-var upscaleDragCounter = 0;
-
-upscaleUploadArea.addEventListener('dragenter', function (e) {
-  e.preventDefault();
-  upscaleDragCounter = upscaleDragCounter + 1;
-  upscaleUploadArea.classList.add('drag-over');
-});
-
-upscaleUploadArea.addEventListener('dragover', function (e) {
-  e.preventDefault();
-});
-
-upscaleUploadArea.addEventListener('dragleave', function () {
-  upscaleDragCounter = upscaleDragCounter - 1;
-  if (upscaleDragCounter <= 0) {
-    upscaleDragCounter = 0;
-    upscaleUploadArea.classList.remove('drag-over');
-  }
-});
-
-upscaleUploadArea.addEventListener('drop', function (e) {
-  e.preventDefault();
-  upscaleDragCounter = 0;
-  upscaleUploadArea.classList.remove('drag-over');
-  upscaleFileInput.value = '';
-  handleUpscaleFile(e.dataTransfer.files[0]);
-});
+wireFileUpload(upscaleUploadArea, upscaleFileInput, function (files) { handleUpscaleFile(files[0]); });
 
 window.addEventListener('paste', function (e) {
   var items = e.clipboardData && e.clipboardData.items;
