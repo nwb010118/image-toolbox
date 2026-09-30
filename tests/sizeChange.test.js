@@ -11,3 +11,15 @@ for (const [name, original, result, expected] of cases) {
   assert.strictEqual(describeSizeChange(original, result), expected);
   console.log('PASS: size change ' + name);
 }
+
+const enCases = [
+  ['reduction (en)', 10240, 2048, 'en', 'About 80.0% smaller · 8.0 KB saved'],
+  ['increase (en)', 1024, 2048, 'en', 'About 100.0% larger · 1.0 KB added'],
+  ['unchanged (en)', 1024, 1024, 'en', 'No change in size'],
+  ['zero input (en)', 0, 1024, 'en', 'Original size unavailable for comparison.'],
+  ['tiny reduction (en)', 100000, 99999, 'en', 'Less than 0.1% smaller · 1 B saved']
+];
+for (const [name, original, result, lang, expected] of enCases) {
+  assert.strictEqual(describeSizeChange(original, result, lang), expected);
+  console.log('PASS: size change ' + name);
+}
