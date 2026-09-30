@@ -922,3 +922,68 @@ test('pdf-merge-multiple-files.html new content covers filename ordering tip, pa
   const common = thisSents.filter(function (s) { return otherSents.includes(s); });
   assert.strictEqual(common.length, 0, 'pdf-merge-multiple-files.html shares a verbatim sentence with pdf-file-size-reduction.html: ' + JSON.stringify(common));
 });
+
+const EN_PAGES = [
+  { ko: 'index.html', en: 'en/index.html', koUrl: 'https://nwb010118.github.io/image-toolbox/', enUrl: 'https://nwb010118.github.io/image-toolbox/en/index.html' },
+  { ko: 'upscale.html', en: 'en/upscale.html', koUrl: 'https://nwb010118.github.io/image-toolbox/upscale.html', enUrl: 'https://nwb010118.github.io/image-toolbox/en/upscale.html' },
+  { ko: 'pdf.html', en: 'en/pdf.html', koUrl: 'https://nwb010118.github.io/image-toolbox/pdf.html', enUrl: 'https://nwb010118.github.io/image-toolbox/en/pdf.html' }
+];
+
+EN_PAGES.forEach(function (pair) {
+  test(pair.en + ' exists and has required <head> tags', function () {
+    const html = readRepoFile(pair.en);
+    assert.ok(/<title>[^<]+<\/title>/.test(html), 'missing <title>');
+    assert.ok(html.includes('rel="canonical"'), 'missing canonical link');
+    assert.ok(html.includes('property="og:title"'), 'missing og:title');
+    assert.ok(html.includes('lang="en"'), 'missing lang="en" on <html>');
+  });
+
+  test(pair.en + ' has valid SoftwareApplication and FAQPage JSON-LD', function () {
+    const html = readRepoFile(pair.en);
+    const blocks = extractJsonLdBlocks(html);
+    const types = blocks.map(function (b) { return b['@type']; });
+    assert.ok(types.includes('SoftwareApplication'), 'missing SoftwareApplication block');
+    assert.ok(types.includes('FAQPage'), 'missing FAQPage block');
+  });
+
+  test(pair.en + ' FAQPage entry count matches its visible <details> count', function () {
+    const html = readRepoFile(pair.en);
+    const blocks = extractJsonLdBlocks(html);
+    const faqBlock = blocks.filter(function (b) { return b['@type'] === 'FAQPage'; })[0];
+    const detailsCount = (html.match(/<details>/g) || []).length;
+    assert.strictEqual(faqBlock.mainEntity.length, detailsCount, 'FAQPage mainEntity count does not match visible <details> count');
+  });
+
+  test(pair.ko + ' FAQPage entry count still matches its visible <details> count', function () {
+    const html = readRepoFile(pair.ko);
+    const blocks = extractJsonLdBlocks(html);
+    const faqBlock = blocks.filter(function (b) { return b['@type'] === 'FAQPage'; })[0];
+    const detailsCount = (html.match(/<details>/g) || []).length;
+    assert.strictEqual(faqBlock.mainEntity.length, detailsCount, 'FAQPage mainEntity count does not match visible <details> count');
+  });
+
+  test(pair.en + ' <-> ' + pair.ko + ' hreflang cross-references are correct', function () {
+    const enHtml = readRepoFile(pair.en);
+    const koHtml = readRepoFile(pair.ko);
+    assert.ok(enHtml.includes('hreflang="ko" href="' + pair.koUrl + '"'), pair.en + ' missing hreflang=ko pointing to ' + pair.koUrl);
+    assert.ok(enHtml.includes('hreflang="en" href="' + pair.enUrl + '"'), pair.en + ' missing hreflang=en pointing to itself');
+    assert.ok(enHtml.includes('hreflang="x-default" href="' + pair.koUrl + '"'), pair.en + ' missing hreflang=x-default pointing to ' + pair.koUrl);
+    assert.ok(koHtml.includes('hreflang="ko" href="' + pair.koUrl + '"'), pair.ko + ' missing hreflang=ko pointing to itself');
+    assert.ok(koHtml.includes('hreflang="en" href="' + pair.enUrl + '"'), pair.ko + ' missing hreflang=en pointing to ' + pair.enUrl);
+    assert.ok(koHtml.includes('hreflang="x-default" href="' + pair.koUrl + '"'), pair.ko + ' missing hreflang=x-default');
+  });
+
+  test(pair.ko + ' nav links to ' + pair.en + ', and ' + pair.en + ' nav links back to ' + pair.ko, function () {
+    const koHtml = readRepoFile(pair.ko);
+    const enHtml = readRepoFile(pair.en);
+    assert.ok(koHtml.includes('href="' + pair.en + '"'), pair.ko + ' missing nav link to ' + pair.en);
+    assert.ok(enHtml.includes('href="../' + pair.ko + '"'), pair.en + ' missing nav link back to ../' + pair.ko);
+  });
+});
+
+test('sitemap.xml includes the 3 English pages', function () {
+  const xml = readRepoFile('sitemap.xml');
+  ['en/index.html', 'en/upscale.html', 'en/pdf.html'].forEach(function (page) {
+    assert.ok(xml.includes('/image-toolbox/' + page), 'sitemap.xml missing ' + page);
+  });
+});
