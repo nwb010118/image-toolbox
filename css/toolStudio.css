@@ -60,3 +60,5 @@
 .file-list li { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 10px 0; overflow-wrap: anywhere; }
 .file-list button { padding: 5px 12px; font-size: 13px; }
 .studio-pdf .studio-art { color: var(--color-chip-purple-fg); }
+
+.batch-note { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 16px; }

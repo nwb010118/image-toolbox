@@ -125,7 +125,7 @@
     <nav class="task-picker" aria-label="작업 바로가기"><a href="#uploadArea" aria-current="true">사진 용량 줄이기</a><a href="pdf.html#images-to-pdf">사진을 PDF로</a><a href="upscale.html">작은 이미지 확대</a></nav>
     <div class="tool-intro-grid">
 <section class="upload-area" id="uploadArea">
-      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
+      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp" multiple>
       <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12"></path>
         <path d="M7 8l5-5 5 5"></path>
@@ -134,7 +134,7 @@
       <h2 class="upload-heading">이미지를 여기에 놓으세요</h2>
       <button type="button" class="upload-btn">파일 선택</button>
       <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
-      <p class="upload-formats">JPG, PNG, WebP · 한 번에 1장 · 최대 20MB</p>
+      <p class="upload-formats">JPG, PNG, WebP · 한 번에 최대 10장 · 파일당 최대 20MB</p>
       <div id="errorMessage" class="error-message" role="alert" hidden></div>
     </section>
 <aside class="compression-example" aria-labelledby="example-title">
@@ -154,7 +154,7 @@
       <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
       <input type="range" id="qualitySlider" min="10" max="100" value="80">
 
-      <div class="resize-fields">
+      <div class="resize-fields" id="resizeFields">
         <label class="resize-label">가로(px)
           <input type="number" id="resizeWidth" min="1" max="8000">
         </label>
@@ -184,6 +184,15 @@
         </svg>
         서버 전송 없음 · 브라우저에서만 처리
       </p>
+    </section>
+
+    <section class="pdf-section batch-area" id="batchArea" aria-label="여러 장 압축 결과" hidden>
+      <h2>여러 장 압축</h2>
+      <p id="batchNote" class="batch-note">여러 장 모드: 품질과 출력 형식이 모든 이미지에 똑같이 적용되고, 크기는 원본 그대로 유지됩니다.</p>
+      <ul id="batchList" class="file-list"></ul>
+      <p id="batchProgress" class="pdf-progress" role="status" hidden></p>
+      <p id="batchSummary" class="compression-savings" role="status" hidden></p>
+      <button type="button" id="batchZipBtn" class="btn" hidden>결과를 ZIP으로 받기</button>
     </section>
 
     <section class="preview-area" id="previewArea" hidden>
@@ -262,6 +271,8 @@
   <script src="js/imageTools.js"></script>
   <script src="js/uploadUtil.js"></script>
   <script src="js/shareUtil.js"></script>
+  <script src="js/workflowTools.js"></script>
+  <script src="js/batchTools.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

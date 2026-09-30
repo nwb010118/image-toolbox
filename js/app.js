@@ -1,4 +1,6 @@
 var selectedFile = null;
+var batchFiles = [];
+var batchResults = [];
 
 var uploadArea = document.getElementById('uploadArea');
 var fileInput = document.getElementById('fileInput');
@@ -24,6 +26,13 @@ var shareStatus = document.getElementById('shareStatus');
 var resizeWidth = document.getElementById('resizeWidth');
 var resizeHeight = document.getElementById('resizeHeight');
 var maintainAspectRatio = document.getElementById('maintainAspectRatio');
+var resizeFields = document.getElementById('resizeFields');
+var batchArea = document.getElementById('batchArea');
+var batchNote = document.getElementById('batchNote');
+var batchList = document.getElementById('batchList');
+var batchProgress = document.getElementById('batchProgress');
+var batchSummary = document.getElementById('batchSummary');
+var batchZipBtn = document.getElementById('batchZipBtn');
 var formatSelect = document.getElementById('formatSelect');
 
 var originalImageWidth = 0;
@@ -99,11 +108,12 @@ function clearError() {
 }
 
 function updatePngSizeHint() {
-  if (!selectedFile) {
+  var probe = selectedFile || batchFiles[0];
+  if (!probe) {
     pngSizeHint.hidden = true;
     return;
   }
-  var outputMimeType = resolveOutputMimeType(selectedFile.type, formatSelect.value);
+  var outputMimeType = resolveOutputMimeType(probe.type, formatSelect.value);
   pngSizeHint.hidden = outputMimeType !== 'image/png';
 }
 
@@ -111,6 +121,7 @@ function handleFile(file) {
   if (compressBtn.disabled) { showError(t('busyFileChange')); return; }
   if (originalPreview.src && originalPreview.src.indexOf('blob:') === 0) URL.revokeObjectURL(originalPreview.src);
   clearError();
+  resetBatch();
   compressionSavings.hidden = true;
   compressionSavings.textContent = '';
   uploadArea.classList.remove('has-file');
@@ -158,6 +169,155 @@ function handleFile(file) {
   updatePngSizeHint();
 }
 
+function resetBatch() {
+  batchResults.forEach(function (r) { URL.revokeObjectURL(r.url); });
+  batchResults = [];
+  batchFiles = [];
+  batchList.innerHTML = '';
+  batchArea.hidden = true;
+  batchProgress.hidden = true;
+  batchProgress.textContent = '';
+  batchSummary.hidden = true;
+  batchSummary.textContent = '';
+  batchZipBtn.hidden = true;
+  resizeFields.hidden = false;
+}
+
+function handleFiles(files) {
+  var list = Array.prototype.slice.call(files || []);
+  if (list.length <= 1) {
+    handleFile(list[0]);
+    return;
+  }
+  handleBatch(list);
+}
+
+function handleBatch(list) {
+  if (compressBtn.disabled) { showError(t('busyFileChange')); return; }
+  handleFile(null);
+
+  var accepted = [];
+  var skipped = 0;
+  list.forEach(function (file) {
+    if (isSupportedImageType(file.type) && file.size <= MAX_FILE_SIZE && accepted.length < MAX_BATCH_FILES) {
+      accepted.push(file);
+    } else {
+      skipped++;
+    }
+  });
+
+  if (accepted.length === 0) {
+    showError(t('batchNoValidFiles'));
+    return;
+  }
+  if (skipped > 0) {
+    showError(t('batchSkipped', { count: skipped, max: MAX_BATCH_FILES }));
+  }
+
+  batchFiles = accepted;
+  uploadHeading.textContent = t('batchSelected', { n: accepted.length });
+  uploadHeading.title = '';
+  uploadButton.textContent = t('chooseAnotherImage');
+  uploadArea.classList.add('has-file');
+  resizeFields.hidden = true;
+  batchArea.hidden = false;
+  accepted.forEach(function (file) {
+    var li = document.createElement('li');
+    li.textContent = file.name + ' (' + formatBytes(file.size) + ')';
+    batchList.appendChild(li);
+  });
+  updatePngSizeHint();
+  controls.hidden = false;
+  controls.focus({ preventScroll: true });
+  controls.scrollIntoView({ behavior: 'instant', block: 'start' });
+}
+
+function addBatchRow(file, result, name, error) {
+  var li = document.createElement('li');
+  var label = document.createElement('span');
+  if (error) {
+    label.textContent = file.name + ' — ' + t('batchItemFailed', { reason: error.message });
+    li.appendChild(label);
+  } else {
+    label.textContent = name + ' — ' + formatBytes(file.size) + ' → ' + formatBytes(result.blob.size) + ' · ' + describeSizeChange(file.size, result.blob.size, LANG);
+    var link = document.createElement('a');
+    link.className = 'btn btn-outline';
+    link.href = result.url;
+    link.download = name;
+    link.textContent = t('batchDownload');
+    li.appendChild(label);
+    li.appendChild(document.createTextNode(' '));
+    li.appendChild(link);
+  }
+  batchList.appendChild(li);
+}
+
+function runBatch() {
+  clearError();
+  batchResults.forEach(function (r) { URL.revokeObjectURL(r.url); });
+  batchResults = [];
+  batchList.innerHTML = '';
+  batchZipBtn.hidden = true;
+  batchSummary.hidden = true;
+
+  var files = batchFiles.slice();
+  var quality = Number(qualitySlider.value) / 100;
+  var usedNames = {};
+  var totalBefore = 0;
+  var totalAfter = 0;
+
+  compressBtn.disabled = true;
+  compressBtn.textContent = t('processingEllipsis');
+  batchProgress.hidden = false;
+
+  files.reduce(function (promise, file, index) {
+    return promise.then(function () {
+      batchProgress.textContent = t('batchProgress', { current: index + 1, total: files.length });
+      return processImage(file, {
+        quality: quality,
+        targetWidth: null,
+        targetHeight: null,
+        outputMimeType: resolveOutputMimeType(file.type, formatSelect.value)
+      }).then(function (result) {
+        var name = getBatchOutputName(file.name, getExtensionForMimeType(result.blob.type), usedNames);
+        batchResults.push({ name: name, blob: result.blob, url: result.url });
+        totalBefore += file.size;
+        totalAfter += result.blob.size;
+        addBatchRow(file, result, name, null);
+      }, function (err) {
+        addBatchRow(file, null, null, err);
+      });
+    });
+  }, Promise.resolve())
+    .then(function () {
+      batchProgress.hidden = true;
+      batchSummary.textContent = batchResults.length > 0
+        ? t('batchSummary', { done: batchResults.length, total: files.length, change: describeSizeChange(totalBefore, totalAfter, LANG) })
+        : t('batchSummaryNone', { done: 0, total: files.length });
+      batchSummary.hidden = false;
+      batchZipBtn.hidden = batchResults.length === 0;
+    })
+    .then(function () {
+      compressBtn.disabled = false;
+      compressBtn.textContent = t('applyButton');
+    });
+}
+
+batchZipBtn.addEventListener('click', function () {
+  createStoredZip(batchResults.map(function (r) { return { name: r.name, blob: r.blob }; }))
+    .then(function (zip) {
+      var url = URL.createObjectURL(zip);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'compressed-images.zip';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    })
+    .catch(function (err) { showError(err.message); });
+});
+
 originalPreview.addEventListener('load', function () {
   if (!selectedFile) {
     return;
@@ -185,7 +345,7 @@ originalPreview.addEventListener('error', function () {
   showError(t('imageLoadFailedChooseAnother'));
 });
 
-wireFileUpload(uploadArea, fileInput, function (files) { handleFile(files[0]); });
+wireFileUpload(uploadArea, fileInput, handleFiles);
 
 window.addEventListener('paste', function (e) {
   var items = e.clipboardData && e.clipboardData.items;
@@ -209,6 +369,10 @@ qualitySlider.addEventListener('input', function () {
 });
 
 compressBtn.addEventListener('click', function () {
+  if (batchFiles.length > 0) {
+    runBatch();
+    return;
+  }
   if (!selectedFile) {
     return;
   }
