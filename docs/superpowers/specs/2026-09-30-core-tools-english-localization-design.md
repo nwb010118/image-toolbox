@@ -49,9 +49,21 @@ Product Hunt 런칭을 준비 중인데, 사이트 전체가 `lang="ko"`이고 �
 - 각 페이지의 `canonical`은 **자기 자신**을 가리킨다(서로를 중복 콘텐츠로 취급하지 않음 — hreflang은 "번역본" 관계를 알려줄 뿐 정규화 대상이 아니다).
 - `sitemap.xml`에 `en/index.html`, `en/upscale.html`, `en/pdf.html` 3개 URL을 추가한다(lastmod는 신규 커밋일 기준).
 
+## JS 동적 문자열 다국어 처리 (설계 확정 후 발견되어 추가된 범위)
+
+계획 작성 중 `js/app.js`, `js/upscaleApp.js`, `js/pdfApp.js`, `js/pdfConvertApp.js`에 에러 메시지, 진행 상태, 버튼 라벨, 공유 다이얼로그 문구 등 **동적으로 렌더링되는 UI 텍스트가 전부 한국어로 하드코딩**되어 있음을 발견했다(총 약 110곳). 특히 `app.js`는 페이지 로드 시 `uploadHeading.textContent`/`uploadButton.textContent`를 한국어로 다시 덮어쓰기까지 한다. "JS는 전혀 수정하지 않는다"는 원래 원칙대로면 영어 페이지도 실제 사용 중(에러, 진행 상태, 결과, 공유)에는 한국어가 그대로 노출되어 번역의 의미가 없어진다.
+
+**해결책**: 기존 JS를 언어별 문자열 테이블로 개조한다(신규 `en/` 전용 JS 파일을 따로 만들지 않음 — 로직 중복에 따른 드리프트 위험을 피하기 위해 사용자가 이 방식을 선택함).
+
+- 신규 `js/strings.js` 추가: `document.documentElement.lang`이 `"en"`이면 `LANG = 'en'`, 아니면 `LANG = 'ko'`로 판정하고, `t(key, params)` 헬퍼로 `{ko: '...', en: '...'}` 형태의 문자열 테이블을 조회한다. `{placeholder}` 형태의 간단한 치환만 지원한다(복잡한 포맷팅 불필요). 기존 `imageTools.js`의 IIFE export 패턴(`exports.xxx = ...`, `exports`는 브라우저에서 `window`)을 그대로 따라 `LANG`/`t`를 전역으로 노출한다.
+- `js/app.js`, `js/upscaleApp.js`, `js/pdfApp.js`, `js/pdfConvertApp.js`의 하드코딩된 한국어 리터럴을 전부 `t('key', params)` 호출로 교체한다. 공유 버튼의 `url` 필드(현재 한국어 페이지 URL로 고정됨)는 `LANG`에 따라 한국어/영어 URL을 분기한다.
+- `js/imageTools.js`의 `describeSizeChange(originalBytes, resultBytes)`는 세 번째 인자 `lang`(기본값 `'ko'`)을 받도록 확장한다. 이 함수는 Node 테스트(`tests/sizeChange.test.js`)에서 `document` 없이 직접 `require`되므로, `strings.js`의 전역 `t()`에 의존하지 않고 함수 내부에 자체 ko/en 텍스트를 갖는다. `lang` 인자를 생략하면 기존 테스트가 그대로 통과하도록 기본값을 `'ko'`로 유지하고, 기존 5개 테스트 케이스의 한국어 출력 문자열은 한 글자도 바꾸지 않는다.
+- `js/strings.js`는 한국어 3페이지(`index.html`, `upscale.html`, `pdf.html`)의 `<script>` 목록에도 추가해야 한다(가장 먼저 로드) — 이 리팩터링 이후 한국어 페이지의 실제 동작/노출 텍스트는 100% 동일해야 한다(회귀 없음, `t()`가 반환하는 ko 텍스트가 기존 하드코딩 문자열과 정확히 일치하므로).
+- 이 작업은 영어 페이지 생성보다 먼저 끝나야 한다 — 영어 페이지는 이 리팩터링이 끝난 JS를 그대로 재사용한다.
+
 ## 에러 처리
 
-해당 없음 — 순수 정적 콘텐츠 페이지이고 JS 로직은 기존 그대로이므로 새로운 실패 지점이 없다.
+해당 없음 — 순수 정적 콘텐츠 페이지이고 JS 로직 변경은 문자열 치환뿐이므로 새로운 실패 지점이 없다. 다만 리팩터링 과정에서 한국어 페이지의 기존 동작을 깨뜨리지 않는 것이 가장 큰 리스크이므로, JS 리팩터링 직후 한국어 3페이지를 브라우저에서 라이브로 재검증하는 단계를 구현 계획에 반드시 포함한다.
 
 ## 테스트 방침
 
@@ -62,7 +74,8 @@ Product Hunt 런칭을 준비 중인데, 사이트 전체가 `lang="ko"`이고 �
   - `sitemap.xml`에 3개 URL이 반영됐는지
   - 사이트 전체 상대링크(href/src) 깨짐 검사에 `en/` 경로도 포함되는지(기존 스캔 로직이 하위 디렉터리를 다루는지 확인, 안 되면 확장)
 - 기존 223개 테스트가 회귀 없이 통과하는지 확인한다.
-- 수동 확인: 로컬 서버로 `en/index.html`/`en/upscale.html`/`en/pdf.html` 각각에서 실제로 파일 업로드→처리까지 라이브 테스트(JS가 한국어판과 동일하게 동작하는지, id 불일치로 인한 미동작이 없는지가 가장 위험한 실패 지점).
+- `tests/sizeChange.test.js`의 기존 5개 케이스가 `describeSizeChange` 시그니처 변경 후에도 수정 없이 그대로 통과하는지 확인(기본값 `lang='ko'`로 하위 호환).
+- 수동 확인: 로컬 서버로 (a) 한국어 `index.html`/`upscale.html`/`pdf.html` 3개를 리팩터링 직후 라이브로 재검증(에러 메시지, 진행 상태, 공유 문구 등 기존과 동일한 한국어가 그대로 나오는지), (b) `en/index.html`/`en/upscale.html`/`en/pdf.html` 각각에서 실제로 파일 업로드→처리까지 라이브 테스트(에러/진행상태/결과/공유 문구가 전부 영어로 나오는지, id 불일치로 인한 미동작이 없는지가 가장 위험한 실패 지점).
 
 ## 성공 기준
 
