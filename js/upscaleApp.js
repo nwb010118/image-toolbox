@@ -1,4 +1,4 @@
-// 이미지 업스케일링 도구 - 이벤트 와이어링
+// Image upscaling tool - event wiring
 
 var upscaleUploadArea = document.getElementById('upscaleUploadArea');
 var upscaleFileInput = document.getElementById('upscaleFileInput');
@@ -16,7 +16,12 @@ var upscaleShareBtn = document.getElementById('upscaleShareBtn');
 var upscaleShareStatus = document.getElementById('upscaleShareStatus');
 var upscaleModeRadios = document.querySelectorAll('input[name="upscaleMode"]');
 
-var UPSCALE_MODE_LABELS = { '2x': '2배', '4x': '4배', '1440p': '1440p', '4K': '4K' };
+var UPSCALE_MODE_LABELS = LANG === 'en'
+  ? { '2x': '2x', '4x': '4x', '1440p': '1440p', '4K': '4K' }
+  : { '2x': '2배', '4x': '4배', '1440p': '1440p', '4K': '4K' };
+var SHARE_URL = LANG === 'en'
+  ? 'https://nwb010118.github.io/image-toolbox/en/upscale.html'
+  : 'https://nwb010118.github.io/image-toolbox/upscale.html';
 
 var selectedUpscaleFile = null;
 var selectedUpscaleDataUrl = null;
@@ -44,7 +49,7 @@ function loadImageFile(file) {
     };
     img.onerror = function () {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error('이미지를 불러올 수 없습니다: ' + file.name));
+      reject(new Error(t('imageLoadFailedNamed', { name: file.name })));
     };
     img.src = objectUrl;
   });
@@ -56,7 +61,7 @@ function imageToDataUrl(img) {
   canvas.height = img.naturalHeight;
   var ctx = canvas.getContext('2d');
   if (!ctx) {
-    throw new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.');
+    throw new Error(t('canvas2dUnavailable'));
   }
   ctx.drawImage(img, 0, 0);
   return canvas.toDataURL('image/png');
@@ -85,7 +90,7 @@ function updateUpscaleModeAvailability(width, height) {
       note.textContent = '';
     } else {
       var minLongEdge = Math.ceil(RESOLUTION_PRESETS[mode] / MAX_AI_SCALE);
-      note.textContent = '이 이미지로는 도달할 수 없어요 (긴 변 최소 ' + minLongEdge + 'px 필요)';
+      note.textContent = t('modeUnreachableNote', { min: minLongEdge });
       note.hidden = false;
     }
   }
@@ -97,7 +102,7 @@ function updateUpscaleModeAvailability(width, height) {
 
 function handleUpscaleFile(file) {
   if (upscaleBtn.disabled) {
-    showUpscaleError('처리 중에는 새 이미지를 선택할 수 없습니다. 완료 후 다시 시도해주세요.');
+    showUpscaleError(t('busyCannotSelectNew'));
     return;
   }
 
@@ -109,7 +114,7 @@ function handleUpscaleFile(file) {
   upscaleShareBtn.hidden = true;
   upscaleShareStatus.hidden = true;
   upscaleShareStatus.textContent = '';
-  upscaleResultHeading.textContent = '결과';
+  upscaleResultHeading.textContent = t('resultLabel');
   selectedUpscaleFile = null;
   selectedUpscaleDataUrl = null;
   selectedUpscaleWidth = null;
@@ -120,18 +125,18 @@ function handleUpscaleFile(file) {
   }
 
   if (!isSupportedImageType(file.type)) {
-    showUpscaleError('지원하지 않는 파일 형식입니다: ' + file.name + ' (JPG, PNG, WebP만 가능)');
+    showUpscaleError(t('unsupportedFormatNamed', { name: file.name }));
     return;
   }
   if (!isValidFileSize(file.size)) {
-    showUpscaleError('파일이 너무 큽니다 (최대 20MB): ' + file.name);
+    showUpscaleError(t('fileTooLargeNamed20MB', { name: file.name }));
     return;
   }
 
   loadImageFile(file)
     .then(function (img) {
       if (!isValidUpscaleDimensions(img.naturalWidth, img.naturalHeight)) {
-        showUpscaleError('이미지가 너무 큽니다 (가로/세로 각각 최대 ' + MAX_UPSCALE_DIMENSION + 'px). 이미지 압축 도구에서 먼저 크기를 줄여주세요.');
+        showUpscaleError(t('imageTooLarge', { max: MAX_UPSCALE_DIMENSION }));
         return;
       }
 
@@ -238,14 +243,14 @@ function resizeDataUrlToLongEdge(dataUrl, targetLongEdge) {
       canvas.height = targetHeight;
       var ctx = canvas.getContext('2d');
       if (!ctx) {
-        reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+        reject(new Error(t('canvas2dUnavailable')));
         return;
       }
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
       resolve(canvas.toDataURL('image/png'));
     };
     img.onerror = function () {
-      reject(new Error('업스케일 결과 이미지를 불러올 수 없습니다.'));
+      reject(new Error(t('upscaleResultImageFailed')));
     };
     img.src = dataUrl;
   });
@@ -258,7 +263,7 @@ upscaleBtn.addEventListener('click', function () {
   clearUpscaleError();
 
   if (typeof Upscaler === 'undefined' || typeof ESRGANSlim2x === 'undefined') {
-    showUpscaleError('업스케일링 기능을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
+    showUpscaleError(t('upscaleLibraryLoadFailed'));
     return;
   }
 
@@ -267,15 +272,15 @@ upscaleBtn.addEventListener('click', function () {
   var plan = getUpscalePlan(mode, selectedUpscaleWidth, selectedUpscaleHeight);
 
   if (!plan.reachable) {
-    showUpscaleError('이 이미지로는 선택한 해상도에 도달할 수 없습니다.');
+    showUpscaleError(t('resolutionUnreachable'));
     return;
   }
 
   var runFileName = selectedUpscaleFile.name;
 
   upscaleBtn.disabled = true;
-  upscaleBtn.textContent = '처리 중...';
-  upscaleProgress.textContent = '처리 중... (0%)';
+  upscaleBtn.textContent = t('processingEllipsis');
+  upscaleProgress.textContent = t('processingPercent', { percent: 0 });
   upscaleProgress.hidden = false;
   upscaleResultPreview.hidden = true;
   upscaleDownloadBtn.hidden = true;
@@ -285,7 +290,7 @@ upscaleBtn.addEventListener('click', function () {
   }
 
   runUpscalePasses(selectedUpscaleDataUrl, plan.aiPasses, function (fraction) {
-    upscaleProgress.textContent = '처리 중... (' + Math.round(fraction * 100) + '%)';
+    upscaleProgress.textContent = t('processingPercent', { percent: Math.round(fraction * 100) });
   })
     .then(function (resultDataUrl) {
       if (plan.targetLongEdge) {
@@ -294,7 +299,7 @@ upscaleBtn.addEventListener('click', function () {
       return resultDataUrl;
     })
     .then(function (finalDataUrl) {
-      upscaleResultHeading.textContent = '결과 (' + UPSCALE_MODE_LABELS[mode] + ')';
+      upscaleResultHeading.textContent = t('resultWithMode', { mode: UPSCALE_MODE_LABELS[mode] });
       upscaleResultPreview.src = finalDataUrl;
       upscaleResultPreview.hidden = false;
       upscaleDownloadBtn.href = finalDataUrl;
@@ -305,19 +310,19 @@ upscaleBtn.addEventListener('click', function () {
     })
     .catch(function (err) {
       console.error('Upscale failed:', err);
-      showUpscaleError('업스케일링 중 오류가 발생했습니다. 다른 이미지로 다시 시도해주세요.');
+      showUpscaleError(t('upscaleFailed'));
     })
     .then(function () {
       upscaleBtn.disabled = false;
-      upscaleBtn.textContent = '확대하기';
+      upscaleBtn.textContent = t('upscaleButton');
       upscaleProgress.hidden = true;
     });
 });
 
 wireShareButton(upscaleShareBtn, upscaleShareStatus, function () {
   return {
-    title: 'image toolbox - 브라우저에서 바로 처리하는 AI 업스케일링',
-    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 AI 업스케일링하는 도구예요.',
-    url: 'https://nwb010118.github.io/image-toolbox/upscale.html'
+    title: t('upscaleShareTitle'),
+    text: t('upscaleShareText'),
+    url: SHARE_URL
   };
 });

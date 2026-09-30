@@ -31,11 +31,14 @@ var originalImageHeight = 0;
 var lastResultUrl = null;
 
 var MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+var SHARE_URL = LANG === 'en'
+  ? 'https://nwb010118.github.io/image-toolbox/en/index.html'
+  : 'https://nwb010118.github.io/image-toolbox/';
 
 function processImage(file, options) {
   return new Promise(function (resolve, reject) {
     if (!options.outputMimeType) {
-      reject(new Error('지원하지 않는 파일 형식입니다.'));
+      reject(new Error(t('unsupportedFormatGeneric')));
       return;
     }
 
@@ -52,7 +55,7 @@ function processImage(file, options) {
       var ctx = canvas.getContext('2d');
       if (!ctx) {
         URL.revokeObjectURL(objectUrl);
-        reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+        reject(new Error(t('canvas2dUnavailable')));
         return;
       }
 
@@ -66,7 +69,7 @@ function processImage(file, options) {
         function (blob) {
           URL.revokeObjectURL(objectUrl);
           if (!blob) {
-            reject(new Error('이미지 처리에 실패했습니다.'));
+            reject(new Error(t('imageProcessingFailed')));
             return;
           }
           resolve({ blob: blob, url: URL.createObjectURL(blob), width: dimensions.width, height: dimensions.height });
@@ -78,7 +81,7 @@ function processImage(file, options) {
 
     img.onerror = function () {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error('이미지를 불러올 수 없습니다.'));
+      reject(new Error(t('imageLoadFailedGeneric')));
     };
 
     img.src = objectUrl;
@@ -109,8 +112,8 @@ function handleFile(file) {
   compressionSavings.hidden = true;
   compressionSavings.textContent = '';
   uploadArea.classList.remove('has-file');
-  uploadHeading.textContent = '이미지를 여기에 놓으세요';
-  uploadButton.textContent = '파일 선택';
+  uploadHeading.textContent = t('dropImageHere');
+  uploadButton.textContent = t('chooseFile');
   controls.hidden = true;
   previewArea.hidden = true;
   selectedFile = null;
@@ -132,18 +135,18 @@ function handleFile(file) {
   }
 
   if (!isSupportedImageType(file.type)) {
-    showError('지원하지 않는 파일 형식입니다. JPG, PNG, WebP 파일만 업로드할 수 있어요.');
+    showError(t('unsupportedImageUpload'));
     return;
   }
 
   if (file.size > MAX_FILE_SIZE) {
-    showError('파일이 너무 큽니다 (최대 20MB). 더 작은 파일을 선택해주세요.');
+    showError(t('fileTooLarge20MB'));
     return;
   }
 
   selectedFile = file;
   originalPreview.src = URL.createObjectURL(file);
-  originalSize.textContent = '원본 크기: ' + formatBytes(file.size);
+  originalSize.textContent = t('originalSizeLabel', { size: formatBytes(file.size) });
   // Show editing controls only after the image has decoded.
   previewArea.hidden = false;
   compressedPreview.src = '';
@@ -165,7 +168,7 @@ originalPreview.addEventListener('load', function () {
   resizeHeight.value = prefill.height;
   uploadHeading.textContent = selectedFile.name;
   uploadHeading.title = selectedFile.name;
-  uploadButton.textContent = '다른 이미지 선택';
+  uploadButton.textContent = t('chooseAnotherImage');
   uploadArea.classList.add('has-file');
   controls.hidden = false;
   controls.focus({ preventScroll: true });
@@ -177,7 +180,7 @@ originalPreview.addEventListener('error', function () {
   selectedFile = null;
   controls.hidden = true;
   previewArea.hidden = true;
-  showError('이미지를 불러올 수 없습니다. 다른 파일을 선택해주세요.');
+  showError(t('imageLoadFailedChooseAnother'));
 });
 
 fileInput.addEventListener('change', function (e) {
@@ -251,24 +254,24 @@ compressBtn.addEventListener('click', function () {
   var heightInput = readDimensionInput(resizeHeight);
 
   if ((widthInput !== null && isNaN(widthInput)) || (heightInput !== null && isNaN(heightInput))) {
-    showError('가로/세로 값은 숫자로 입력해주세요.');
+    showError(t('dimensionsMustBeNumbers'));
     return;
   }
   if ((widthInput !== null && !isValidDimensionInput(widthInput)) || (heightInput !== null && !isValidDimensionInput(heightInput))) {
-    showError('가로/세로 값은 1~' + MAX_DIMENSION + 'px 사이여야 합니다.');
+    showError(t('dimensionsOutOfRange', { max: MAX_DIMENSION }));
     return;
   }
 
   var resolved = resolveDimensions(originalImageWidth, originalImageHeight, widthInput, heightInput);
   if (!isValidDimensionInput(resolved.width) || !isValidDimensionInput(resolved.height)) {
-    showError('가로/세로 값은 1~' + MAX_DIMENSION + 'px 사이여야 합니다.');
+    showError(t('dimensionsOutOfRange', { max: MAX_DIMENSION }));
     return;
   }
 
   var outputMimeType = resolveOutputMimeType(selectedFile.type, formatSelect.value);
 
   compressBtn.disabled = true;
-  compressBtn.textContent = '처리 중...';
+  compressBtn.textContent = t('processingEllipsis');
 
   var quality = Number(qualitySlider.value) / 100;
 
@@ -284,8 +287,8 @@ compressBtn.addEventListener('click', function () {
       }
       lastResultUrl = result.url;
       compressedPreview.src = result.url;
-      compressedSize.textContent = '결과 크기: ' + formatBytes(result.blob.size) + ' (' + result.width + '×' + result.height + ')';
-      compressionSavings.textContent = describeSizeChange(selectedFile.size, result.blob.size);
+      compressedSize.textContent = t('resultSizeLabel', { size: formatBytes(result.blob.size), width: result.width, height: result.height });
+      compressionSavings.textContent = describeSizeChange(selectedFile.size, result.blob.size, LANG);
       compressionSavings.classList.toggle('size-increased', result.blob.size > selectedFile.size);
       compressionSavings.hidden = false;
       compressWarning.hidden = result.blob.size <= selectedFile.size;
@@ -300,7 +303,7 @@ compressBtn.addEventListener('click', function () {
     })
     .then(function () {
       compressBtn.disabled = false;
-      compressBtn.textContent = '적용하기';
+      compressBtn.textContent = t('applyButton');
     });
 });
 
@@ -339,8 +342,8 @@ formatSelect.addEventListener('change', updatePngSizeHint);
 
 wireShareButton(shareBtn, shareStatus, function () {
   return {
-    title: 'image toolbox - 브라우저에서 바로 처리하는 이미지 압축',
-    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 압축·변환하는 도구예요.',
-    url: 'https://nwb010118.github.io/image-toolbox/'
+    title: t('compressShareTitle'),
+    text: t('compressShareText'),
+    url: SHARE_URL
   };
 });
