@@ -16,7 +16,7 @@ function wireShareButton(button, statusEl, getShareData) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(data.url).then(function () {
         if (statusEl) {
-          statusEl.textContent = '링크가 복사되었습니다.';
+          statusEl.textContent = t('linkCopied');
           statusEl.hidden = false;
         }
       });

@@ -1,8 +1,11 @@
 (function (exports) {
+  function msg(key, fallback, params) {
+    return typeof t === 'function' ? t(key, params) : fallback;
+  }
   function parsePageRange(start, end, total) {
     var first = Number(start || 1), last = end === '' ? total : Number(end);
-    if (!Number.isInteger(first) || !Number.isInteger(last) || first < 1 || last < first || last > total) throw new Error('페이지 범위를 확인해주세요 (1~' + total + ').');
-    if (last - first + 1 > 50) throw new Error('한 번에 최대 50페이지를 선택해주세요.');
+    if (!Number.isInteger(first) || !Number.isInteger(last) || first < 1 || last < first || last > total) throw new Error(msg('pageRangeInvalid', '페이지 범위를 확인해주세요 (1~' + total + ').', { total: total }));
+    if (last - first + 1 > 50) throw new Error(msg('pageRangeTooMany', '한 번에 최대 50페이지를 선택해주세요.'));
     return Array.from({ length: last - first + 1 }, function (_, i) { return first + i; });
   }
   // Store already-compressed PNG bytes in a standard ZIP without another dependency.

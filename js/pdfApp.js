@@ -1,4 +1,4 @@
-// PDF 변환 도구 - 이미지 → PDF, PDF → 이미지 이벤트 와이어링
+// PDF tools - image to PDF and PDF to image event wiring
 
 var imgToPdfUploadArea = document.getElementById('imgToPdfUploadArea');
 var imgToPdfFileInput = document.getElementById('imgToPdfFileInput');
@@ -8,6 +8,10 @@ var imgToPdfBtn = document.getElementById('imgToPdfBtn');
 var imgToPdfDownloadBtn = document.getElementById('imgToPdfDownloadBtn');
 var imgToPdfShareBtn = document.getElementById('imgToPdfShareBtn');
 var imgToPdfShareStatus = document.getElementById('imgToPdfShareStatus');
+
+var PDF_SHARE_URL = LANG === 'en'
+  ? 'https://nwb010118.github.io/image-toolbox/en/pdf.html'
+  : 'https://nwb010118.github.io/image-toolbox/pdf.html';
 
 var selectedImageFiles = [];
 var lastPdfUrl = null;
@@ -36,7 +40,7 @@ function renderImgToPdfFileList() {
   selectedImageFiles.forEach(function (file, index) {
     var li = document.createElement('li');
     li.textContent = file.name + ' (' + formatBytes(file.size) + ')';
-    [['위', -1], ['아래', 1], ['삭제', 0]].forEach(function (action) {
+    [[t('moveUp'), -1], [t('moveDown'), 1], [t('removeItem'), 0]].forEach(function (action) {
       var button = document.createElement('button');
       button.type = 'button'; button.textContent = action[0];
       button.setAttribute('aria-label', file.name + ' ' + action[0]);
@@ -54,25 +58,25 @@ function renderImgToPdfFileList() {
 }
 
 function handleImageFiles(files) {
-  if (isBuildingPdf) { showImgToPdfError('변환 중에는 파일 목록을 바꿀 수 없습니다.'); return; }
+  if (isBuildingPdf) { showImgToPdfError(t('busyListChange')); return; }
   clearImgToPdfError();
   if (!files || files.length === 0) {
     return;
   }
 
   if (!isValidImageCount(selectedImageFiles.length + files.length)) {
-    showImgToPdfError('이미지는 최대 ' + MAX_IMAGE_COUNT + '장까지 선택할 수 있습니다.');
+    showImgToPdfError(t('tooManyImages', { max: MAX_IMAGE_COUNT }));
     return;
   }
 
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
     if (!isSupportedImageType(file.type)) {
-      showImgToPdfError('지원하지 않는 파일 형식입니다: ' + file.name + ' (JPG, PNG, WebP만 가능)');
+      showImgToPdfError(t('unsupportedFormatNamed', { name: file.name }));
       return;
     }
     if (!isValidFileSize(file.size)) {
-      showImgToPdfError('파일이 너무 큽니다 (최대 20MB): ' + file.name);
+      showImgToPdfError(t('fileTooLargeNamed20MB', { name: file.name }));
       return;
     }
   }
@@ -116,7 +120,7 @@ function imageFileToJpegDataUrl(file) {
       var ctx = canvas.getContext('2d');
       if (!ctx) {
         URL.revokeObjectURL(objectUrl);
-        reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+        reject(new Error(t('canvas2dUnavailable')));
         return;
       }
       ctx.fillStyle = '#ffffff';
@@ -131,7 +135,7 @@ function imageFileToJpegDataUrl(file) {
     };
     img.onerror = function () {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error('이미지를 불러올 수 없습니다: ' + file.name));
+      reject(new Error(t('imageLoadFailedNamed', { name: file.name })));
     };
     img.src = objectUrl;
   });
@@ -164,14 +168,14 @@ imgToPdfBtn.addEventListener('click', function () {
   clearImgToPdfError();
 
   if (typeof jspdf === 'undefined') {
-    showImgToPdfError('PDF 처리 기능을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
+    showImgToPdfError(t('pdfLibraryLoadFailed'));
     return;
   }
 
   isBuildingPdf = true;
   renderImgToPdfFileList();
   imgToPdfBtn.disabled = true;
-  imgToPdfBtn.textContent = '변환 중...';
+  imgToPdfBtn.textContent = t('convertingEllipsis');
 
   buildPdfFromImages(selectedImageFiles.slice())
     .then(function (blob) {
@@ -192,7 +196,7 @@ imgToPdfBtn.addEventListener('click', function () {
       isBuildingPdf = false;
       renderImgToPdfFileList();
       imgToPdfBtn.disabled = false;
-      imgToPdfBtn.textContent = 'PDF로 변환';
+      imgToPdfBtn.textContent = t('convertToPdfButton');
     });
 });
 
@@ -251,13 +255,13 @@ function renderPdfPage(blob, pageNumber, baseName, totalPages) {
 
   var img = document.createElement('img');
   img.src = url;
-  img.alt = '페이지 ' + pageNumber + ' 미리보기';
+  img.alt = t('pageAltLabel', { n: pageNumber });
 
   var link = document.createElement('a');
   link.className = 'btn';
   link.href = url;
   link.download = getPageImageFilename(baseName, pageNumber, totalPages);
-  link.textContent = '페이지 ' + pageNumber + ' 다운로드';
+  link.textContent = t('pageDownloadLabel', { n: pageNumber });
 
   item.appendChild(img);
   item.appendChild(link);
@@ -267,19 +271,19 @@ function renderPdfPage(blob, pageNumber, baseName, totalPages) {
 function renderPdfPageToBlob(pdfDoc, pageNumber) {
   return pdfDoc.getPage(pageNumber).then(function (page) {
     var viewport = page.getViewport({ scale: pdfImageScale });
-    if (viewport.width * viewport.height > 16000000) throw new Error('페이지 해상도가 너무 큽니다. 기본 해상도로 다시 시도해주세요.');
+    if (viewport.width * viewport.height > 16000000) throw new Error(t('pageResolutionTooLarge'));
     var canvas = document.createElement('canvas');
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     var ctx = canvas.getContext('2d');
     if (!ctx) {
-      return Promise.reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+      return Promise.reject(new Error(t('canvas2dUnavailable')));
     }
     return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
       return new Promise(function (resolve, reject) {
         canvas.toBlob(function (blob) {
           if (!blob) {
-            reject(new Error('페이지 ' + pageNumber + ' 이미지를 만들지 못했습니다.'));
+            reject(new Error(t('pageImageFailed', { n: pageNumber })));
             return;
           }
           canvas.width = 0; canvas.height = 0; page.cleanup();
@@ -294,7 +298,7 @@ function processPdfFile(file) {
   clearPdfToImgError();
   clearPdfPages();
   pdfToImgProgress.hidden = false;
-  pdfToImgProgress.textContent = 'PDF를 불러오는 중...';
+  pdfToImgProgress.textContent = t('loadingPdf');
 
   var baseName = getBaseFileName(file.name);
   var objectUrl = URL.createObjectURL(file);
@@ -303,14 +307,14 @@ function processPdfFile(file) {
   return pdfjsLib.getDocument(objectUrl).promise
     .catch(function () {
       URL.revokeObjectURL(objectUrl);
-      throw new Error('PDF 파일을 읽을 수 없습니다.');
+      throw new Error(t('pdfReadFailed'));
     })
     .then(function (pdfDoc) {
       loadedPdf = pdfDoc;
       URL.revokeObjectURL(objectUrl);
 
       if (!isValidPageCount(pdfDoc.numPages)) {
-        throw new Error('PDF 페이지 수가 너무 많습니다 (최대 ' + MAX_PDF_PAGES + '페이지).');
+        throw new Error(t('tooManyPages', { max: MAX_PDF_PAGES }));
       }
 
       var totalPages = pdfDoc.numPages;
@@ -318,8 +322,8 @@ function processPdfFile(file) {
 
       return pageNumbers.reduce(function (promise, pageNumber) {
         return promise.then(function () {
-          if (cancelPdfImages) throw new Error('작업을 중단했습니다. 생성된 페이지는 다운로드할 수 있습니다.');
-          pdfToImgProgress.textContent = '처리 중... (' + pageNumber + '/' + totalPages + ')';
+          if (cancelPdfImages) throw new Error(t('pdfCancelled'));
+          pdfToImgProgress.textContent = t('processingPageProgress', { current: pageNumber, total: totalPages });
           return renderPdfPageToBlob(pdfDoc, pageNumber);
         }).then(function (blob) {
           renderPdfPage(blob, pageNumber, baseName, totalPages);
@@ -335,19 +339,19 @@ function handlePdfFile(file) {
   clearPdfToImgError();
 
   if (!isValidPdfFile(file)) {
-    showPdfToImgError('PDF 파일만 업로드할 수 있어요.');
+    showPdfToImgError(t('pdfOnlyUpload'));
     return;
   }
   if (!isValidFileSize(file.size)) {
-    showPdfToImgError('파일이 너무 큽니다 (최대 20MB).');
+    showPdfToImgError(t('fileTooLarge20MBGeneric'));
     return;
   }
   if (typeof pdfjsLib === 'undefined') {
-    showPdfToImgError('PDF 처리 기능을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
+    showPdfToImgError(t('pdfLibraryLoadFailed'));
     return;
   }
   if (isProcessingPdf) {
-    showPdfToImgError('이전 PDF를 처리하는 중입니다. 완료된 후 다시 시도해주세요.');
+    showPdfToImgError(t('pdfBusy'));
     return;
   }
 
@@ -378,8 +382,8 @@ wireFileUpload(pdfToImgUploadArea, pdfToImgFileInput, function (files) { handleP
 
 wireShareButton(imgToPdfShareBtn, imgToPdfShareStatus, function () {
   return {
-    title: 'image toolbox - 브라우저에서 바로 처리하는 PDF 변환',
-    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 PDF로 합치는 도구예요.',
-    url: 'https://nwb010118.github.io/image-toolbox/pdf.html'
+    title: t('pdfShareTitle'),
+    text: t('imgToPdfShareText'),
+    url: PDF_SHARE_URL
   };
 });

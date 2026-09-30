@@ -1,4 +1,4 @@
-// PDF → 문서 변환 (PPT/Word/Excel) 이벤트 와이어링
+// PDF to document conversion (PPT/Word/Excel) - event wiring
 
 var pdfConvertUploadArea = document.getElementById('pdfConvertUploadArea');
 var pdfConvertFileInput = document.getElementById('pdfConvertFileInput');
@@ -10,13 +10,17 @@ var pdfConvertDownloadBtn = document.getElementById('pdfConvertDownloadBtn');
 var pdfConvertShareBtn = document.getElementById('pdfConvertShareBtn');
 var pdfConvertShareStatus = document.getElementById('pdfConvertShareStatus');
 
+var PDF_CONVERT_SHARE_URL = LANG === 'en'
+  ? 'https://nwb010118.github.io/image-toolbox/en/pdf.html'
+  : 'https://nwb010118.github.io/image-toolbox/pdf.html';
+
 var selectedPdfConvertFile = null;
 var lastPdfConvertUrl = null;
 var isConvertingPdf = false;
 var cancelPdfDocument = false;
 var pdfDocumentCancel = document.getElementById('pdfDocumentCancel');
 pdfDocumentCancel.addEventListener('click', function () { cancelPdfDocument = true; pdfDocumentCancel.disabled = true; });
-function checkDocumentCancellation() { if (cancelPdfDocument) throw new Error('문서 변환을 중단했습니다.'); }
+function checkDocumentCancellation() { if (cancelPdfDocument) throw new Error(t('docCancelled')); }
 
 function showPdfConvertError(message) {
   pdfConvertError.textContent = message;
@@ -35,7 +39,7 @@ function getSelectedPdfConvertFormat() {
 function handlePdfConvertFile(file) {
   clearPdfConvertError();
   if (isConvertingPdf) {
-    showPdfConvertError('변환이 진행 중입니다. 완료된 후 다시 시도해주세요.');
+    showPdfConvertError(t('convertBusy'));
     return;
   }
   pdfConvertControls.hidden = true;
@@ -55,11 +59,11 @@ function handlePdfConvertFile(file) {
   }
 
   if (!isValidPdfFile(file)) {
-    showPdfConvertError('PDF 파일만 업로드할 수 있어요.');
+    showPdfConvertError(t('pdfOnlyUpload'));
     return;
   }
   if (!isValidFileSize(file.size)) {
-    showPdfConvertError('파일이 너무 큽니다 (최대 20MB).');
+    showPdfConvertError(t('fileTooLarge20MBGeneric'));
     return;
   }
 
@@ -78,7 +82,7 @@ function renderPdfConvertPageToImage(pdfDoc, pageNumber, renderScale) {
     canvas.height = viewport.height;
     var ctx = canvas.getContext('2d');
     if (!ctx) {
-      return Promise.reject(new Error('2D 캔버스 컨텍스트를 생성할 수 없습니다.'));
+      return Promise.reject(new Error(t('canvas2dUnavailable')));
     }
     return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
       return {
@@ -100,7 +104,7 @@ function convertPdfToPptx(pdfDoc, totalPages) {
   return pageNumbers.reduce(function (promise, pageNumber) {
     return promise.then(function () {
       checkDocumentCancellation();
-      pdfConvertProgress.textContent = '처리 중... (' + pageNumber + '/' + totalPages + ')';
+      pdfConvertProgress.textContent = t('processingPageProgress', { current: pageNumber, total: totalPages });
       return renderPdfConvertPageToImage(pdfDoc, pageNumber, 2);
     }).then(function (page) {
       if (pageNumber === 1) {
@@ -136,7 +140,7 @@ function extractPdfConvertPagesLines(pdfDoc, totalPages) {
   return pageNumbers.reduce(function (promise, pageNumber) {
     return promise.then(function () {
       checkDocumentCancellation();
-      pdfConvertProgress.textContent = '텍스트를 읽는 중... (' + pageNumber + '/' + totalPages + ')';
+      pdfConvertProgress.textContent = t('readingTextProgress', { current: pageNumber, total: totalPages });
       return extractPdfConvertPageLines(pdfDoc, pageNumber);
     }).then(function (lines) {
       pagesLines.push(lines);
@@ -192,7 +196,7 @@ function runPdfConversion(pdfDoc, totalPages, format) {
   if (format === 'word' || format === 'excel') {
     return extractPdfConvertPagesLines(pdfDoc, totalPages).then(function (pagesLines) {
       if (!hasSubstantialText(concatenatePagesLinesText(pagesLines))) {
-        throw new Error('이 PDF는 텍스트가 없는 스캔본으로 보입니다. PPT 변환을 이용해주세요.');
+        throw new Error(t('scannedPdfNoText'));
       }
       if (format === 'word') {
         return convertPdfToDocx(pagesLines);
@@ -200,7 +204,7 @@ function runPdfConversion(pdfDoc, totalPages, format) {
       return convertPdfToXlsx(pagesLines);
     });
   }
-  return Promise.reject(new Error('지원하지 않는 형식입니다: ' + format));
+  return Promise.reject(new Error(t('unsupportedConvertFormat', { format: format })));
 }
 
 function isPdfConvertLibraryLoaded(format) {
@@ -225,7 +229,7 @@ pdfConvertBtn.addEventListener('click', function () {
   var format = getSelectedPdfConvertFormat();
 
   if (typeof pdfjsLib === 'undefined' || !isPdfConvertLibraryLoaded(format)) {
-    showPdfConvertError('문서 변환 기능을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
+    showPdfConvertError(t('documentLibraryLoadFailed'));
     return;
   }
 
@@ -233,9 +237,9 @@ pdfConvertBtn.addEventListener('click', function () {
   cancelPdfDocument = false;
   pdfDocumentCancel.hidden = false; pdfDocumentCancel.disabled = false;
   pdfConvertBtn.disabled = true;
-  pdfConvertBtn.textContent = '변환 중...';
+  pdfConvertBtn.textContent = t('convertingEllipsis');
   pdfConvertProgress.hidden = false;
-  pdfConvertProgress.textContent = 'PDF를 불러오는 중...';
+  pdfConvertProgress.textContent = t('loadingPdf');
   pdfConvertDownloadBtn.hidden = true;
 
   var baseName = getBaseFileName(selectedPdfConvertFile.name);
@@ -245,7 +249,7 @@ pdfConvertBtn.addEventListener('click', function () {
   pdfjsLib.getDocument(objectUrl).promise
     .catch(function () {
       URL.revokeObjectURL(objectUrl);
-      throw new Error('PDF 파일을 읽을 수 없습니다.');
+      throw new Error(t('pdfReadFailed'));
     })
     .then(function (pdfDoc) {
       loadedDocument = pdfDoc;
@@ -253,10 +257,10 @@ pdfConvertBtn.addEventListener('click', function () {
       URL.revokeObjectURL(objectUrl);
 
       if (!isValidPageCount(pdfDoc.numPages)) {
-        throw new Error('PDF 페이지 수가 너무 많습니다 (최대 ' + MAX_PDF_PAGES + '페이지).');
+        throw new Error(t('tooManyPages', { max: MAX_PDF_PAGES }));
       }
       if (format === 'ppt' && pdfDoc.numPages > MAX_PPT_CONVERSION_PAGES) {
-        throw new Error('PowerPoint 변환은 메모리 보호를 위해 최대 ' + MAX_PPT_CONVERSION_PAGES + '페이지까지 지원합니다. 더 많은 페이지는 PDF를 나눠서 변환해주세요.');
+        throw new Error(t('pptPageLimitExceeded', { max: MAX_PPT_CONVERSION_PAGES }));
       }
 
       return runPdfConversion(pdfDoc, pdfDoc.numPages, format);
@@ -282,15 +286,15 @@ pdfConvertBtn.addEventListener('click', function () {
       isConvertingPdf = false;
       pdfDocumentCancel.hidden = true;
       pdfConvertBtn.disabled = false;
-      pdfConvertBtn.textContent = '변환하기';
+      pdfConvertBtn.textContent = t('convertButton');
       pdfConvertProgress.hidden = true;
     });
 });
 
 wireShareButton(pdfConvertShareBtn, pdfConvertShareStatus, function () {
   return {
-    title: 'image toolbox - 브라우저에서 바로 처리하는 PDF 변환',
-    text: '사진을 서버에 올리지 않고 브라우저에서 무료로 PDF를 Word/PPT/Excel로 바꾸는 도구예요.',
-    url: 'https://nwb010118.github.io/image-toolbox/pdf.html'
+    title: t('pdfShareTitle'),
+    text: t('pdfConvertShareText'),
+    url: PDF_CONVERT_SHARE_URL
   };
 });

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#116b5d">
+  <title>Free Image Compressor - Compress, Convert &amp; Resize in Your Browser</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="Compress, convert, and upscale your photos for free, right in your browser. No uploads, no sign-up. Supports JPG, PNG, and WebP.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/en/index.html">
+  <link rel="alternate" hreflang="ko" href="https://nwb010118.github.io/image-toolbox/">
+  <link rel="alternate" hreflang="en" href="https://nwb010118.github.io/image-toolbox/en/index.html">
+  <link rel="alternate" hreflang="x-default" href="https://nwb010118.github.io/image-toolbox/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free Image Compressor - Compress, Convert &amp; Resize in Your Browser">
+  <meta property="og:description" content="Compress, convert, and upscale your photos for free, right in your browser. No uploads, no sign-up.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/en/index.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <link rel="stylesheet" href="../css/toolStudio.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Image Compressor",
+    "url": "https://nwb010118.github.io/image-toolbox/en/index.html",
+    "description": "Compress, convert, and upscale your photos for free, right in your browser. No uploads, no sign-up. Supports JPG, PNG, and WebP.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Are my uploaded photos stored on a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This tool never sends your images to any server. Compression happens entirely on your device using the browser's Canvas API, and the result disappears once you leave the page."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which file formats are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can upload JPG, PNG, or WebP images, and save the result as any of those three formats."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I set the compression quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the slider to choose a quality between 10% and 100%. Lower values produce smaller files but reduce image quality. If the result ends up larger than the original, a warning is shown before you download."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much can I shrink a photo's file size?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends on how far you lower the quality, but a 50-90% reduction from the original is typical. Results vary with the photo's original format and content."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I also resize the image dimensions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Enter width and height directly, or turn on \"Keep aspect ratio\" and enter just one value — the other is calculated automatically to match the original proportions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to sign up or install anything?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. You can use it right away in your browser, with no account and no software to install."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="page-tool page-compress studio-page studio-compress">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox home"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="Main menu">
+        <a href="index.html" aria-current="page">Compress</a>
+        <a href="pdf.html">PDF Tools</a>
+        <a href="upscale.html">Upscale</a>
+        <a href="../index.html" lang="ko" hreflang="ko">한국어</a>
+      </nav>
+    </div>
+  </header>
+  <noscript><p class="noscript-banner">This site doesn't work with JavaScript disabled. Please enable JavaScript in your browser to use the image compressor.</p></noscript>
+  <main class="container" id="main-content">
+<div class="studio-hero"><div class="studio-hero-copy">    <p class="eyebrow">IMAGE TOOLS</p>
+    <h1>Lighter images.<br><span>Bigger possibilities.</span></h1><p class="studio-tool-label">Compress &amp; Convert Images</p>
+    <p class="subtitle">Reduce file size, resize, and convert format — all for free, right in your browser.</p></div><svg class="studio-art" viewBox="0 0 340 180" fill="none" aria-hidden="true"><circle cx="185" cy="90" r="84" fill="var(--color-accent-soft)"/><g transform="rotate(-9 110 90)"><rect x="34" y="30" width="140" height="112" rx="14" fill="var(--color-surface)" stroke="var(--color-border-strong)"/><rect x="46" y="42" width="116" height="74" rx="8" fill="var(--color-chip-blue-bg)"/><circle cx="132" cy="60" r="10" fill="var(--color-chip-orange-fg)"/><path d="m46 106 34-39 29 27 20-17 33 39H46Z" fill="var(--color-accent)" opacity=".7"/><path d="M48 129h44" stroke="var(--color-border-strong)" stroke-width="5" stroke-linecap="round"/></g><g transform="rotate(7 248 98)"><rect x="202" y="45" width="100" height="112" rx="14" fill="var(--color-accent)"/><path d="M224 72h56M224 85h40M224 98h30" stroke="var(--color-on-accent)" stroke-width="5" stroke-linecap="round"/><circle cx="271" cy="132" r="16" fill="var(--color-surface)"/><path d="m263 132 5 5 10-11" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M168 91h30m-9-9 9 9-9 9" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M291 18v14m-7-7h14M18 134v10m-5-5h10" stroke="var(--color-chip-orange-fg)" stroke-width="2" stroke-linecap="round"/></svg></div>
+
+    <nav class="task-picker" aria-label="Quick links"><a href="#uploadArea" aria-current="true">Compress photos</a><a href="pdf.html#images-to-pdf">Photos to PDF</a><a href="upscale.html">Enlarge small images</a></nav>
+    <div class="tool-intro-grid">
+<section class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
+      <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12"></path>
+        <path d="M7 8l5-5 5 5"></path>
+        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+      </svg>
+      <h2 class="upload-heading">Drop your image here</h2>
+      <button type="button" class="upload-btn">Choose File</button>
+      <p class="upload-hint">or drag and drop a file into this area</p>
+      <p class="upload-formats">JPG, PNG, WebP · one file at a time · up to 20MB</p>
+      <div id="errorMessage" class="error-message" role="alert" hidden></div>
+    </section>
+<aside class="compression-example" aria-labelledby="example-title">
+  <span class="example-label">MEASURED EXAMPLE</span>
+  <h2 id="example-title">How much smaller?</h2>
+  <div class="example-sizes"><div><span>Original PNG</span><strong>1.72 <small>MB</small></strong></div><span aria-hidden="true">→</span><div><span>Converted to JPG</span><strong>113 <small>KB</small></strong></div></div>
+  <div class="size-bars" aria-hidden="true"><div><span>Before</span><i></i></div><div><span>After</span><i></i></div></div>
+  <p class="example-saving">93.6% smaller</p>
+  <p class="example-caption">Synthetic photo-style test image · JPG quality 80%<br>Results vary by file and browser.</p>
+  <a href="../benchmark.html">See the full measured results →</a>
+</aside>
+    </div>
+
+    <p class="privacy-strip">No server uploads · No sign-up or install required</p>
+
+    <section class="controls" id="controls" tabindex="-1" aria-label="Image compression settings" hidden>
+      <label for="qualitySlider">Quality: <span id="qualityValue">80</span>%</label>
+      <input type="range" id="qualitySlider" min="10" max="100" value="80">
+
+      <div class="resize-fields">
+        <label class="resize-label">Width (px)
+          <input type="number" id="resizeWidth" min="1" max="8000">
+        </label>
+        <label class="resize-label">Height (px)
+          <input type="number" id="resizeHeight" min="1" max="8000">
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="maintainAspectRatio" checked>
+          Keep aspect ratio
+        </label>
+      </div>
+
+      <label for="formatSelect">Output format</label>
+      <select id="formatSelect">
+        <option value="original">Same as original</option>
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WebP</option>
+      </select>
+      <p id="pngSizeHint" class="compress-warning" hidden>PNG is a lossless format, so compressing it won't shrink the file size — it may even get larger than the original. Choose JPG or WebP to actually reduce file size.</p>
+
+      <button id="compressBtn">Apply</button>
+      <p class="offline-badge">
+        <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        No server uploads · Processed entirely in your browser
+      </p>
+    </section>
+
+    <section class="preview-area" id="previewArea" hidden>
+      <div class="preview-box">
+        <h2>Original</h2>
+        <img id="originalPreview" alt="Original image preview">
+        <p id="originalSize"></p>
+      </div>
+      <div class="preview-box">
+        <h2>Result</h2>
+        <img id="compressedPreview" alt="Compressed image preview">
+        <p id="compressedSize"></p>
+        <p id="compressionSavings" class="compression-savings" role="status" hidden></p>
+        <p id="compressWarning" class="compress-warning" hidden>⚠ The result is larger than the original. Consider lowering the quality, or skip downloading it.</p>
+        <div class="result-actions">
+          <a id="downloadBtn" class="btn" href="#" download="compressed-image.jpg" hidden>Download</a>
+          <button type="button" id="shareBtn" class="btn btn-outline" hidden>Share this site</button>
+        </div>
+        <p id="shareStatus" class="share-status" role="status" hidden></p>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <h2>How compression works</h2>
+      <p class="tool-nav"><a href="../benchmark.html">See real compression-rate test results →</a></p>
+      <p>This tool compresses images by re-encoding them with the browser's Canvas API: it draws the original onto a canvas, then saves it again in the format and quality you choose.</p>
+      <p>JPG and WebP are lossy formats, so lowering the quality slider actually shrinks the file size. PNG, on the other hand, is lossless — adjusting the quality slider has no effect on its file size, and that's standard browser behavior, not a limitation of this tool. To shrink a PNG photo, switch the output format to JPG or WebP, or reduce its pixel dimensions instead.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>Which format should I choose?</h2>
+<div class="format-grid">
+      <p class="format-card"><span class="format-symbol" aria-hidden="true">▧</span><strong>JPG</strong>works well for photos with complex colors and compresses efficiently to a small file size. It doesn't support transparency.</p>
+      <p class="format-card"><span class="format-symbol" aria-hidden="true">▦</span><strong>PNG</strong>is lossless, so there's no quality loss, and it supports transparency. It's a good fit for screenshots, logos, and text-heavy graphics, but produces large files for photos.</p>
+      <p class="format-card"><span class="format-symbol" aria-hidden="true">◈</span><strong>WebP</strong>is a newer format that can match JPG-level quality at a smaller file size. Most modern browsers support it, but older software may not be able to open it.</p>
+</div>
+    </section>
+
+    <section class="info-section">
+      <h2>Frequently Asked Questions</h2>
+      <details>
+        <summary>Are my uploaded photos stored on a server?</summary>
+        <p>No. This tool never sends your images to any server. Compression happens entirely on your device using the browser's Canvas API, and the result disappears once you leave the page.</p>
+      </details>
+      <details>
+        <summary>Which file formats are supported?</summary>
+        <p>You can upload JPG, PNG, or WebP images, and save the result as any of those three formats.</p>
+      </details>
+      <details>
+        <summary>How do I set the compression quality?</summary>
+        <p>Use the slider to choose a quality between 10% and 100%. Lower values produce smaller files but reduce image quality. If the result ends up larger than the original, a warning is shown before you download.</p>
+      </details>
+      <details>
+        <summary>How much can I shrink a photo's file size?</summary>
+        <p>It depends on how far you lower the quality, but a 50-90% reduction from the original is typical. Results vary with the photo's original format and content.</p>
+      </details>
+      <details>
+        <summary>Can I also resize the image dimensions?</summary>
+        <p>Yes. Enter width and height directly, or turn on "Keep aspect ratio" and enter just one value — the other is calculated automatically to match the original proportions.</p>
+      </details>
+      <details>
+        <summary>Do I need to sign up or install anything?</summary>
+        <p>No. You can use it right away in your browser, with no account and no software to install.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">Everyday image work, made simple and safe.</p></div>
+      <nav class="footer-links" aria-label="Site info"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy Policy</a></nav>
+    </div>
+  </footer>
+
+  <script src="../js/strings.js"></script>
+  <script src="../js/imageTools.js"></script>
+  <script src="../js/uploadUtil.js"></script>
+  <script src="../js/shareUtil.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
