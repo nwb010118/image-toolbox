@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#116b5d">
+  <title>Free AI Image Upscaler - Enlarge Photos Up to 4x, Up to 4K</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="Free online tool that uses an AI model to upscale photos 2x or 4x, or resize them to 1440p or 4K resolution. No server uploads — everything runs in your browser.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/en/upscale.html">
+  <link rel="alternate" hreflang="ko" href="https://nwb010118.github.io/image-toolbox/upscale.html">
+  <link rel="alternate" hreflang="en" href="https://nwb010118.github.io/image-toolbox/en/upscale.html">
+  <link rel="alternate" hreflang="x-default" href="https://nwb010118.github.io/image-toolbox/upscale.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free AI Image Upscaler - Enlarge Photos Up to 4x, Up to 4K">
+  <meta property="og:description" content="Free online tool that uses an AI model to upscale photos 2x or 4x, or resize them to 1440p or 4K resolution.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/en/upscale.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Image Upscaler",
+    "url": "https://nwb010118.github.io/image-toolbox/en/upscale.html",
+    "description": "Free online tool that uses an AI model to upscale photos 2x or 4x, or resize them to 1440p or 4K resolution. No server uploads — everything runs in your browser.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much can I enlarge an image?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It supports 2x and 4x enlargement, plus resizing to 1440p or 4K resolution. The AI model can only double an image per pass, so it chains up to two passes internally (for 4x); the resolution options that need more than that are only selectable when the original image is already large enough."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is there an image size limit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The AI model runs its calculations directly in your browser, so a very large image would take a long time or could freeze the browser. Only images up to 1000px on each side are supported — for larger images, shrink them first with the image compressor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are my uploaded photos stored on a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All AI computation happens in your browser, and no image is ever sent to a server."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a low-resolution image really become high-resolution?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The AI model analyzes the image's pixel data and infers plausible detail as it enlarges it. Unlike simple stretching, edges and textures come out noticeably sharper."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does processing take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends on the image size and the scale or resolution you choose, but since the AI runs directly in your browser, it typically takes anywhere from a few seconds to tens of seconds."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use it without installing anything or signing up?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. No installation or account is required — just use it directly in your browser."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="page-tool">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox home"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="Main menu">
+        <a href="index.html">Compress</a>
+        <a href="pdf.html">PDF Tools</a>
+        <a href="upscale.html" aria-current="page">Upscale</a>
+        <a href="../upscale.html">한국어</a>
+      </nav>
+    </div>
+  </header>
+  <noscript><p class="noscript-banner">This site doesn't work with JavaScript disabled. Please enable JavaScript in your browser to use the AI upscaler.</p></noscript>
+  <main class="container" id="main-content">
+    <p class="eyebrow">AI IMAGE TOOLS</p>
+    <h1>Image Upscaler</h1>
+    <p class="subtitle">Your photo is never sent anywhere — it's enlarged by AI right in this browser.</p>
+
+    <div class="tool-intro-grid">
+<section class="upload-area" id="upscaleUploadArea">
+      <input type="file" id="upscaleFileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
+      <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12"></path>
+        <path d="M7 8l5-5 5 5"></path>
+        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+      </svg>
+      <h2 class="upload-heading">Drop your image here</h2>
+      <button type="button" class="upload-btn">Choose File</button>
+      <p class="upload-hint">or drag and drop a file into this area</p>
+      <p class="upload-formats">JPG, PNG, WebP supported · up to 20MB · max 1000px per side</p>
+      <div id="upscaleError" class="error-message" hidden></div>
+    </section>
+<aside class="tool-aside" aria-label="Tool info"><span class="aside-label">MADE FOR YOUR PRIVACY</span><h2>Your photo,<br>stays in your browser.</h2><p>Enlarge a small image with AI and compare the original side by side with the result. All processing happens on your device.</p><ul><li>No image server uploads</li><li>Free, no sign-up</li><li>No install — use it right away</li></ul></aside>
+    </div>
+
+    <section class="controls" id="upscaleControls" hidden>
+      <p class="upscale-mode-label">Choose a scale</p>
+      <div class="upscale-mode-group">
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="2x" checked>
+          2x
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="4x">
+          4x
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="1440p">
+          To 1440p
+          <span class="upscale-mode-note" id="upscaleNote1440p" hidden></span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="upscaleMode" value="4K">
+          To 4K
+          <span class="upscale-mode-note" id="upscaleNote4K" hidden></span>
+        </label>
+      </div>
+      <button id="upscaleBtn">Upscale</button>
+      <p class="offline-badge">
+        <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        No server uploads · Processed entirely in your browser
+      </p>
+    </section>
+    <p id="upscaleProgress" class="pdf-progress" hidden>Processing...</p>
+
+    <section class="preview-area" id="upscalePreviewArea" hidden>
+      <div class="preview-box">
+        <h2>Original</h2>
+        <img id="upscaleOriginalPreview" alt="Original image preview">
+        <p id="upscaleOriginalSize"></p>
+      </div>
+      <div class="preview-box">
+        <h2 id="upscaleResultHeading">Result</h2>
+        <img id="upscaleResultPreview" alt="Upscaled image preview" hidden>
+        <div class="result-actions">
+          <a id="upscaleDownloadBtn" class="btn" href="#" download="upscaled.png" hidden>Download</a>
+          <button type="button" id="upscaleShareBtn" class="btn btn-outline" hidden>Share this site</button>
+        </div>
+        <p id="upscaleShareStatus" class="share-status" role="status" hidden></p>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <h2>How AI upscaling works</h2>
+      <p>Ordinary resizing interpolates by averaging nearby pixel colors to fill in the new pixels, so no real detail is added and edges end up blurry. This tool instead runs a lightweight ESRGAN-family AI model (esrgan-slim) directly in your browser using TensorFlow.js.</p>
+      <p>When you pick a resolution option like 1440p or 4K, it upscales with AI up to the target size (measured by the long edge), then precisely downsizes any excess with the canvas to land exactly on that size.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>When would I need this</h2>
+      <p>Useful when you need to print or display an old or small photo at a larger size, show a low-resolution image on a big screen like a wallpaper, or bring back as much detail as possible from a photo where only a small copy survives. We wrote an honest breakdown of what AI upscaling can and can't actually do — read it <a href="../ai-upscaling-limits.html">here</a>. Curious about the right wallpaper size for your monitor's resolution? Check out <a href="../monitor-resolution-wallpaper-size.html">this guide</a>, and for scanning and organizing old photos, see <a href="../old-photo-scan-digitize-workflow.html">this guide</a>.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>Frequently Asked Questions</h2>
+      <details>
+        <summary>How much can I enlarge an image?</summary>
+        <p>It supports 2x and 4x enlargement, plus resizing to 1440p or 4K resolution. The AI model can only double an image per pass, so it chains up to two passes internally (for 4x); the resolution options that need more than that are only selectable when the original image is already large enough.</p>
+      </details>
+      <details>
+        <summary>Why is there an image size limit?</summary>
+        <p>The AI model runs its calculations directly in your browser, so a very large image would take a long time or could freeze the browser. Only images up to 1000px on each side are supported — for larger images, shrink them first with the image compressor.</p>
+      </details>
+      <details>
+        <summary>Are my uploaded photos stored on a server?</summary>
+        <p>No. All AI computation happens in your browser, and no image is ever sent to a server.</p>
+      </details>
+      <details>
+        <summary>Can a low-resolution image really become high-resolution?</summary>
+        <p>Yes. The AI model analyzes the image's pixel data and infers plausible detail as it enlarges it. Unlike simple stretching, edges and textures come out noticeably sharper.</p>
+      </details>
+      <details>
+        <summary>How long does processing take?</summary>
+        <p>It depends on the image size and the scale or resolution you choose, but since the AI runs directly in your browser, it typically takes anywhere from a few seconds to tens of seconds.</p>
+      </details>
+      <details>
+        <summary>Can I use it without installing anything or signing up?</summary>
+        <p>Yes. No installation or account is required — just use it directly in your browser.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">Everyday image work, made simple and safe.</p></div>
+      <nav class="footer-links" aria-label="Site info"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy Policy</a></nav>
+    </div>
+  </footer>
+
+  <script src="../js/strings.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js" integrity="sha384-vE8hbVJ4lezako5rlvE7bY0BVzWlFhZncPlckrqNwcUQpVtgbENTgZ8TBbnPjZre" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@1.0.0/dist/umd/models/esrgan-slim/src/x2/index.min.js" integrity="sha384-AGBOpw8YDaWtze64+1P80uYCg+607+NLyI/tVeKNOJr9+SHUMEC7Z0ue5WJy5zIs" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/upscaler@1.0.0/dist/browser/umd/upscaler.min.js" integrity="sha384-QMCS4oRU0yhc/triRbY4mcIreg38XzA/8NNuZfTWWvv/km8cX/L63yLb3hh0IaA3" crossorigin="anonymous"></script>
+  <script src="../js/imageTools.js"></script>
+  <script src="../js/upscaleTools.js"></script>
+  <script src="../js/shareUtil.js"></script>
+  <script src="../js/upscaleApp.js"></script>
+</body>
+</html>
