@@ -78,7 +78,9 @@
   function getConvertedFilename(baseName, format) {
     var extension = FORMAT_EXTENSIONS[format];
     if (!extension) {
-      throw new Error('지원하지 않는 변환 형식입니다: ' + format);
+      throw new Error(typeof t === 'function'
+        ? t('unsupportedConvertFormat', { format: format })
+        : 'Unsupported conversion format: ' + format);
     }
     return baseName + '.' + extension;
   }
