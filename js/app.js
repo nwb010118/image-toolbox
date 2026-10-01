@@ -130,10 +130,19 @@ function canvasToBlob(canvas, mimeType, quality) {
   });
 }
 
+// Memory guards: the encoders copy the pixel data (RGBA = 4 bytes per pixel) and work on top of it.
+var MAX_PNG_QUANTIZE_PIXELS = 25000000;
+var MAX_AVIF_PIXELS = 12000000;
+
 function encodeCanvas(canvas, mimeType, level, options) {
+  var pixels = canvas.width * canvas.height;
   if (mimeType === 'image/png') {
     var colors = typeof level === 'number' ? level : options.pngColors;
     if (!colors) {
+      return canvasToBlob(canvas, 'image/png');
+    }
+    if (pixels > MAX_PNG_QUANTIZE_PIXELS) {
+      options.notice = 'pngSkippedLarge';
       return canvasToBlob(canvas, 'image/png');
     }
     return quantizeCanvasToPngBlob(canvas, colors, options.dither).catch(function () {
@@ -141,6 +150,9 @@ function encodeCanvas(canvas, mimeType, level, options) {
     });
   }
   if (mimeType === 'image/avif') {
+    if (pixels > MAX_AVIF_PIXELS) {
+      return Promise.reject(new Error(t('avifTooLarge')));
+    }
     return window.ModernEncoders.encodeCanvas('avif', canvas, level);
   }
   if (mimeType === 'image/jpeg' && MODERN_ENCODERS) {
@@ -157,6 +169,7 @@ function processImage(file, options) {
     return Promise.reject(new Error(t('unsupportedFormatGeneric')));
   }
 
+  options.notice = null;
   return loadImage(file).then(function (img) {
     var dimensions = options.longEdge
       ? fitInside(img.naturalWidth, img.naturalHeight, options.longEdge)
@@ -193,13 +206,13 @@ function processImage(file, options) {
       return fitToTargetSize(function (level, scale) {
         return encodeCanvas(canvasFor(scale), options.outputMimeType, level, options);
       }, options.targetBytes, { levels: levels, preferredLevels: preferredLevels }).then(function (found) {
-        return finish(found.blob, { targeted: true, fit: found.fit, level: found.level, scale: found.scale, isPng: isPng });
+        return finish(found.blob, { targeted: true, fit: found.fit, level: found.level, scale: found.scale, isPng: isPng, notice: options.notice });
       });
     }
 
     var level = isPng ? options.pngColors : options.quality;
     return encodeCanvas(canvasFor(1), options.outputMimeType, level, options).then(function (blob) {
-      return finish(blob, { targeted: false, fit: true, level: level, scale: 1, isPng: isPng });
+      return finish(blob, { targeted: false, fit: true, level: level, scale: 1, isPng: isPng, notice: options.notice });
     });
   });
 }
@@ -281,15 +294,18 @@ function describeLevel(info) {
 }
 
 function showTargetNote(result, targetBytes) {
-  if (!result.info.targeted) {
-    targetNote.hidden = true;
-    return;
+  var parts = [];
+  if (result.info.targeted) {
+    var targetText = formatBytes(targetBytes);
+    parts.push(result.info.fit
+      ? t('targetFit', { target: targetText, detail: describeLevel(result.info) })
+      : t('targetMiss', { target: targetText, size: formatBytes(result.blob.size) }));
   }
-  var targetText = formatBytes(targetBytes);
-  targetNote.textContent = result.info.fit
-    ? t('targetFit', { target: targetText, detail: describeLevel(result.info) })
-    : t('targetMiss', { target: targetText, size: formatBytes(result.blob.size) });
-  targetNote.hidden = false;
+  if (result.info.notice) {
+    parts.push(t(result.info.notice));
+  }
+  targetNote.textContent = parts.join(' ');
+  targetNote.hidden = parts.length === 0;
 }
 
 function showMetaNotice(meta) {
