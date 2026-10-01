@@ -62,7 +62,7 @@
         "name": "Can I merge multiple PDF files into one?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "This tool combines images into a PDF, so it doesn't merge existing PDF files directly. A workaround is to extract each PDF to images first, then combine those images back into a single PDF in order."
+          "text": "Yes. Under \"Merge PDFs\", choose up to 10 PDFs (100MB in total), set the order with the Up / Down buttons, and merge. Pages are copied as they are rather than turned into images, so text selection, search and formatting are kept. Password-protected PDFs cannot be merged."
         }
       },
       {
@@ -86,7 +86,7 @@
         "name": "Can I also shrink a PDF's file size?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "This tool combines images into a PDF or extracts a PDF's pages as images — it doesn't compress a PDF directly. To shrink one, extract it to images, compress those with the image compressor, then combine them back into a PDF."
+          "text": "Yes. Upload a PDF under \"Shrink a PDF\" and each page is rebuilt as a JPG image to cut the size (up to 50 pages, three compression levels). It works well for scanned or photo-heavy PDFs, but pages become images, so the text can no longer be selected or searched. Text-based PDFs can even get larger, and the tool tells you when that happens."
         }
       },
       {
@@ -145,8 +145,11 @@
     <h1>PDF Converter</h1>
     <p class="subtitle">Your files are never sent anywhere — everything is processed right in this browser.</p></div><svg class="studio-art" viewBox="0 0 340 180" fill="none" aria-hidden="true"><circle cx="185" cy="90" r="84" fill="var(--color-accent-soft)"/><g transform="rotate(-9 110 90)"><rect x="34" y="30" width="140" height="112" rx="14" fill="var(--color-surface)" stroke="var(--color-border-strong)"/><rect x="46" y="42" width="116" height="74" rx="8" fill="var(--color-chip-blue-bg)"/><circle cx="132" cy="60" r="10" fill="var(--color-chip-orange-fg)"/><path d="m46 106 34-39 29 27 20-17 33 39H46Z" fill="var(--color-accent)" opacity=".7"/><path d="M48 129h44" stroke="var(--color-border-strong)" stroke-width="5" stroke-linecap="round"/></g><g transform="rotate(7 248 98)"><rect x="202" y="45" width="100" height="112" rx="14" fill="var(--color-accent)"/><path d="M224 72h56M224 85h40M224 98h30" stroke="var(--color-on-accent)" stroke-width="5" stroke-linecap="round"/><circle cx="271" cy="132" r="16" fill="var(--color-surface)"/><path d="m263 132 5 5 10-11" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M168 91h30m-9-9 9 9-9 9" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M291 18v14m-7-7h14M18 134v10m-5-5h10" stroke="var(--color-chip-orange-fg)" stroke-width="2" stroke-linecap="round"/></svg></div>
 
+    <div id="privacyMeter" class="privacy-meter" aria-live="polite"></div>
     <nav class="task-picker" aria-label="Choose a PDF task">
       <a href="#images-to-pdf" aria-current="true">Photos → PDF</a>
+      <a href="#merge-pdf">Merge PDFs</a>
+      <a href="#shrink-pdf">Shrink a PDF</a>
       <a href="#pdf-to-images">PDF → Images</a>
       <a href="#pdf-to-document">PDF → Word·PPT·Excel</a>
     </nav>
@@ -182,6 +185,72 @@
         <button type="button" id="imgToPdfShareBtn" class="btn btn-outline" hidden>Share this site</button>
       </div>
       <p id="imgToPdfShareStatus" class="share-status" role="status" hidden></p>
+    </section>
+
+    <section class="pdf-section" id="merge-pdf">
+      <h2>Merge PDFs</h2>
+      <p class="tool-nav"><a href="../pdf-merge-multiple-files.html">Learn more about merging several PDFs →</a></p>
+      <section class="upload-area" id="mergePdfUploadArea">
+        <input type="file" id="mergePdfFileInput" class="visually-hidden" accept="application/pdf,.pdf" multiple>
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="M7 8l5-5 5 5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        <button type="button" class="upload-btn">Choose PDF files (several allowed)</button>
+        <p class="upload-hint">or drag and drop files into this area</p>
+        <p class="upload-formats">PDF supported · up to 20MB each · up to 10 files · 100MB in total</p>
+        <div id="mergePdfError" class="error-message" role="alert" hidden></div>
+      </section>
+
+      <p class="upload-hint">After adding files, use the Up / Down buttons to set the order. Text and formatting are preserved.</p>
+      <ul id="mergePdfFileList" class="file-list"></ul>
+
+      <button id="mergePdfBtn" hidden>Merge PDFs</button>
+      <p class="offline-badge">
+        <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        No server uploads · Processed entirely in your browser
+      </p>
+      <p id="mergePdfProgress" class="pdf-progress" role="status" hidden></p>
+      <div class="result-actions">
+        <a id="mergePdfDownloadBtn" class="btn" href="#" download="merged.pdf" hidden>Download merged PDF</a>
+      </div>
+      <p id="mergePdfNote" class="result-note" role="status" hidden></p>
+    </section>
+
+    <section class="pdf-section" id="shrink-pdf">
+      <h2>Shrink a PDF</h2>
+      <p class="tool-nav"><a href="../pdf-file-size-reduction.html">Learn which PDFs this helps →</a></p>
+      <div class="conversion-notice"><strong>Good to know first</strong><ul><li>Works well for scanned or photo-heavy PDFs.</li><li>Each page is rebuilt as an image, so you can no longer select or search the text.</li><li>Text-based PDFs can actually get larger. If that happens, you will be told.</li></ul></div>
+      <div class="pdf-options"><label>Compression level <select id="shrinkPreset"><option value="balanced">Balanced (110 dpi)</option><option value="high">High quality (150 dpi)</option><option value="small">Smallest (80 dpi)</option></select></label></div>
+      <section class="upload-area" id="shrinkPdfUploadArea">
+        <input type="file" id="shrinkPdfFileInput" class="visually-hidden" accept="application/pdf,.pdf">
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="M7 8l5-5 5 5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        <button type="button" class="upload-btn">Choose PDF file</button>
+        <p class="upload-hint">or drag and drop files into this area</p>
+        <p class="upload-formats">PDF supported · up to 20MB · up to 50 pages</p>
+        <div id="shrinkPdfError" class="error-message" role="alert" hidden></div>
+      </section>
+      <p class="offline-badge">
+        <svg class="offline-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        No server uploads · Processed entirely in your browser
+      </p>
+      <p id="shrinkPdfProgress" class="pdf-progress" role="status" hidden></p>
+      <button type="button" id="shrinkPdfCancel" hidden>Stop after current page</button>
+      <div class="result-actions">
+        <a id="shrinkPdfDownloadBtn" class="btn" href="#" download hidden>Download shrunk PDF</a>
+      </div>
+      <p id="shrinkPdfNote" class="result-note" role="status" hidden></p>
     </section>
 
     <section class="pdf-section" id="pdf-to-images">
@@ -269,7 +338,8 @@
 
     <section class="info-section">
       <h2>What this tool can do</h2>
-      <p>Combine multiple photos into a single PDF, in order. See <a href="../photos-to-pdf.html">how to combine photos into a PDF</a> for details.</p>
+      <p>You can merge several PDF files into one in the order you choose (text and formatting are kept), and shrink scanned or photo-heavy PDFs.</p>
+      <p>You can combine multiple photos into a single PDF, in order. See <a href="../photos-to-pdf.html">how to combine photos into a PDF</a> for details.</p>
       <p>Extract individual PDF pages as separate images.</p>
       <p>Convert a PDF to Word, PowerPoint, or Excel. See <a href="../pdf-to-word.html">how to convert a PDF to Word</a> and <a href="../pdf-to-ppt.html">how to convert a PDF to PowerPoint</a> for details.</p>
     </section>
@@ -282,7 +352,7 @@
       </details>
       <details>
         <summary>Can I merge multiple PDF files into one?</summary>
-        <p>This tool combines images into a PDF, so it doesn't merge existing PDF files directly. A workaround is to extract each PDF to images first, then combine those images back into a single PDF in order. See <a href="../pdf-merge-multiple-files.html">this guide</a> for the full method and its limits.</p>
+        <p>Yes. Under "Merge PDFs", choose up to 10 PDFs (100MB in total), set the order with the Up / Down buttons, and merge. Pages are copied as they are rather than turned into images, so text selection, search and formatting are kept. Password-protected PDFs cannot be merged. See <a href="../pdf-merge-multiple-files.html">this guide</a> for details and limits.</p>
       </details>
       <details>
         <summary>What format do I get when I extract images from a PDF?</summary>
@@ -294,7 +364,7 @@
       </details>
       <details>
         <summary>Can I also shrink a PDF's file size?</summary>
-        <p>This tool combines images into a PDF or extracts a PDF's pages as images — it doesn't compress a PDF directly. To shrink one, extract it to images, compress those with the image compressor, then combine them back into a PDF. See <a href="../pdf-file-size-reduction.html">this guide</a> for when this approach actually helps.</p>
+        <p>Yes. Upload a PDF under "Shrink a PDF" and each page is rebuilt as a JPG image to cut the size (up to 50 pages, three compression levels). It works well for scanned or photo-heavy PDFs, but pages become images, so the text can no longer be selected or searched. Text-based PDFs can even get larger, and the tool tells you when that happens. See <a href="../pdf-file-size-reduction.html">this guide</a> for when this approach actually helps.</p>
       </details>
       <details>
         <summary>Can I turn scanned document photos into a PDF?</summary>
@@ -322,6 +392,7 @@
     </div>
   </footer>
 
+  <script src="../js/privacyMeter.js"></script>
   <script src="../js/strings.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
@@ -332,10 +403,15 @@
   <script src="../js/workflowTools.js"></script>
   <script src="../js/pdfNavigation.js"></script>
   <script src="../js/pdfApp.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" integrity="sha384-weMABwrltA6jWR8DDe9Jp5blk+tZQh7ugpCsF3JwSA53WZM9/14PjS5LAJNHNjAI" crossorigin="anonymous"></script>
+  <script src="../js/pdfExtraTools.js"></script>
+  <script src="../js/pdfMergeApp.js"></script>
+  <script src="../js/pdfShrinkApp.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js" integrity="sha384-qb0Xhi7LLYpvW1HCK6oMrmDLSY9sy7vwm6ZlV6KjtrlL9yg30+YN4neTwnmX+Kp8" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.iife.js" integrity="sha384-9OH56uLhIvkZkwF0jWNlfpcK3gPuSy5DfEMNqKe156wCpkND+MDdtaRyd05kwpG0" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
   <script src="../js/pdfConvertTools.js"></script>
   <script src="../js/pdfConvertApp.js"></script>
+  <script src="../js/privacyBadge.js"></script>
 </body>
 </html>
