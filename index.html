@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
   <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
-  <link rel="stylesheet" href="css/toolStudio.css?v=6c457a6e">
+  <link rel="stylesheet" href="css/toolStudio.css?v=9e0750ee">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -176,12 +176,8 @@
     <div id="privacyMeter" class="privacy-meter" aria-live="polite"></div>
 
     <section class="controls" id="controls" tabindex="-1" aria-label="이미지 압축 설정" hidden>
-      <div class="option-group">
-        <label for="presetSelect">용도별 프리셋</label>
-        <select id="presetSelect"><option value="">직접 설정</option></select>
-        <p id="presetNote" class="field-note" hidden></p>
-      </div>
-
+      <div class="control-step">
+        <p class="control-step-title">1. 용량</p>
       <fieldset class="mode-group">
         <legend>압축 방식</legend>
         <label class="radio-label"><input type="radio" name="compressMode" id="modeQuality" value="quality" checked> 품질로 조절</label>
@@ -198,6 +194,44 @@
       <div id="qualityFields">
         <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
         <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      </div>
+
+      </div>
+
+      <div class="control-step">
+        <p class="control-step-title">2. 형식</p>
+      <label for="formatSelect">출력 형식</label>
+      <select id="formatSelect">
+        <option value="original">원본과 동일</option>
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WebP</option>
+      </select>
+
+      <div id="pngOptions" class="option-group" hidden>
+        <label for="pngColors">PNG 색 수</label>
+        <select id="pngColors">
+          <option value="256" selected>256색 (권장 · 용량이 크게 줄어요)</option>
+          <option value="128">128색</option>
+          <option value="64">64색</option>
+          <option value="32">32색</option>
+          <option value="0">원본 그대로 (무손실 · 용량이 거의 안 줄어요)</option>
+        </select>
+        <label class="checkbox-label">
+          <input type="checkbox" id="pngDither">
+          디더링 (그라데이션을 더 부드럽게)
+        </label>
+      </div>
+      <p id="pngSizeHint" class="compress-warning" hidden>PNG '원본 그대로'는 무손실이라 압축해도 용량이 줄지 않고, 오히려 원본보다 커질 수 있습니다. 용량을 줄이려면 색 수를 줄이거나 JPG·WebP를 선택하세요.</p>
+
+      </div>
+
+      <div class="control-step">
+        <p class="control-step-title">3. 크기·규격 (선택)</p>
+      <div class="option-group">
+        <label for="presetSelect">용도별 프리셋</label>
+        <select id="presetSelect"><option value="">직접 설정</option></select>
+        <p id="presetNote" class="field-note" hidden></p>
       </div>
 
       <div class="resize-fields" id="resizeFields">
@@ -229,29 +263,7 @@
         </div>
       </div>
 
-      <label for="formatSelect">출력 형식</label>
-      <select id="formatSelect">
-        <option value="original">원본과 동일</option>
-        <option value="image/jpeg">JPG</option>
-        <option value="image/png">PNG</option>
-        <option value="image/webp">WebP</option>
-      </select>
-
-      <div id="pngOptions" class="option-group" hidden>
-        <label for="pngColors">PNG 색 수</label>
-        <select id="pngColors">
-          <option value="256" selected>256색 (권장 · 용량이 크게 줄어요)</option>
-          <option value="128">128색</option>
-          <option value="64">64색</option>
-          <option value="32">32색</option>
-          <option value="0">원본 그대로 (무손실 · 용량이 거의 안 줄어요)</option>
-        </select>
-        <label class="checkbox-label">
-          <input type="checkbox" id="pngDither">
-          디더링 (그라데이션을 더 부드럽게)
-        </label>
       </div>
-      <p id="pngSizeHint" class="compress-warning" hidden>PNG '원본 그대로'는 무손실이라 압축해도 용량이 줄지 않고, 오히려 원본보다 커질 수 있습니다. 용량을 줄이려면 색 수를 줄이거나 JPG·WebP를 선택하세요.</p>
 
       <button id="compressBtn">적용하기</button>
       <p class="offline-badge">

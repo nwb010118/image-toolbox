@@ -88,3 +88,8 @@
 .privacy-meter-how summary { cursor: pointer; font-size: 13px; color: var(--color-accent-dark); }
 .privacy-meter-how ol { margin: 8px 0 4px; padding-left: 20px; color: var(--color-text-secondary); line-height: 1.7; }
 .privacy-meter-note { font-size: 12px; color: var(--color-text-secondary); margin-top: 6px !important; line-height: 1.6; }
+
+/* Compression controls are grouped into numbered steps */
+.control-step { padding: 0 0 6px; margin: 0 0 20px; border-bottom: 1px solid var(--color-border); }
+.control-step:last-of-type { border-bottom: 0; }
+.control-step-title { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: .02em; color: var(--color-accent-dark); }

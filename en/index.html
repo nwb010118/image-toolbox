@@ -27,7 +27,7 @@
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
   <link rel="stylesheet" href="../css/style.css?v=ea4abd9e">
   <link rel="stylesheet" href="../css/site.css?v=f3a74f6f">
-  <link rel="stylesheet" href="../css/toolStudio.css?v=6c457a6e">
+  <link rel="stylesheet" href="../css/toolStudio.css?v=9e0750ee">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -175,12 +175,8 @@
     <div id="privacyMeter" class="privacy-meter" aria-live="polite"></div>
 
     <section class="controls" id="controls" tabindex="-1" aria-label="Image compression settings" hidden>
-      <div class="option-group">
-        <label for="presetSelect">Preset for a specific use</label>
-        <select id="presetSelect"><option value="">Custom</option></select>
-        <p id="presetNote" class="field-note" hidden></p>
-      </div>
-
+      <div class="control-step">
+        <p class="control-step-title">1. File size</p>
       <fieldset class="mode-group">
         <legend>Compression mode</legend>
         <label class="radio-label"><input type="radio" name="compressMode" id="modeQuality" value="quality" checked> Set the quality</label>
@@ -197,6 +193,44 @@
       <div id="qualityFields">
         <label for="qualitySlider">Quality: <span id="qualityValue">80</span>%</label>
         <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      </div>
+
+      </div>
+
+      <div class="control-step">
+        <p class="control-step-title">2. Format</p>
+      <label for="formatSelect">Output format</label>
+      <select id="formatSelect">
+        <option value="original">Same as original</option>
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WebP</option>
+      </select>
+
+      <div id="pngOptions" class="option-group" hidden>
+        <label for="pngColors">PNG colors</label>
+        <select id="pngColors">
+          <option value="256" selected>256 colors (recommended · big savings)</option>
+          <option value="128">128 colors</option>
+          <option value="64">64 colors</option>
+          <option value="32">32 colors</option>
+          <option value="0">Original (lossless · barely shrinks)</option>
+        </select>
+        <label class="checkbox-label">
+          <input type="checkbox" id="pngDither">
+          Dithering (smoother gradients)
+        </label>
+      </div>
+      <p id="pngSizeHint" class="compress-warning" hidden>PNG "Original" is lossless, so compressing it won't shrink the file — it may even get larger. To reduce size, lower the number of colors or choose JPG or WebP.</p>
+
+      </div>
+
+      <div class="control-step">
+        <p class="control-step-title">3. Dimensions & presets (optional)</p>
+      <div class="option-group">
+        <label for="presetSelect">Preset for a specific use</label>
+        <select id="presetSelect"><option value="">Custom</option></select>
+        <p id="presetNote" class="field-note" hidden></p>
       </div>
 
       <div class="resize-fields" id="resizeFields">
@@ -228,29 +262,7 @@
         </div>
       </div>
 
-      <label for="formatSelect">Output format</label>
-      <select id="formatSelect">
-        <option value="original">Same as original</option>
-        <option value="image/jpeg">JPG</option>
-        <option value="image/png">PNG</option>
-        <option value="image/webp">WebP</option>
-      </select>
-
-      <div id="pngOptions" class="option-group" hidden>
-        <label for="pngColors">PNG colors</label>
-        <select id="pngColors">
-          <option value="256" selected>256 colors (recommended · big savings)</option>
-          <option value="128">128 colors</option>
-          <option value="64">64 colors</option>
-          <option value="32">32 colors</option>
-          <option value="0">Original (lossless · barely shrinks)</option>
-        </select>
-        <label class="checkbox-label">
-          <input type="checkbox" id="pngDither">
-          Dithering (smoother gradients)
-        </label>
       </div>
-      <p id="pngSizeHint" class="compress-warning" hidden>PNG "Original" is lossless, so compressing it won't shrink the file — it may even get larger. To reduce size, lower the number of colors or choose JPG or WebP.</p>
 
       <button id="compressBtn">Apply</button>
       <p class="offline-badge">
