@@ -23,7 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="css/site.css?v=7e213919">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,7 +33,7 @@
     "description": "PDF 파일 여러 개를 하나로 합치는 방법과 한계를 정리했습니다.",
     "inLanguage": "ko",
     "datePublished": "2026-09-13",
-    "dateModified": "2026-09-28",
+    "dateModified": "2026-10-01",
     "author": {
       "@type": "Organization",
       "name": "image toolbox"
@@ -62,19 +62,51 @@
 
     <section class="info-section">
       <h2>이 사이트에서 PDF 합치기</h2>
-      <p><a href="pdf.html#merge-pdf">PDF 변환 도구의 'PDF 합치기'</a>에서 이미 만들어진 PDF 파일을 최대 10개까지 선택해 하나로 합칠 수 있습니다. 파일당 최대 20MB, 합계 100MB까지 지원합니다. 파일을 추가한 뒤 위·아래 버튼으로 순서를 정하고 '합치기'를 누르면 됩니다.</p>
-      <p>이 기능은 페이지를 이미지로 바꾸지 않고 그대로 복사해서 이어 붙입니다. 그래서 글자를 선택·검색하는 기능과 서식이 유지되고, 용량도 원본들의 합계와 거의 같습니다. 직접 만든 테스트 PDF(텍스트 3페이지 + 스캔형 3페이지 + 텍스트 3페이지)를 합쳤을 때 9페이지로 정확히 이어졌고 첫 페이지의 글자도 그대로 선택됐습니다.</p>
+      <p><a href="pdf.html#merge-pdf">PDF 변환 도구의 'PDF 합치기'</a>에서 이미 만들어진 PDF 파일을 최대 10개까지 선택해 하나로 합칠 수 있습니다. 파일당 최대 20MB, 합계 100MB까지 지원합니다. 파일을 추가한 뒤 위·아래 버튼으로 순서를 정하고 'PDF 합치기'를 누르면 됩니다.</p>
+      <p>이 기능은 페이지를 이미지로 바꾸지 않고 그대로 복사해서 이어 붙입니다. 그래서 글자를 선택·검색하는 기능과 서식이 유지되고, 용량도 원본들의 합계와 거의 같습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>직접 합쳐 본 결과: 종류가 다른 PDF 3개</h2>
+      <p>성격이 전혀 다른 PDF 세 개를 순서대로 합쳤습니다. 글자로 된 보고서, 사진이 들어간 가로형 발표 자료, 종이를 스캔한 문서입니다.</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>순서</th><th>파일</th><th>페이지</th><th>용량</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>글자 보고서(A4 세로)</td><td>3</td><td>35.2KB</td></tr>
+          <tr><td>2</td><td>발표 자료(가로)</td><td>4</td><td>2.5MB</td></tr>
+          <tr><td>3</td><td>스캔 문서(A4 세로)</td><td>4</td><td>4.7MB</td></tr>
+          <tr><td colspan="2"><strong>합친 결과</strong></td><td><strong>11</strong></td><td><strong>7.2MB</strong></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>합치는 데 0.3초가 걸렸고, 결과 용량(7,589,841바이트)은 원본 합계(7,597,502바이트)와 0.1%밖에 차이 나지 않았습니다. 첫 페이지의 글자는 합친 뒤에도 그대로 선택·검색됐고, 가로 페이지는 가로로, 세로 페이지는 세로로 섞인 채 이어졌습니다.</p>
+      <figure class="guide-image">
+        <img src="images/guide-pdf-merge-result.png" alt="PDF 합치기 화면 — 보고서·발표 자료·스캔 문서 PDF 3개가 순서대로 목록에 있고, '3개 PDF, 총 11페이지를 합쳤어요 (7.2 MB)' 결과 문구와 합친 PDF 다운로드 버튼이 보이는 모습" width="768" height="606" loading="lazy" decoding="async">
+        <figcaption>세 파일을 합친 뒤의 실제 화면. 결과 문구에 페이지 수와 용량이 함께 표시됩니다.</figcaption>
+      </figure>
     </section>
 
     <section class="info-section">
       <h2>한계</h2>
       <p>암호가 걸린 PDF는 합칠 수 없습니다(먼저 암호를 풀어야 합니다). PDF 안의 책갈피(목차 링크)나 양식 입력칸은 합친 결과에서 유지되지 않을 수 있습니다. 한 번에 합칠 수 있는 파일은 10개, 합계 100MB까지입니다. 이를 넘으면 두 번에 나눠 합친 뒤 결과를 다시 합치면 됩니다.</p>
-      <p>페이지 순서만 바꾸고 싶거나 특정 페이지만 뽑고 싶다면, 합치기 전에 'PDF → 이미지'로 필요한 페이지만 추출해 이미지로 쓰는 방법도 있습니다. 다만 이 경우 글자는 이미지가 됩니다.</p>
+      <p>합친 PDF 안에서 특정 페이지만 빼거나 순서를 섞는 편집 기능은 없습니다. 파일 단위로만 순서를 정할 수 있으니, 페이지 단위 편집이 필요하다면 PDF 편집 프로그램을 쓰는 편이 맞습니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>합친 뒤 용량이 크다면</h2>
-      <p>스캔본이 섞여 있어 합친 PDF가 너무 크다면 <a href="pdf.html#shrink-pdf">PDF 용량 줄이기</a>로 한 번 더 줄일 수 있습니다. 이 방법은 페이지를 이미지로 다시 만들기 때문에 글자를 선택·검색할 수 없게 된다는 점을 알아두세요. 자세한 내용은 <a href="pdf-file-size-reduction.html">PDF 파일 용량 줄이는 법</a>을 참고하세요.</p>
+      <h2>합친 뒤 용량이 크다면: 무엇이 섞여 있는지부터 보세요</h2>
+      <p>합친 PDF가 업로드 제한을 넘는다면 <a href="pdf.html#shrink-pdf">PDF 용량 줄이기</a>로 한 번 더 줄일 수 있습니다. 다만 이 기능은 페이지를 이미지로 다시 만들기 때문에 <strong>어떤 PDF냐에 따라 결과가 정반대</strong>입니다. 위에서 쓴 세 파일을 각각 세 단계로 줄여 봤습니다.</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>파일</th><th>원본</th><th>고화질</th><th>보통</th><th>최대 압축</th></tr></thead>
+        <tbody>
+          <tr><td>스캔 문서</td><td>4.7MB</td><td>1.1MB</td><td>579.6KB</td><td>312.1KB</td></tr>
+          <tr><td>발표 자료</td><td>2.5MB</td><td>330.8KB</td><td>185.1KB</td><td>106.6KB</td></tr>
+          <tr><td>글자 보고서</td><td>35.2KB</td><td>681.1KB</td><td>390.2KB</td><td>205.3KB</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>스캔 문서와 사진이 든 발표 자료는 77~96% 줄었지만, 글자 보고서는 최대 압축에서도 원본의 약 6배로 <strong>커졌습니다</strong>. 그래서 글자 PDF와 스캔 PDF를 합칠 계획이라면, <strong>스캔 PDF만 먼저 줄인 뒤 합치는 순서</strong>가 가장 좋습니다. 글자 PDF는 그대로 두면 가볍고 검색도 되기 때문입니다. 줄인 페이지는 글자를 선택하거나 검색할 수 없다는 점도 알아두세요. 자세한 내용은 <a href="pdf-file-size-reduction.html">PDF 파일 용량 줄이는 법</a>에 정리했습니다.</p>
     </section>
 
     <section class="info-section">
@@ -85,7 +117,11 @@
       </details>
       <details>
         <summary>합친 PDF도 텍스트를 검색하거나 복사할 수 있나요?</summary>
-        <p>네. 페이지를 이미지로 바꾸지 않고 그대로 복사해 이어 붙이기 때문에, 원본에서 선택·검색되던 글자는 합친 뒤에도 그대로 선택·검색됩니다.</p>
+        <p>네. 페이지를 이미지로 바꾸지 않고 그대로 복사해 이어 붙이기 때문에, 원본에서 선택·검색되던 글자는 합친 뒤에도 그대로 선택·검색됩니다. 테스트에서도 첫 페이지 글자가 그대로 선택됐습니다.</p>
+      </details>
+      <details>
+        <summary>합치면 용량이 늘어나나요?</summary>
+        <p>거의 그대로입니다. 테스트에서 PDF 3개(합계 7,597,502바이트)를 합친 결과가 7,589,841바이트로, 차이는 0.1%였습니다.</p>
       </details>
       <details>
         <summary>합치려는 PDF가 총 100MB가 넘으면 어떻게 하나요?</summary>
@@ -97,15 +133,11 @@
       </details>
       <details>
         <summary>페이지 방향(회전)이 다른 PDF끼리도 합쳐지나요?</summary>
-        <p>네. 각 페이지는 원본의 크기와 방향을 그대로 유지한 채 이어 붙습니다. 가로 페이지와 세로 페이지가 섞여 있으면 합친 뒤에도 그대로 섞여 보입니다.</p>
-      </details>
-      <details>
-        <summary>페이지 순서가 뒤바뀌지 않게 하려면 어떻게 하나요?</summary>
-        <p>파일 목록의 위·아래 버튼으로 원하는 순서를 맞춘 뒤 합치면 목록 순서 그대로 페이지가 이어집니다. 합치기 전에 순서를 한 번 더 확인하세요.</p>
+        <p>네. 각 페이지는 원본의 크기와 방향을 그대로 유지한 채 이어 붙습니다. 테스트에서도 가로 발표 자료와 세로 보고서가 그대로 섞여 이어졌습니다.</p>
       </details>
       <details>
         <summary>스캔한 사진 여러 장을 합치는 것도 같은 방법인가요?</summary>
-        <p>사진(JPG·PNG 등)을 순서대로 PDF로 만드는 것은 '이미지 → PDF' 기능을 쓰세요. 이미 PDF가 된 파일끼리 합칠 때만 'PDF 합치기'를 쓰면 됩니다. 스캔한 옛날 사진을 정리하는 방법은 <a href="old-photo-scan-digitize-workflow.html">옛날 사진 스캔부터 보관까지</a>에서 더 자세히 다룹니다.</p>
+        <p>사진(JPG·PNG 등)을 순서대로 PDF로 만드는 것은 '이미지 → PDF' 기능을 쓰세요. 이미 PDF가 된 파일끼리 합칠 때만 'PDF 합치기'를 쓰면 됩니다. 방법은 <a href="photos-to-pdf.html">여러 장 사진을 PDF로 합치는 법</a>에 있습니다.</p>
       </details>
     </section>
 

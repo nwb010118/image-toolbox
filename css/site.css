@@ -8,7 +8,7 @@
   --color-border: #dde4e0;
   --color-border-strong: #9db9ad;
   --color-text: #202b27;
-  --color-text-secondary: #64716b;
+  --color-text-secondary: #5f6b66;
   --color-surface: #ffffff;
   --color-surface-subtle: #f6f8f7;
   --color-aside-bg: #eaf0ec;
@@ -181,7 +181,8 @@ select, #formatSelect { min-height: 44px; border: 1px solid var(--color-border);
   .guide-grid { grid-template-columns: 1fr; }
   .guide-card { padding: 24px; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
-  .footer-links { gap: 20px; }
+  .footer-links { gap: 8px 20px; }
+  .footer-links a { display: inline-block; padding: 12px 0; }
   table { font-size: 12px; overflow-wrap: anywhere; word-break: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -254,3 +255,12 @@ select, #formatSelect { min-height: 44px; border: 1px solid var(--color-border);
 .preview-box .compression-savings.size-increased { color: var(--color-warning-text); background: var(--color-warning-bg); }
 .page-guide .card-visual { margin-bottom: 16px; }
 
+
+/* Data tables and small notes inside guide articles */
+.info-section .table-wrap { overflow-x: auto; margin: 12px 0 16px; -webkit-overflow-scrolling: touch; }
+.info-section table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.6; }
+.info-section th, .info-section td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--color-border); }
+.info-section th { color: var(--color-text-secondary); font-weight: 600; white-space: nowrap; }
+.info-section ul, .info-section ol { padding-left: 22px; margin: 8px 0 14px; }
+.info-section li { margin-bottom: 6px; }
+.info-section .note-small { font-size: 13px; color: var(--color-text-secondary); }

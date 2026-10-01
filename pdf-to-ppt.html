@@ -23,28 +23,28 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="css/site.css?v=7e213919">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "PDF를 파워포인트(PPT)로 변환하는 방법",
-    "description": "PDF 각 페이지를 파워포인트(.pptx) 슬라이드로 변환하는 방법",
+    "description": "PDF의 각 페이지를 이미지로 담은 .pptx 파일을 만드는 방법",
     "step": [
       {
         "@type": "HowToStep",
         "name": "PDF 파일 선택",
-        "text": "PDF → 문서 변환 섹션에서 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다."
+        "text": "PDF→문서 변환 섹션에서 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다."
       },
       {
         "@type": "HowToStep",
         "name": "출력 형식 확인",
-        "text": "출력 형식의 기본값이 이미 PowerPoint이므로 별도 선택 없이 바로 진행할 수 있습니다."
+        "text": "출력 형식의 기본값이 PowerPoint이므로 그대로 진행합니다."
       },
       {
         "@type": "HowToStep",
-        "name": "변환하기 클릭 후 다운로드",
-        "text": "변환하기 버튼을 누르면 브라우저 안에서 .pptx 파일이 만들어지고, 바로 다운로드할 수 있습니다."
+        "name": "변환하기 후 다운로드",
+        "text": "각 페이지가 이미지로 바뀌어 슬라이드에 들어간 .pptx 파일을 내려받습니다."
       }
     ]
   }
@@ -59,7 +59,7 @@
         "name": "슬라이드 안의 텍스트를 파워포인트에서 수정할 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "아니요. 각 PDF 페이지를 이미지로 캡처해 슬라이드에 삽입하는 방식이라, 파워포인트에서 텍스트를 직접 수정할 수는 없습니다. 텍스트 편집이 필요하다면 PDF→Word 변환을 이용해주세요."
+          "text": "아니요. 각 페이지가 그림 한 장으로 들어가서 글상자가 없습니다. 글자를 고쳐야 한다면 PDF→Word로 글자를 뽑아 붙여 넣으세요."
         }
       },
       {
@@ -67,7 +67,7 @@
         "name": "스캔한 PDF(이미지로 된 PDF)도 변환되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "네. PPT 변환은 텍스트 유무와 상관없이 페이지를 이미지로 그대로 옮기기 때문에, 스캔본 PDF도 문제없이 변환됩니다. Word·Excel 변환과 달리 텍스트가 없어도 동작하는 이유입니다."
+          "text": "네. PPT 변환은 페이지를 그림으로 옮기기 때문에 스캔본도 변환됩니다. Word·Excel 변환과 다른 점입니다."
         }
       },
       {
@@ -75,15 +75,23 @@
         "name": "몇 페이지까지 변환할 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "메모리 보호를 위해 PPT 변환은 최대 100페이지까지 지원합니다. 더 많은 페이지가 있다면 PDF를 나눠서 여러 번 변환해주세요."
+          "text": "메모리 보호를 위해 PPT 변환은 최대 100페이지까지 지원합니다. 더 많다면 PDF를 나눠서 변환하세요."
         }
       },
       {
         "@type": "Question",
-        "name": "슬라이드 크기(비율)가 이상해요",
+        "name": "슬라이드 비율이 16:9가 아니에요",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "슬라이드 크기는 표준 16:9가 아니라 원본 PDF 페이지의 실제 크기 그대로 고정됩니다. PDF가 A4 비율이라면 슬라이드도 A4 비율로 생성됩니다."
+          "text": "슬라이드 크기는 원본 PDF 페이지 비율을 그대로 따릅니다. A4 세로 PDF라면 슬라이드도 A4 세로 비율이 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PPT 파일이 원본 PDF보다 커요",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "페이지를 그림으로 바꿔 넣기 때문입니다. 테스트에서 2.5MB PDF가 2.7MB PPT가 됐습니다. 글자 위주의 PDF는 차이가 더 커질 수 있습니다."
         }
       },
       {
@@ -91,7 +99,7 @@
         "name": "다운로드한 파일은 어떤 프로그램에서 열리나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": ".pptx 형식으로 저장되며 Microsoft PowerPoint, 한쇼, 구글 프레젠테이션 등에서 열 수 있습니다."
+          "text": ".pptx 형식이라 Microsoft PowerPoint, 한쇼, 구글 프레젠테이션 등에서 열 수 있습니다."
         }
       }
     ]
@@ -119,44 +127,68 @@
     <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="info-section">
-      <h2>이런 상황에서 필요합니다</h2>
-      <p>PDF로 받은 자료를 발표 자료로 재활용해야 할 때, 강의 자료나 보고서를 슬라이드 형태로 옮겨서 보여줘야 할 때, 스캔해서 이미지로만 존재하는 옛날 문서를 프레젠테이션에 끼워 넣어야 할 때처럼, PDF 페이지를 파워포인트 슬라이드로 옮겨야 하는 상황이 있습니다. 이 페이지에서는 image-toolbox의 PDF→문서 변환 기능으로 이를 처리하는 방법을 설명합니다.</p>
+      <h2>"PPT로 바꾸면 수정할 수 있겠지"라고 생각했다면</h2>
+      <p>이 도구의 PDF→PPT 변환은 각 페이지를 <strong>그림으로 찍어서</strong> 슬라이드 한 장에 한 장씩 넣습니다. 그래서 파워포인트에서 글자를 고칠 수는 없습니다. 대신 PDF 자료를 발표 순서에 끼워 넣거나, 스캔 문서처럼 글자가 없는 PDF를 슬라이드로 보여 주는 데는 잘 맞습니다. 변환 화면 위쪽에도 이 차이가 먼저 안내됩니다.</p>
+      <figure class="guide-image">
+        <img src="images/guide-pdf-to-ppt-notice.png" alt="PDF→문서 변환 화면 — 'PPT: 페이지를 이미지로 넣습니다. 슬라이드 안의 글자는 직접 편집할 수 없습니다' 등의 안내 상자와 PowerPoint가 선택된 출력 형식, 변환된 파일 다운로드 버튼" width="768" height="780" loading="lazy" decoding="async">
+        <figcaption>발표 자료 PDF 4페이지를 PowerPoint로 변환한 뒤의 화면. 위쪽 노란 상자에 형식별로 무엇이 옮겨지는지 적혀 있습니다.</figcaption>
+      </figure>
     </section>
 
     <section class="info-section">
-      <h2>사용 방법</h2>
-      <p><strong>1. PDF 파일 선택.</strong> "PDF → 문서 변환" 섹션에서 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다. 최대 20MB, PPT 변환은 최대 100페이지까지 지원합니다.</p>
-      <p><strong>2. 출력 형식 확인.</strong> 출력 형식의 기본값이 이미 PowerPoint이므로 별도로 선택할 필요 없이 바로 진행할 수 있습니다.</p>
-      <p><strong>3. 변환하기 클릭 후 다운로드.</strong> 브라우저 안에서 각 페이지가 이미지로 캡처되어 슬라이드로 만들어지고, 완료되면 .pptx 파일을 바로 다운로드할 수 있습니다.</p>
-      <p><a class="btn" href="pdf.html#pdfConvertUploadArea">지금 PDF를 파워포인트로 변환하기 →</a></p>
+      <h2>직접 변환해 본 결과</h2>
+      <p>제목 띠, 글머리표 문장 4줄, 사진 한 장이 들어간 가로형 발표 자료 PDF 4페이지(2.5MB)를 변환했습니다.</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>결과</th></tr></thead>
+        <tbody>
+          <tr><td>슬라이드 수</td><td>4장(원본 페이지 수와 같음)</td></tr>
+          <tr><td>슬라이드 내용</td><td>페이지 전체가 그림 1장으로 들어감 — 글상자 0개</td></tr>
+          <tr><td>글자 수정</td><td>불가(그림의 일부)</td></tr>
+          <tr><td>처리 시간</td><td>약 0.8초</td></tr>
+          <tr><td>파일 용량</td><td>2.7MB(원본 PDF보다 약 7% 큼)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>페이지를 그림으로 바꾸기 때문에 PPT 파일이 원본 PDF보다 약간 커졌습니다. 글자 위주의 가벼운 PDF일수록 이 차이가 더 벌어질 수 있습니다. 슬라이드 크기는 16:9로 바뀌지 않고 원본 PDF 페이지 비율을 그대로 따릅니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>알아두면 좋은 점</h2>
-      <p>이 기능은 PDF의 각 페이지를 이미지로 캡처해서 슬라이드에 그대로 삽입하는 방식입니다. 그래서 파워포인트에서 슬라이드 안의 텍스트나 도형을 직접 수정할 수는 없지만, 반대로 텍스트가 없는 스캔본 PDF도 변환할 수 있다는 장점이 있습니다(Word·Excel 변환은 텍스트가 있는 PDF만 지원합니다). 슬라이드 크기는 표준 16:9가 아니라 원본 PDF 페이지 크기 그대로 고정되며, 메모리 보호를 위해 한 번에 최대 100페이지까지만 변환할 수 있습니다. 텍스트를 편집 가능한 형태로 옮기고 싶다면 <a href="pdf-to-word.html">PDF→Word 변환</a>을 이용해주세요.</p>
+      <h2>목적별로 고르는 법</h2>
+      <ul>
+        <li><strong>PDF 페이지를 발표 중에 그대로 보여 주고 싶다</strong> → PDF→PPT(이 기능)</li>
+        <li><strong>스캔 문서를 슬라이드에 넣고 싶다</strong> → PDF→PPT. Word·Excel 변환은 글자가 없는 스캔본을 받지 않습니다.</li>
+        <li><strong>문장을 고쳐 써야 한다</strong> → <a href="pdf-to-word.html">PDF→Word</a>로 글자를 뽑은 뒤 파워포인트에 붙여 넣기</li>
+        <li><strong>슬라이드 몇 장만 그림으로 쓰고 싶다</strong> → <a href="pdf-to-image.html">PDF→이미지</a>로 필요한 페이지만 PNG로 받기</li>
+      </ul>
+      <p><a class="btn" href="pdf.html#pdf-to-document">지금 PDF를 파워포인트로 변환하기 →</a></p>
     </section>
 
     <section class="info-section">
       <h2>자주 묻는 질문</h2>
       <details>
         <summary>슬라이드 안의 텍스트를 파워포인트에서 수정할 수 있나요?</summary>
-        <p>아니요. 각 PDF 페이지를 이미지로 캡처해 슬라이드에 삽입하는 방식이라, 파워포인트에서 텍스트를 직접 수정할 수는 없습니다. 텍스트 편집이 필요하다면 PDF→Word 변환을 이용해주세요.</p>
+        <p>아니요. 각 페이지가 그림 한 장으로 들어가서 글상자가 없습니다. 글자를 고쳐야 한다면 PDF→Word로 글자를 뽑아 붙여 넣으세요.</p>
       </details>
       <details>
         <summary>스캔한 PDF(이미지로 된 PDF)도 변환되나요?</summary>
-        <p>네. PPT 변환은 텍스트 유무와 상관없이 페이지를 이미지로 그대로 옮기기 때문에, 스캔본 PDF도 문제없이 변환됩니다. Word·Excel 변환과 달리 텍스트가 없어도 동작하는 이유입니다.</p>
+        <p>네. PPT 변환은 페이지를 그림으로 옮기기 때문에 스캔본도 변환됩니다. Word·Excel 변환과 다른 점입니다.</p>
       </details>
       <details>
         <summary>몇 페이지까지 변환할 수 있나요?</summary>
-        <p>메모리 보호를 위해 PPT 변환은 최대 100페이지까지 지원합니다. 더 많은 페이지가 있다면 PDF를 나눠서 여러 번 변환해주세요.</p>
+        <p>메모리 보호를 위해 PPT 변환은 최대 100페이지까지 지원합니다. 더 많다면 PDF를 나눠서 변환하세요.</p>
       </details>
       <details>
-        <summary>슬라이드 크기(비율)가 이상해요</summary>
-        <p>슬라이드 크기는 표준 16:9가 아니라 원본 PDF 페이지의 실제 크기 그대로 고정됩니다. PDF가 A4 비율이라면 슬라이드도 A4 비율로 생성됩니다.</p>
+        <summary>슬라이드 비율이 16:9가 아니에요</summary>
+        <p>슬라이드 크기는 원본 PDF 페이지 비율을 그대로 따릅니다. A4 세로 PDF라면 슬라이드도 A4 세로 비율이 됩니다.</p>
+      </details>
+      <details>
+        <summary>PPT 파일이 원본 PDF보다 커요</summary>
+        <p>페이지를 그림으로 바꿔 넣기 때문입니다. 테스트에서 2.5MB PDF가 2.7MB PPT가 됐습니다. 글자 위주의 PDF는 차이가 더 커질 수 있습니다.</p>
       </details>
       <details>
         <summary>다운로드한 파일은 어떤 프로그램에서 열리나요?</summary>
-        <p>.pptx 형식으로 저장되며 Microsoft PowerPoint, 한쇼, 구글 프레젠테이션 등에서 열 수 있습니다.</p>
+        <p>.pptx 형식이라 Microsoft PowerPoint, 한쇼, 구글 프레젠테이션 등에서 열 수 있습니다.</p>
       </details>
     </section>
 

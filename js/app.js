@@ -132,7 +132,7 @@ function canvasToBlob(canvas, mimeType, quality) {
 
 // Memory guards: the encoders copy the pixel data (RGBA = 4 bytes per pixel) and work on top of it.
 var MAX_PNG_QUANTIZE_PIXELS = 25000000;
-var MAX_AVIF_PIXELS = 12000000;
+var MAX_AVIF_PIXELS = 12600000;
 
 function encodeCanvas(canvas, mimeType, level, options) {
   var pixels = canvas.width * canvas.height;

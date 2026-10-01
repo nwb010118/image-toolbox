@@ -30,17 +30,17 @@ function extractJsonLdBlocks(html) {
 const PAGES = [
   {
     file: 'photos-to-pdf.html',
-    ctaHref: 'pdf.html#imgToPdfUploadArea',
+    ctaHref: 'pdf.html#images-to-pdf',
     relatedLinks: ['pdf-to-word.html', 'pdf-to-ppt.html', 'pdf.html']
   },
   {
     file: 'pdf-to-word.html',
-    ctaHref: 'pdf.html#pdfConvertUploadArea',
+    ctaHref: 'pdf.html#pdf-to-document',
     relatedLinks: ['pdf-to-ppt.html', 'photos-to-pdf.html', 'pdf.html']
   },
   {
     file: 'pdf-to-ppt.html',
-    ctaHref: 'pdf.html#pdfConvertUploadArea',
+    ctaHref: 'pdf.html#pdf-to-document',
     relatedLinks: ['pdf-to-word.html', 'photos-to-pdf.html', 'pdf.html']
   }
 ];
@@ -513,12 +513,12 @@ test('print-resolution-dpi-guide.html contains the DPI formula and both print-qu
   assert.ok(html.includes('2.54'), 'missing inch-to-cm conversion constant');
 });
 
-test('print-resolution-dpi-guide.html has the DPI formula diagram', function () {
+test('print-resolution-dpi-guide.html has a pixels-per-print-size table and the aspect-ratio crop steps', function () {
   const html = readRepoFile('print-resolution-dpi-guide.html');
-  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
-  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg diagram');
-  assert.ok(html.includes('필요 픽셀 계산 공식과 실제 비율로 비교한 두 예시: 10×15cm 300DPI는 1200×1800픽셀, A4 포스터 200DPI는 1660×2340픽셀'), 'missing unique diagram desc sentence');
-  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+  assert.ok(html.includes('<table>'), 'missing data table');
+  assert.ok(html.includes('1200×1800') && html.includes('2480×3508'), 'missing required pixel sizes');
+  assert.ok(html.includes('"비율 유지"를 끕니다'), 'missing keep-ratio off step');
+  assert.ok(html.includes('잘라서 꽉 채우기'), 'missing cover-crop option');
 });
 
 test('pdf-merge-multiple-files.html describes the PDF merge tool, its limits and the photo route', function () {
@@ -621,12 +621,11 @@ test('web-image-loading-speed.html has an inline LCP threshold chart', function 
   assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
 });
 
-test('cloud-storage-photo-tips.html has an inline storage capacity chart', function () {
+test('cloud-storage-photo-tips.html has a free-storage table and measured compression results', function () {
   const html = readRepoFile('cloud-storage-photo-tips.html');
-  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
-  assert.ok(/<svg[^>]*role="img"/.test(html), 'missing inline svg chart');
-  assert.ok(html.includes('서비스별 무료 저장공간 막대그래프: 구글 드라이브 15기가바이트, 아이클라우드 5기가바이트, 원드라이브 5기가바이트, 네이버 마이박스 30기가바이트'), 'missing unique chart desc sentence');
-  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
+  assert.ok(html.includes('<table>'), 'missing data table');
+  assert.ok(html.includes('네이버 마이박스') && html.includes('30GB') && html.includes('15GB') && html.includes('5GB'), 'missing free-storage figures');
+  assert.ok(html.includes('긴 변 2048px'), 'missing measured resize result');
 });
 
 test('pdf-file-size-reduction.html has the real PDF-to-image extraction screenshot', function () {

@@ -26,7 +26,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
   <link rel="stylesheet" href="../css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="../css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="../css/site.css?v=7e213919">
   <link rel="stylesheet" href="../css/toolStudio.css?v=9e0750ee">
   <script type="application/ld+json">
   {
@@ -54,7 +54,7 @@
         "name": "Are my uploaded photos stored on a server?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. This tool never sends your images to any server. Compression happens entirely on your device using the browser's Canvas API, and the result disappears once you leave the page."
+          "text": "No. This tool never sends your images to any server. Compression happens entirely on your device using the browser's Canvas API and WebAssembly encoders (MozJPEG, AVIF) bundled with the site, and the result disappears once you leave the page."
         }
       },
       {
@@ -308,7 +308,7 @@
     <section class="info-section">
       <h2>How compression works</h2>
       <p class="tool-nav"><a href="../benchmark.html">See real compression-rate test results →</a></p>
-      <p>This tool compresses images by re-encoding them with the browser's Canvas API: it draws the original onto a canvas, then saves it again in the format and quality you choose. Because the file is re-encoded, metadata such as location (GPS) and camera details does not carry over to the result.</p>
+      <p>This tool draws the original onto a browser canvas, then saves it again in the format and quality you choose. JPG is saved with MozJPEG and AVIF with a WebAssembly encoder; PNG uses the site's own palette encoder when you reduce colors, and WebP uses the browser's built-in encoder. Because the file is re-encoded, metadata such as location (GPS) and camera details does not carry over to the result.</p>
       <p>JPG, WebP and AVIF are lossy formats, so lowering the quality slider really does shrink the file. PNG is lossless, so the quality slider has no effect on it, but this tool can shrink screenshots and graphics a lot with <strong>color reduction</strong> (palette PNG). Because it works by reducing the number of colors, photos may show slight color banding; choose "Original" if you need true lossless output.</p>
       <p>Choose <strong>Fit a target file size</strong> and type a number such as "200 KB": the tool searches for the best quality that stays under it. If even the lowest quality is too big, it shrinks the pixel size step by step, and it tells you if the target can't be reached.</p>
       <p>JPG output uses <strong>MozJPEG</strong> (WebAssembly bundled with this site) instead of the browser's default encoder, which produces a smaller file at the same quality value. You can save <strong>AVIF</strong> the same way, but it takes longer and isn't always smaller than JPG, depending on the photo. WebP and PNG use the browser's built-in encoders. All of this runs in your browser, with no server.</p>
@@ -327,7 +327,7 @@
       <h2>Frequently Asked Questions</h2>
       <details>
         <summary>Are my uploaded photos stored on a server?</summary>
-        <p>No. This tool never sends your images to any server. Compression happens entirely on your device using the browser's Canvas API, and the result disappears once you leave the page.</p>
+        <p>No. This tool never sends your images to any server. Compression happens entirely on your device using the browser's Canvas API and WebAssembly encoders (MozJPEG, AVIF) bundled with the site, and the result disappears once you leave the page.</p>
       </details>
       <details>
         <summary>Which file formats are supported?</summary>
@@ -372,7 +372,7 @@
   </footer>
 
   <script src="../js/privacyMeter.js?v=71ae9dfe"></script>
-  <script src="../js/strings.js?v=d27fb910"></script>
+  <script src="../js/strings.js?v=984d9861"></script>
   <script src="../js/imageTools.js?v=13c2ec25"></script>
   <script src="../js/targetSize.js?v=a6f4c69c"></script>
   <script src="../js/pngQuantize.js?v=ef9b4024"></script>
@@ -384,7 +384,7 @@
   <script src="../js/shareUtil.js?v=0a21e00e"></script>
   <script src="../js/workflowTools.js?v=1a9bd24d"></script>
   <script src="../js/batchTools.js?v=81aa03c8"></script>
-  <script src="../js/privacyBadge.js?v=f7e73791"></script>
-  <script src="../js/app.js?v=56242907"></script>
+  <script src="../js/privacyBadge.js?v=633d59a2"></script>
+  <script src="../js/app.js?v=7d3185b5"></script>
 </body>
 </html>

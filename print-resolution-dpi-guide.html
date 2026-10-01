@@ -23,7 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="css/site.css?v=7e213919">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,7 +33,7 @@
     "description": "인쇄할 크기에 맞는 픽셀 수를 계산하는 공식과 인쇄물별 권장 DPI를 정리했습니다.",
     "inLanguage": "ko",
     "datePublished": "2026-09-13",
-    "dateModified": "2026-09-19",
+    "dateModified": "2026-10-01",
     "author": {
       "@type": "Organization",
       "name": "image toolbox"
@@ -62,45 +62,67 @@
 
     <section class="info-section">
       <h2>DPI란, 어떻게 계산하나</h2>
-      <p>DPI(Dots Per Inch)는 1인치(2.54cm)에 몇 개의 점(픽셀)을 채워 인쇄하는지를 나타내는 단위입니다. 필요한 픽셀 수는 <strong>DPI × 인쇄할 크기(인치)</strong>로 계산합니다. 인치가 아니라 센티미터로 크기를 알고 있다면 먼저 센티미터를 2.54로 나눠서 인치로 바꾼 뒤 곱하면 됩니다.</p>
+      <p>DPI(Dots Per Inch)는 1인치(2.54cm)에 몇 개의 점(픽셀)을 채워 인쇄하는지를 나타내는 단위입니다. 필요한 픽셀 수는 <strong>DPI × 인쇄할 크기(인치)</strong>로 계산합니다. 센티미터로 크기를 알고 있다면 먼저 2.54로 나눠 인치로 바꾼 뒤 곱하면 됩니다.</p>
+      <p>예를 들어 10×15cm(약 4×6인치) 사진을 300DPI로 인쇄하려면 4 × 300 = 1200px, 6 × 300 = 1800px, 즉 <strong>1200×1800px</strong>가 필요합니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>인쇄물별 권장 DPI</h2>
-      <p>안전하게 인쇄하려면 <strong>300DPI</strong>를 기준으로 삼는 것이 일반적입니다. 다만 포스터나 배너처럼 사람이 멀리서 보는 대형 출력물은 <strong>150~200DPI</strong>로도 충분히 선명하게 나옵니다. 명함이나 스티커처럼 가까이서 보는 작은 인쇄물은 300DPI를 지키는 것이 안전합니다.</p>
-      <p>DPI를 높게 잡을수록 픽셀 수가 많아져 파일 용량도 함께 커집니다. 예를 들어 같은 10×15cm 사진이라도 150DPI(약 600×900px)보다 300DPI(1200×1800px)로 준비하면 가로세로 픽셀이 각각 2배가 되어 전체 픽셀 수는 4배로 늘어나고, 파일 용량도 그만큼 커집니다. 인쇄소에 파일을 전달할 때 용량 제한이 있다면, 필요 이상으로 DPI를 높이지 말고 인쇄물 종류에 맞는 최소한의 DPI로 맞추는 것이 유리합니다.</p>
+      <h2>인쇄물별 필요한 픽셀 수</h2>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>인쇄물</th><th>크기</th><th>권장 DPI</th><th>필요한 픽셀</th></tr></thead>
+        <tbody>
+          <tr><td>일반 인화(4×6)</td><td>10.2×15.2cm</td><td>300</td><td>1200×1800</td></tr>
+          <tr><td>5×7 인화</td><td>12.7×17.8cm</td><td>300</td><td>1500×2100</td></tr>
+          <tr><td>8×10 액자</td><td>20.3×25.4cm</td><td>300</td><td>2400×3000</td></tr>
+          <tr><td>A4 문서·전단</td><td>21×29.7cm</td><td>300</td><td>2480×3508</td></tr>
+          <tr><td>A4 포스터(멀리서 봄)</td><td>21×29.7cm</td><td>200</td><td>1654×2339</td></tr>
+          <tr><td>A2 포스터</td><td>42×59.4cm</td><td>150</td><td>2480×3508</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>명함·스티커처럼 가까이서 보는 작은 인쇄물은 300DPI를 지키는 것이 안전하고, 포스터나 배너처럼 멀리서 보는 대형 출력물은 150~200DPI로도 충분히 선명합니다. 요즘 휴대폰 사진(12MP, 4032×3024)은 300DPI 기준으로 약 25×34cm까지 인쇄할 수 있어서, 일반 인화나 A4 인쇄에는 해상도가 부족한 경우가 드뭅니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>계산 예시</h2>
-      <p>10cm × 15cm(약 4×6인치) 사진을 300DPI로 인쇄하려면, 4 × 300 = 1200px, 6 × 300 = 1800px, 즉 약 1200×1800px가 필요합니다. A4 크기(약 8.3×11.7인치) 포스터를 200DPI로 인쇄한다면 약 1660×2340px면 충분합니다.</p>
-      <figure class="guide-image">
-        <svg viewBox="0 -8 420 338" role="img" aria-labelledby="dpiChartTitle dpiChartDesc" xmlns="http://www.w3.org/2000/svg">
-          <title id="dpiChartTitle">DPI 계산 공식과 예시 두 가지</title>
-          <desc id="dpiChartDesc">필요 픽셀 계산 공식과 실제 비율로 비교한 두 예시: 10×15cm 300DPI는 1200×1800픽셀, A4 포스터 200DPI는 1660×2340픽셀</desc>
-          <text x="210" y="20" text-anchor="middle" font-size="17" font-weight="700" fill="var(--color-text)">필요 픽셀 = DPI × 인치</text>
-          <text x="110" y="95" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">10×15cm · 300DPI</text>
-          <rect x="50" y="108" width="120" height="180" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
-          <text x="303" y="42" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">A4 포스터 · 200DPI</text>
-          <rect x="220" y="54" width="166" height="234" fill="var(--color-accent-soft)" stroke="var(--color-accent)" stroke-width="2"></rect>
-          <line x1="30" y1="288" x2="400" y2="288" stroke="var(--color-border)" stroke-width="2"></line>
-          <text x="110" y="308" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">1200 × 1800px</text>
-          <text x="303" y="308" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">1660 × 2340px</text>
-        </svg>
-        <figcaption>두 예시를 같은 비율(1/10 축소)로 그려 실제 크기 차이를 그대로 비교할 수 있습니다.</figcaption>
-      </figure>
+      <h2>더 자주 막히는 건 해상도가 아니라 비율입니다</h2>
+      <p>휴대폰 사진은 대부분 <strong>4:3</strong> 비율인데, 4×6 인화지는 <strong>3:2</strong>, A4는 약 <strong>1:1.41</strong>입니다. 비율이 다르면 둘 중 하나가 생깁니다. 사진 일부가 잘리거나, 인화지에 흰 여백이 남습니다. 4032×3024 사진을 <a href="index.html">이미지 압축 도구</a>로 인쇄 크기에 맞춰 보면 이 차이가 그대로 드러납니다.</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>맞추려던 크기</th><th>"비율 유지" 켬(기본) — 세로를 입력했을 때</th><th>"비율 유지" 끄고 잘라서 채우기</th></tr></thead>
+        <tbody>
+          <tr><td>4×6 인화용 1800×1200</td><td>1600×1200 · 122.9KB</td><td>1800×1200 · 137.9KB</td></tr>
+          <tr><td>5×7 인화용 2100×1500</td><td>2000×1500 · 181.7KB</td><td>—</td></tr>
+          <tr><td>8×10 액자용 3000×2400</td><td>3200×2400 · 618.4KB</td><td>—</td></tr>
+          <tr><td>A4용 3508×2480</td><td>3307×2480 · 665.6KB</td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>"비율 유지"가 켜져 있으면 가로·세로 중 <strong>마지막에 입력한 칸을 기준으로 다른 칸이 사진 비율에 맞춰 자동으로 바뀝니다</strong>. 세로에 1200을 넣으면 가로가 1600으로 바뀌고, 가로에 1800을 넣으면 세로가 1350으로 바뀌는 식이라 두 값을 동시에 정확히 맞출 수 없습니다. 이 상태의 파일을 4×6으로 인화하면 여백이 생기거나, 인화소가 알아서 일부를 잘라냅니다.</p>
+      <p>정확히 인화지 비율로 맞추고 싶다면:</p>
+      <ol>
+        <li>가로·세로 칸 아래의 <strong>"비율 유지"를 끕니다.</strong></li>
+        <li>그러면 나타나는 "비율이 다를 때" 설정에서 <strong>"잘라서 꽉 채우기"</strong>(기본값)를 고릅니다.</li>
+        <li>가로·세로 위치 슬라이더로 어느 부분을 남길지 정한 뒤 압축합니다.</li>
+      </ol>
+      <p>테스트에서 이렇게 하니 정확히 1800×1200이 나왔습니다. 4:3 사진을 3:2로 자르면 세로가 약 11% 잘려 나가니, 사람 머리나 발끝이 가장자리에 있다면 위치 슬라이더로 꼭 확인하세요. "늘려서 맞추기"를 고르면 자르지는 않지만 얼굴이 옆으로 퍼져 보입니다.</p>
+      <p class="note-small">용량 수치는 직접 만든 테스트 사진(JPG 품질 90)으로 측정한 값입니다. 실제 사진은 이보다 클 수 있습니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>이 사이트에서 필요한 크기로 맞추는 법</h2>
-      <p>계산한 픽셀 값을 <a href="index.html">이미지 압축 도구</a>의 가로/세로 입력란에 그대로 넣으면 정확한 크기로 맞출 수 있습니다. 원본이 계산된 값보다 작다면 <a href="upscale.html">이미지 업스케일링</a>으로 먼저 키운 뒤 정확한 크기로 조정하는 순서를 권장합니다. 인화지 비율(예: 4×6인치는 2:3)과 원본 사진의 비율이 다르면 '비율이 다를 때' 설정에서 '잘라서 꽉 채우기'(기본값)를 고르면 가운데를 기준으로 비율에 맞춰 잘라 주고(가로·세로 위치 슬라이더로 조절), '늘려서 맞추기'를 고르면 사진이 눌리거나 늘어나 보일 수 있으니 주의하세요.</p>
+      <h2>원본이 필요한 픽셀보다 작다면</h2>
+      <p>메신저로 받은 사진이나 오래된 사진은 픽셀이 부족한 경우가 있습니다. 이때는 <a href="upscale.html">이미지 업스케일링</a>으로 먼저 2배나 4배로 키운 뒤, 위 순서로 정확한 크기에 맞추는 것을 권합니다. 업스케일링은 가로세로 각각 1000px 이하 이미지만 받습니다. 키운다고 원래 없던 디테일이 생기지는 않으니, 결과가 어떤지는 <a href="ai-upscaling-limits.html">AI 업스케일링의 한계</a>를 먼저 읽어 보면 기대치를 맞추기 좋습니다.</p>
     </section>
 
     <section class="info-section">
       <h2>자주 묻는 질문</h2>
       <details>
         <summary>웹에서 쓰던 사진을 그대로 인쇄해도 되나요?</summary>
-        <p>웹용 이미지는 보통 72~96DPI 기준으로 작게 만들어지는 경우가 많아서, 그대로 인쇄하면 확대된 만큼 흐릿하게 나올 수 있습니다. 인쇄할 크기에 맞는 픽셀 수를 계산해서 확인해보는 것이 안전합니다.</p>
+        <p>웹용 이미지는 보통 작게 줄여져 있어서 그대로 인쇄하면 흐릿하게 나올 수 있습니다. 인쇄할 크기에 필요한 픽셀 수(DPI × 인치)를 계산해서 원본 크기와 비교해 보세요.</p>
+      </details>
+      <details>
+        <summary>1800×1200을 입력했는데 1600×1200이 나와요</summary>
+        <p>"비율 유지"가 켜져 있으면 마지막에 입력한 칸을 기준으로 다른 칸이 사진 비율(휴대폰 사진은 4:3)에 맞춰 자동으로 바뀌기 때문입니다. "비율 유지"를 끄고 "잘라서 꽉 채우기"를 고르면 정확히 1800×1200이 됩니다.</p>
       </details>
       <details>
         <summary>대형 포스터도 무조건 300DPI로 만들어야 하나요?</summary>
@@ -108,7 +130,7 @@
       </details>
       <details>
         <summary>원본 사진이 계산된 픽셀보다 작으면 어떻게 하나요?</summary>
-        <p>단순히 늘리면 화질이 흐려집니다. 이 사이트의 AI 업스케일링 도구로 먼저 확대한 뒤(단, 원본이 가로세로 각각 1000px 이하여야 입력 가능) 정확한 크기로 맞추는 순서를 권장합니다.</p>
+        <p>단순히 늘리면 화질이 흐려집니다. AI 업스케일링 도구로 먼저 확대한 뒤(원본이 가로세로 각각 1000px 이하여야 입력 가능) 정확한 크기로 맞추는 순서를 권장합니다.</p>
       </details>
       <details>
         <summary>인쇄소마다 요구하는 DPI가 다른가요?</summary>
@@ -116,11 +138,7 @@
       </details>
       <details>
         <summary>PPI와 DPI는 같은 말인가요?</summary>
-        <p>엄밀히는 다릅니다. PPI(Pixels Per Inch)는 화면이나 이미지 파일의 픽셀 밀도를, DPI(Dots Per Inch)는 프린터가 실제로 찍는 잉크 점의 밀도를 가리킵니다. 다만 일상적으로는 두 용어가 거의 같은 의미로 섞여 쓰이는 경우가 많습니다.</p>
-      </details>
-      <details>
-        <summary>인쇄물이 흐려 보이면 항상 DPI가 원인인가요?</summary>
-        <p>아닙니다. DPI(해상도)가 충분해도 원본 사진 자체가 흔들렸거나 초점이 안 맞았다면 인쇄해도 선명해지지 않습니다. 흐림의 원인이 해상도 부족인지 원본 화질 문제인지 먼저 확인하는 것이 좋습니다.</p>
+        <p>엄밀히는 다릅니다. PPI(Pixels Per Inch)는 이미지 파일의 픽셀 밀도를, DPI(Dots Per Inch)는 프린터가 찍는 잉크 점의 밀도를 가리킵니다. 다만 일상적으로는 거의 같은 의미로 섞여 쓰입니다.</p>
       </details>
     </section>
 
@@ -130,6 +148,8 @@
       <p><a href="index.html">이미지 압축 도구</a></p>
       <p><a href="upscale.html">이미지 업스케일링 도구</a></p>
       <p><a href="guide.html">언제 어떤 도구가 필요할까? 가이드</a></p>
+      <p><a href="monitor-resolution-wallpaper-size.html">내 모니터에 딱 맞는 배경화면 크기는</a></p>
+      <p><a href="old-photo-scan-digitize-workflow.html">옛날 사진, 스캔부터 보관까지</a></p>
     </section>
   </main>
 

@@ -247,9 +247,9 @@ pdfConvertBtn.addEventListener('click', function () {
 
   var loadedDocument;
   pdfjsLib.getDocument(objectUrl).promise
-    .catch(function () {
+    .catch(function (err) {
       URL.revokeObjectURL(objectUrl);
-      throw new Error(t('pdfReadFailed'));
+      throw new Error(t(err && err.name === 'PasswordException' ? 'pdfPasswordProtected' : 'pdfReadFailed'));
     })
     .then(function (pdfDoc) {
       loadedDocument = pdfDoc;

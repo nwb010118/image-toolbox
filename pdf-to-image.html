@@ -23,28 +23,28 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="css/site.css?v=7e213919">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "PDF를 이미지로 변환하는 방법",
-    "description": "PDF의 각 페이지를 PNG 이미지로 변환해 개별 다운로드하는 방법",
+    "description": "PDF의 각 페이지를 PNG 이미지로 바꿔 페이지별 또는 ZIP으로 내려받는 방법",
     "step": [
       {
         "@type": "HowToStep",
+        "name": "페이지 범위와 해상도 선택",
+        "text": "시작·끝 페이지와 이미지 해상도(기본 1배 또는 고해상도 2배)를 고릅니다."
+      },
+      {
+        "@type": "HowToStep",
         "name": "PDF 파일 선택",
-        "text": "변환하고 싶은 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다."
+        "text": "PDF를 선택하면 브라우저 안에서 각 페이지가 PNG 이미지로 바뀝니다."
       },
       {
         "@type": "HowToStep",
-        "name": "변환 진행 확인",
-        "text": "브라우저 안에서 PDF의 각 페이지가 PNG 이미지로 변환됩니다. 페이지 수가 많을수록 시간이 더 걸립니다."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "페이지별로 다운로드",
-        "text": "변환이 끝나면 페이지마다 개별 다운로드 링크가 생성됩니다. 필요한 페이지를 하나씩 눌러 저장합니다."
+        "name": "페이지별 또는 ZIP으로 다운로드",
+        "text": "필요한 페이지만 하나씩 받거나, 생성된 이미지 전체를 ZIP 파일 하나로 받습니다."
       }
     ]
   }
@@ -56,10 +56,10 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "여러 페이지를 한 번에 압축(ZIP)해서 받을 수 있나요?",
+        "name": "여러 페이지를 ZIP 파일 하나로 받을 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "아니요. 이 도구는 페이지별로 개별 다운로드 링크만 제공하며, 여러 페이지를 압축파일 하나로 묶어 한 번에 내려받는 기능은 없습니다. 페이지가 많다면 하나씩 다운로드해야 합니다."
+          "text": "네. 변환이 끝나면 \"생성된 이미지 ZIP 다운로드\" 버튼이 나타나 전체 페이지를 한 번에 받을 수 있습니다. 필요한 페이지만 하나씩 받는 것도 됩니다."
         }
       },
       {
@@ -67,23 +67,31 @@
         "name": "어떤 이미지 형식으로 변환되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "PNG로 변환됩니다. JPG나 WebP 등 다른 형식을 선택하는 옵션은 없습니다."
+          "text": "PNG로 변환됩니다. 용량을 줄이려면 받은 PNG를 이미지 압축 도구에 넣어 JPG나 WebP로 바꾸면 됩니다."
         }
       },
       {
         "@type": "Question",
-        "name": "몇 페이지까지, 얼마나 큰 파일까지 변환할 수 있나요?",
+        "name": "기본(1배)과 고해상도(2배) 중 무엇을 골라야 하나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "최대 20MB, 최대 300페이지까지 지원합니다."
+          "text": "미리보기 공유는 1배로 충분합니다. 1배는 A4 한 페이지가 가로 595픽셀이라 작은 글씨가 흐려지므로, 글자를 읽어야 하거나 발표 자료에 넣을 때는 2배(가로 1190픽셀)를 권장합니다."
         }
       },
       {
         "@type": "Question",
-        "name": "텍스트가 있는 PDF도 이미지로 바뀌면 글자를 검색할 수 없나요?",
+        "name": "페이지가 많은 PDF는 어떻게 하나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "맞습니다. 변환된 PNG는 순수 이미지이므로 원본 PDF에 있던 텍스트를 검색하거나 마우스로 선택하는 기능이 사라집니다. 텍스트를 그대로 유지하려면 PDF를 이미지가 아니라 Word로 변환하는 것을 고려하세요."
+          "text": "한 번에 50페이지까지 처리합니다. 시작·끝 페이지를 1~50, 51~100처럼 나눠서 여러 번 변환하면 됩니다. 파일은 최대 20MB·300페이지까지 받습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "이미지로 바꾸면 글자를 검색할 수 없나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "맞습니다. 변환된 PNG는 그림이라 글자 검색·복사가 되지 않습니다. 글자를 살리려면 PDF→Word 변환을 쓰세요."
         }
       },
       {
@@ -91,7 +99,7 @@
         "name": "PDF가 서버에 업로드되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "아니요. 변환은 브라우저 안에서만 이뤄지며, PDF 파일이 어떤 서버로도 전송되지 않습니다."
+          "text": "아니요. 페이지를 이미지로 그리는 작업은 브라우저 안에서 이뤄지며 PDF를 서버로 보내지 않습니다."
         }
       }
     ]
@@ -119,48 +127,70 @@
     <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="info-section">
-      <h2>이런 상황에서 필요합니다</h2>
-      <p>PDF 자료에서 특정 페이지의 그림이나 표만 따로 캡처해서 써야 할 때, PDF 뷰어가 없는 곳에 미리보기 이미지로 공유해야 할 때, 또는 PDF 일부 페이지만 따로 이미지로 쓰고 싶을 때처럼, PDF 페이지를 이미지 파일로 바꿔야 하는 상황이 있습니다. 이 페이지에서는 image-toolbox의 PDF→이미지 기능으로 이를 처리하는 방법을 설명합니다.</p>
+      <h2>PDF 한 페이지를 그림으로 써야 할 때</h2>
+      <p>PDF 자료의 표 한 장을 발표 자료에 붙이거나, PDF를 열 수 없는 메신저에 미리보기로 보내거나, 블로그에 문서 일부를 이미지로 올려야 할 때가 있습니다. PDF→이미지 기능은 PDF의 각 페이지를 PNG 이미지로 바꿔 줍니다. 파일은 최대 20MB·300페이지까지 받고, 한 번에 50페이지씩 처리합니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>사용 방법</h2>
-      <p><strong>1. PDF 파일 선택.</strong> 변환하고 싶은 PDF를 선택하거나 업로드 영역에 끌어다 놓습니다. 최대 20MB, 최대 300페이지까지 지원합니다.</p>
-      <p><strong>2. 변환 진행 확인.</strong> 브라우저 안에서 각 페이지가 PNG 이미지로 변환됩니다. 페이지 수가 많을수록 처리 시간이 더 걸립니다.</p>
-      <p><strong>3. 페이지별로 다운로드.</strong> 변환이 끝나면 페이지마다 "페이지 N 다운로드" 링크가 생깁니다. 필요한 페이지를 하나씩 눌러 저장하면 됩니다.</p>
-      <p><a class="btn" href="pdf.html#pdfToImgUploadArea">지금 PDF를 이미지로 변환하기 →</a></p>
+      <h2>사용 방법: 범위와 해상도를 먼저 고르세요</h2>
+      <p><strong>1. 페이지 범위.</strong> 시작 페이지와 끝 페이지를 정합니다. 끝 페이지를 비워 두면 마지막 페이지까지 바꾸되, 한 번에 최대 50페이지씩 처리합니다.</p>
+      <p><strong>2. 해상도.</strong> "기본(1배)"과 "고해상도(2배)" 중에서 고릅니다. 둘의 차이는 아래 측정 결과를 보고 정하는 게 좋습니다.</p>
+      <p><strong>3. PDF 선택 → 다운로드.</strong> 변환이 끝나면 페이지마다 "페이지 N 다운로드" 버튼이 생기고, 전체를 한 번에 받는 <strong>"생성된 이미지 ZIP 다운로드"</strong> 버튼도 함께 나타납니다.</p>
+      <figure class="guide-image">
+        <img src="images/guide-pdf-to-image-result.png" alt="PDF→이미지 화면 — 고해상도(2배)를 고른 뒤 3페이지짜리 보고서 PDF를 변환해 페이지 미리보기 3장과 ZIP 다운로드 버튼이 나온 모습" width="768" height="644" loading="lazy" decoding="async">
+        <figcaption>3페이지짜리 보고서를 고해상도(2배)로 바꾼 결과. 페이지별 버튼과 ZIP 버튼이 함께 나옵니다.</figcaption>
+      </figure>
+      <p><a class="btn" href="pdf.html#pdf-to-images">지금 PDF를 이미지로 변환하기 →</a></p>
     </section>
 
     <section class="info-section">
-      <h2>알아두면 좋은 점</h2>
-      <p>이 기능은 페이지별로 개별 다운로드 링크만 만들어줄 뿐, 여러 페이지를 압축파일 하나로 묶어 한 번에 내려받는 기능은 없습니다. 페이지 수가 많은 PDF라면 다운로드에 시간이 조금 걸릴 수 있습니다. 또한 변환된 PNG는 순수 이미지라서, 원본 PDF에 있던 텍스트를 검색하거나 복사하는 기능은 사라집니다. 텍스트를 그대로 살리고 싶다면 이미지 대신 <a href="pdf-to-word.html">Word로 변환</a>하는 방법을 고려해보세요. 모든 처리는 브라우저 안에서만 이뤄지고 서버로 전송되지 않습니다.</p>
+      <h2>1배와 2배, 실제로 얼마나 다를까</h2>
+      <p>A4 크기의 글자 보고서, 가로형 발표 자료, 스캔 문서를 두 해상도로 각각 바꿔 봤습니다(값은 한 페이지 기준).</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>PDF 종류</th><th>기본(1배)</th><th>고해상도(2배)</th></tr></thead>
+        <tbody>
+          <tr><td>글자 보고서(A4)</td><td>595×841px · 89.0KB</td><td>1190×1683px · 214.3KB</td></tr>
+          <tr><td>발표 자료(가로)</td><td>841×595px · 177.1KB</td><td>1683×1190px · 676.7KB</td></tr>
+          <tr><td>스캔 문서(A4)</td><td>595×841px · 668.4KB</td><td>1190×1683px · 2.3MB</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>기본(1배)은 A4 한 페이지가 가로 595픽셀이 되는데, 이는 인쇄 기준으로 72dpi 정도라서 <strong>본문 크기 글자는 확대하면 뭉개집니다</strong>. 메신저 미리보기용이라면 1배로 충분하지만, 글자를 읽어야 하거나 발표 자료에 넣을 거라면 2배를 고르세요. 2배도 144dpi 정도라서 인쇄용으로는 부족하다는 점은 알아두면 좋습니다.</p>
+      <p>처리 시간은 3~4페이지 기준으로 1초 안팎이었고, 스캔 문서처럼 그림이 많은 PDF가 3초 정도로 가장 오래 걸렸습니다. 결과는 항상 PNG라서 스캔 문서는 용량이 꽤 큽니다. 2배로 바꾼 스캔 페이지 한 장이 2.3MB였습니다.</p>
+      <p class="note-small">측정에 쓴 파일은 직접 만든 테스트 PDF입니다. 글꼴과 그림 양에 따라 실제 PDF의 결과 용량은 달라질 수 있습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>이미지로 바꾸면 사라지는 것</h2>
+      <p>PNG는 그림 파일이라서 원래 PDF에 있던 글자를 검색하거나 복사할 수 없게 됩니다. 글자를 살려서 옮기고 싶다면 <a href="pdf-to-word.html">PDF→Word 변환</a>이 맞고, PDF끼리 이어 붙이는 게 목적이라면 이미지를 거치지 말고 <a href="pdf-merge-multiple-files.html">PDF 합치기</a>를 쓰는 게 화질과 글자를 모두 지킵니다.</p>
     </section>
 
     <section class="info-section">
       <h2>자주 묻는 질문</h2>
       <details>
-        <summary>여러 페이지를 한 번에 압축(ZIP)해서 받을 수 있나요?</summary>
-        <p>아니요. 이 도구는 페이지별로 개별 다운로드 링크만 제공하며, 여러 페이지를 압축파일 하나로 묶어 한 번에 내려받는 기능은 없습니다. 페이지가 많다면 하나씩 다운로드해야 합니다.</p>
+        <summary>여러 페이지를 ZIP 파일 하나로 받을 수 있나요?</summary>
+        <p>네. 변환이 끝나면 "생성된 이미지 ZIP 다운로드" 버튼이 나타나 전체 페이지를 한 번에 받을 수 있습니다. 필요한 페이지만 하나씩 받는 것도 됩니다.</p>
       </details>
       <details>
         <summary>어떤 이미지 형식으로 변환되나요?</summary>
-        <p>PNG로 변환됩니다. JPG나 WebP 등 다른 형식을 선택하는 옵션은 없습니다.</p>
+        <p>PNG로 변환됩니다. 용량을 줄이려면 받은 PNG를 <a href="index.html">이미지 압축 도구</a>에 넣어 JPG나 WebP로 바꾸면 됩니다.</p>
       </details>
       <details>
-        <summary>몇 페이지까지, 얼마나 큰 파일까지 변환할 수 있나요?</summary>
-        <p>최대 20MB, 최대 300페이지까지 지원합니다.</p>
+        <summary>기본(1배)과 고해상도(2배) 중 무엇을 골라야 하나요?</summary>
+        <p>미리보기 공유는 1배로 충분합니다. 1배는 A4 한 페이지가 가로 595픽셀이라 작은 글씨가 흐려지므로, 글자를 읽어야 하거나 발표 자료에 넣을 때는 2배(가로 1190픽셀)를 권장합니다.</p>
       </details>
       <details>
-        <summary>텍스트가 있는 PDF도 이미지로 바뀌면 글자를 검색할 수 없나요?</summary>
-        <p>맞습니다. 변환된 PNG는 순수 이미지이므로 원본 PDF에 있던 텍스트를 검색하거나 마우스로 선택하는 기능이 사라집니다. 텍스트를 그대로 유지하려면 PDF를 이미지가 아니라 Word로 변환하는 것을 고려하세요.</p>
+        <summary>페이지가 많은 PDF는 어떻게 하나요?</summary>
+        <p>한 번에 50페이지까지 처리합니다. 시작·끝 페이지를 1~50, 51~100처럼 나눠서 여러 번 변환하면 됩니다. 파일은 최대 20MB·300페이지까지 받습니다.</p>
+      </details>
+      <details>
+        <summary>이미지로 바꾸면 글자를 검색할 수 없나요?</summary>
+        <p>맞습니다. 변환된 PNG는 그림이라 글자 검색·복사가 되지 않습니다. 글자를 살리려면 PDF→Word 변환을 쓰세요.</p>
       </details>
       <details>
         <summary>PDF가 서버에 업로드되나요?</summary>
-        <p>아니요. 변환은 브라우저 안에서만 이뤄지며, PDF 파일이 어떤 서버로도 전송되지 않습니다.</p>
-      </details>
-      <details>
-        <summary>변환한 이미지 용량이 너무 크면 어떻게 줄이나요?</summary>
-        <p>다운로드한 PNG를 <a href="index.html">이미지 압축 도구</a>에 다시 넣어 품질을 조절하면 용량을 줄일 수 있습니다. PDF 자체의 용량을 줄이는 방법은 <a href="pdf-file-size-reduction.html">PDF 파일 용량 줄이는 법</a>을 참고하세요.</p>
+        <p>아니요. 페이지를 이미지로 그리는 작업은 브라우저 안에서 이뤄지며 PDF를 서버로 보내지 않습니다.</p>
       </details>
     </section>
 

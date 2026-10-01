@@ -56,7 +56,7 @@
       try {
         pdfDoc = await pdfjsLib.getDocument(objectUrl).promise;
       } catch (e) {
-        throw new Error(t('pdfReadFailed'));
+        throw new Error(t(e && e.name === 'PasswordException' ? 'pdfPasswordProtected' : 'pdfReadFailed'));
       } finally {
         URL.revokeObjectURL(objectUrl);
       }

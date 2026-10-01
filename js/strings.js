@@ -47,6 +47,7 @@
     pageImageFailed: { ko: '페이지 {n} 이미지를 만들지 못했습니다.', en: 'Could not create the image for page {n}.' },
     loadingPdf: { ko: 'PDF를 불러오는 중...', en: 'Loading PDF...' },
     pdfReadFailed: { ko: 'PDF 파일을 읽을 수 없습니다.', en: 'Could not read the PDF file.' },
+    pdfPasswordProtected: { ko: '암호가 걸린 PDF는 열 수 없어요. 암호를 해제한 뒤 다시 선택해주세요.', en: 'Password-protected PDFs can not be opened. Remove the password and choose the file again.' },
     tooManyPages: { ko: 'PDF 페이지 수가 너무 많습니다 (최대 {max}페이지).', en: 'The PDF has too many pages (max {max} pages).' },
     processingPageProgress: { ko: '처리 중... ({current}/{total})', en: 'Processing... ({current}/{total})' },
     pdfOnlyUpload: { ko: 'PDF 파일만 업로드할 수 있어요.', en: 'Only PDF files can be uploaded.' },
@@ -108,7 +109,7 @@
     pdfShrinkDone: { ko: '{before} → {after} ({change}). 페이지가 이미지로 바뀌어서 글자를 선택·검색할 수 없어요.', en: '{before} → {after} ({change}). Pages are now images, so text can no longer be selected or searched.' },
     pdfShrinkBigger: { ko: '결과({after})가 원본({before})보다 크거나 같아요. 글자 위주 PDF에는 이 방법이 맞지 않아요. 원본을 그대로 쓰는 걸 권해요.', en: 'The result ({after}) is not smaller than the original ({before}). This method does not suit text-based PDFs; keeping the original is better.' },
     pngSkippedLarge: { ko: '이미지가 커서(약 2500만 픽셀 초과) 색 수 줄이기를 건너뛰고 원본 그대로(무손실) PNG로 저장했어요. 크기를 줄이면 색 수 줄이기를 쓸 수 있어요.', en: 'The image is large (over about 25 megapixels), so color reduction was skipped and a lossless PNG was saved. Reduce the size to use color reduction.' },
-    avifTooLarge: { ko: 'AVIF는 약 1200만 픽셀(예: 4000×3000) 이하 이미지에서만 쓸 수 있어요. 크기를 줄이거나 다른 형식을 선택해주세요.', en: 'AVIF only works for images up to about 12 megapixels (e.g. 4000×3000). Reduce the size or choose another format.' },
+    avifTooLarge: { ko: 'AVIF는 약 1260만 픽셀(휴대폰 12MP 사진 4032×3024까지) 이하 이미지에서만 쓸 수 있어요. 크기를 줄이거나 다른 형식을 선택해주세요.', en: 'AVIF only works for images up to about 12.6 megapixels (a 12 MP phone photo, 4032×3024, fits). Reduce the size or choose another format.' },
     avifWorking: { ko: 'AVIF로 인코딩하는 중... (시간이 조금 걸려요)', en: 'Encoding AVIF... (this takes a little longer)' },
     avifOption: { ko: 'AVIF (최신 형식 · 처리 느림)', en: 'AVIF (newer format · slower)' },
     pmCount: { ko: '이 페이지가 이미지 데이터를 서버로 보낸 횟수: {n}회', en: 'Times this page sent image data to a server: {n}' },
@@ -120,6 +121,8 @@
     pmOnline: { ko: '온라인', en: 'Online' },
     pmOffline: { ko: '오프라인 상태입니다. 그래도 계속 작동해요.', en: "You're offline. It keeps working." },
     pmOfflineReady: { ko: '오프라인에서도 사용할 수 있게 준비됐어요.', en: 'Ready to use offline.' },
+    pmOfflineReadyCompress: { ko: '오프라인에서도 사용할 수 있게 준비됐어요. 단, AVIF 저장과 아이폰 HEIC 변환은 처음 한 번은 인터넷 연결이 필요해요.', en: 'Ready to use offline. AVIF output and iPhone HEIC conversion need a connection the first time you use them.' },
+    pmOfflinePartial: { ko: '일부 파일을 받지 못해, 인터넷이 끊기면 일부 기능이 작동하지 않을 수 있어요.', en: 'Some files could not be saved, so a few features may not work without a connection.' },
     pmOfflinePreparing: { ko: '오프라인 사용을 준비하는 중...', en: 'Getting ready for offline use...' },
     pmOfflineUnsupported: { ko: '이 브라우저는 오프라인 저장을 지원하지 않아요.', en: "This browser doesn't support offline caching." }
   };

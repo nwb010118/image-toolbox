@@ -23,7 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="css/site.css?v=7e213919">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -34,17 +34,17 @@
       {
         "@type": "HowToStep",
         "name": "사진 파일 선택",
-        "text": "합치고 싶은 사진들을 원하는 순서대로 한 번에 선택하거나, 업로드 영역에 끌어다 놓습니다."
+        "text": "합치고 싶은 사진을 한 번에 선택하거나 업로드 영역에 끌어다 놓습니다."
       },
       {
         "@type": "HowToStep",
-        "name": "업로드 순서 확인",
-        "text": "목록에 표시된 순서가 그대로 PDF 페이지 순서가 됩니다. 순서가 다르면 파일을 다시 선택합니다."
+        "name": "위·아래 버튼으로 순서 정리",
+        "text": "목록 옆의 위·아래 버튼으로 페이지 순서를 맞추고, 필요 없는 사진은 삭제 버튼으로 뺍니다."
       },
       {
         "@type": "HowToStep",
         "name": "PDF로 변환 후 다운로드",
-        "text": "PDF로 변환 버튼을 누르면 브라우저 안에서 PDF가 생성되고, 바로 다운로드할 수 있습니다."
+        "text": "PDF로 변환 버튼을 누르면 브라우저 안에서 PDF가 만들어지고 바로 다운로드할 수 있습니다."
       }
     ]
   }
@@ -56,18 +56,26 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "사진 순서를 잘못 선택했으면 어떻게 하나요?",
+        "name": "업로드한 뒤에 사진 순서를 바꿀 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "업로드 후 순서를 바꾸는 기능은 없습니다. 파일 선택 창에서 원하는 순서대로 다시 선택하거나, 파일명을 순서대로 정렬해둔 뒤 전체 선택하면 편리합니다."
+          "text": "네. 파일 목록마다 있는 위·아래 버튼으로 순서를 바꾸고, 삭제 버튼으로 빼낼 수 있습니다. 목록 순서가 그대로 PDF 페이지 순서가 됩니다."
         }
       },
       {
         "@type": "Question",
-        "name": "사진마다 크기(가로세로 비율)가 달라도 되나요?",
+        "name": "세로 사진과 가로 사진을 섞어도 되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "네. 각 페이지는 해당 사진의 원본 가로세로 비율 그대로 생성되므로, 세로 사진과 가로 사진을 섞어도 문제없습니다."
+          "text": "네. 각 페이지는 사진의 원래 비율대로 만들어지므로 세로 사진은 세로 페이지, 가로 사진은 가로 페이지가 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PDF 페이지가 A4 크기로 만들어지나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. 페이지 크기는 사진의 픽셀 크기를 따라갑니다. 인쇄할 때는 인쇄 창에서 \"용지에 맞춤\"을 선택하세요."
         }
       },
       {
@@ -75,15 +83,15 @@
         "name": "몇 장까지, 얼마나 큰 파일까지 합칠 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "최대 50장, 사진 한 장당 최대 20MB까지 지원합니다. JPG, PNG, WebP 형식을 사용할 수 있습니다."
+          "text": "최대 50장, 사진 한 장당 최대 20MB까지 지원합니다. JPG, PNG, WebP 형식을 사용할 수 있고, 아이폰 HEIC 사진은 먼저 이미지 압축 도구에서 JPG로 바꾼 뒤 넣으면 됩니다."
         }
       },
       {
         "@type": "Question",
-        "name": "만든 PDF를 나중에 다시 수정할 수 있나요?",
+        "name": "만든 PDF를 나중에 수정할 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "이 도구는 사진을 PDF로 합치는 기능만 제공하며, 완성된 PDF 안의 페이지 순서 변경이나 삭제 같은 편집 기능은 없습니다. 순서를 바꾸려면 사진을 원하는 순서로 다시 선택해 새로 만들어야 합니다."
+          "text": "완성된 PDF 안의 페이지를 편집하는 기능은 없습니다. 순서를 바꾸려면 사진을 다시 넣어 새로 만들거나, 이미 만든 PDF 여러 개를 이을 때는 PDF 합치기를 쓰세요."
         }
       },
       {
@@ -91,7 +99,7 @@
         "name": "사진이 서버에 업로드되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "아니요. PDF 생성은 브라우저 안에서만 이뤄지며, 어떤 사진도 서버로 전송되지 않습니다. 신분증, 계약서처럼 민감한 문서를 합칠 때도 안전합니다."
+          "text": "아니요. PDF는 브라우저 안에서 만들어지고 사진을 서버로 보내지 않습니다. 화면 아래의 업로드 카운터로 작업 중 바깥으로 나간 파일 데이터가 없는지 확인할 수 있습니다."
         }
       }
     ]
@@ -119,44 +127,80 @@
     <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="info-section">
-      <h2>이런 상황에서 필요합니다</h2>
-      <p>계약서나 신분증 앞뒤 면을 각각 따로 촬영한 뒤 서류 제출용으로 하나의 파일로 묶어야 할 때, 영수증이나 증빙 서류를 여러 장 찍어서 한 번에 제출해야 할 때, 포트폴리오나 작업물 사진을 순서대로 묶어 공유해야 할 때처럼, 여러 장의 사진을 순서를 유지한 채 하나의 PDF로 만들어야 하는 상황은 생각보다 자주 있습니다. 이 페이지에서는 image-toolbox의 이미지→PDF 기능으로 이를 처리하는 방법을 설명합니다.</p>
+      <h2>계약서 앞뒤, 영수증 여러 장을 한 파일로</h2>
+      <p>서류를 제출할 때 "파일 1개로 올려주세요"라는 조건이 붙는 경우가 많습니다. 신분증 앞뒷면, 영수증 여러 장, 계약서 각 페이지를 휴대폰으로 따로 찍었다면 사진을 순서대로 묶은 PDF 하나가 필요합니다. image-toolbox의 이미지→PDF 기능은 JPG·PNG·WebP 사진을 최대 50장(장당 20MB)까지 받아 브라우저 안에서 PDF로 묶습니다.</p>
     </section>
 
     <section class="info-section">
-      <h2>사용 방법</h2>
-      <p><strong>1. 사진 파일 선택.</strong> 합치고 싶은 사진들을 원하는 순서대로 한 번에 선택하거나, 업로드 영역에 끌어다 놓습니다. JPG, PNG, WebP 형식을 지원하며 최대 50장, 파일당 최대 20MB까지 가능합니다.</p>
-      <p><strong>2. 업로드 순서 확인.</strong> 목록에 표시되는 순서가 그대로 PDF의 페이지 순서가 됩니다. 순서가 잘못됐다면 파일을 다시 선택해주세요.</p>
-      <p><strong>3. PDF로 변환 후 다운로드.</strong> "PDF로 변환" 버튼을 누르면 브라우저 안에서 바로 PDF가 만들어지고, 완료되면 다운로드할 수 있습니다.</p>
-      <p><a class="btn" href="pdf.html#imgToPdfUploadArea">지금 사진 PDF로 합치기 →</a></p>
+      <h2>순서는 업로드한 뒤에도 바꿀 수 있습니다</h2>
+      <p><strong>1. 사진 선택.</strong> 사진을 한 번에 고르거나 업로드 영역에 끌어다 놓습니다.</p>
+      <p><strong>2. 순서 정리.</strong> 파일 목록마다 붙은 <strong>위·아래</strong> 버튼으로 페이지 순서를 맞추고, 잘못 넣은 사진은 <strong>삭제</strong> 버튼으로 뺍니다. 파일 이름을 미리 정렬해 둘 필요는 없습니다.</p>
+      <p><strong>3. PDF로 변환.</strong> "PDF로 변환"을 누르면 바로 다운로드 버튼이 나타납니다.</p>
+      <figure class="guide-image">
+        <img src="images/guide-photos-to-pdf-order.png" alt="이미지→PDF 화면 — 영수증 스캔과 계약서 사진 두 장이 목록에 올라가 있고, 각 줄에 위·아래·삭제 버튼과 PDF 다운로드 버튼이 보이는 모습" width="768" height="539" loading="lazy" decoding="async">
+        <figcaption>사진 두 장을 올린 뒤의 화면. 줄마다 위·아래·삭제 버튼이 있어 순서를 바로 바꿀 수 있습니다.</figcaption>
+      </figure>
+      <p><a class="btn" href="pdf.html#images-to-pdf">지금 사진 PDF로 합치기 →</a></p>
     </section>
 
     <section class="info-section">
-      <h2>알아두면 좋은 점</h2>
-      <p>각 PDF 페이지는 원본 사진의 가로세로 비율 그대로 생성되므로, 세로로 찍은 사진과 가로로 찍은 사진을 섞어도 찌그러지지 않습니다. 다만 업로드 후 페이지 순서를 바꾸거나 특정 페이지만 삭제하는 편집 기능은 없기 때문에, 순서가 중요하다면 파일을 선택하기 전에 순서를 미리 정리해두는 것이 좋습니다. 모든 처리는 이 브라우저 안에서만 이뤄지고 서버로 전송되지 않으므로, 신분증이나 계약서처럼 민감한 문서를 다룰 때도 안전합니다.</p>
+      <h2>직접 묶어 본 결과: 사진 4장, 1초 미만</h2>
+      <p>휴대폰 사진 크기(4032×3024) 두 장과 스캔한 영수증·계약서 이미지 두 장을 섞어 PDF로 만들어 봤습니다.</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>넣은 파일</th><th>크기</th><th>용량</th></tr></thead>
+        <tbody>
+          <tr><td>가로 사진</td><td>4032×3024</td><td>3.4MB</td></tr>
+          <tr><td>세로 사진</td><td>3024×4032</td><td>3.4MB</td></tr>
+          <tr><td>영수증 스캔(300dpi)</td><td>2480×3508</td><td>1.3MB</td></tr>
+          <tr><td>계약서 사진(150dpi)</td><td>1240×1754</td><td>391.8KB</td></tr>
+          <tr><td><strong>결과 PDF (4페이지)</strong></td><td>—</td><td><strong>7.0MB</strong> (합계 8.5MB)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>변환은 1초가 채 걸리지 않았고, 가로 사진은 가로 페이지로, 세로 사진은 세로 페이지로 찌그러짐 없이 들어갔습니다. 사진 화질은 원본 해상도 그대로 유지되기 때문에 PDF 용량은 원본 합계와 비슷한 수준(이번에는 약 18% 작음)입니다.</p>
+      <p class="note-small">측정에 쓴 파일은 직접 만든 테스트 이미지와 PDF입니다. 실제 사진은 테스트 이미지보다 디테일이 많아서 용량이 덜 줄어드는 편이니, 숫자는 대략적인 경향으로 봐 주세요.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>인쇄하거나 A4로 제출할 때 주의할 점</h2>
+      <p>만들어진 PDF의 페이지 크기는 A4가 아니라 <strong>사진의 픽셀 크기를 따라갑니다</strong>. 위 테스트에서 4032×3024 사진이 들어간 페이지는 PDF 뷰어 기준으로 가로 약 190cm짜리 페이지가 됐습니다. 화면으로 볼 때는 문제가 없지만, 그대로 인쇄하면 프린터가 한 장에 맞추지 못할 수 있습니다.</p>
+      <ul>
+        <li><strong>인쇄할 때:</strong> 인쇄 창에서 "용지에 맞춤(Fit to page)"을 선택하면 A4 한 장에 맞춰 나옵니다.</li>
+        <li><strong>"A4 규격 PDF"를 요구하는 곳에 낼 때:</strong> 페이지 크기까지 A4로 맞춰 주지는 않으므로, 제출처에서 A4 규격을 엄격히 확인한다면 한글·워드 같은 문서 프로그램에 사진을 넣어 PDF로 저장하는 방법이 더 확실합니다.</li>
+      </ul>
+    </section>
+
+    <section class="info-section">
+      <h2>PDF가 업로드 제한보다 크다면</h2>
+      <p>휴대폰 사진은 한 장에 3~5MB라서 몇 장만 묶어도 10MB를 넘기기 쉽습니다. 이럴 때는 <a href="index.html">이미지 압축 도구</a>에서 사진을 먼저 줄인 뒤 PDF로 묶는 순서가 가장 확실합니다. 압축 도구의 "이메일·메신저용" 프리셋은 긴 변을 1600px로 줄이고 1MB 이하로 맞추는데, 테스트한 휴대폰 사진(3.4MB)은 800KB가 됐습니다. 서류 글씨를 읽는 데는 긴 변 1600px이면 충분한 경우가 대부분입니다. 이미 만든 PDF를 줄이고 싶다면 <a href="pdf-file-size-reduction.html">PDF 용량 줄이기</a>를 쓰면 되지만, 이 방법은 페이지를 다시 이미지로 만들기 때문에 화질이 한 번 더 떨어집니다.</p>
     </section>
 
     <section class="info-section">
       <h2>자주 묻는 질문</h2>
       <details>
-        <summary>사진 순서를 잘못 선택했으면 어떻게 하나요?</summary>
-        <p>업로드 후 순서를 바꾸는 기능은 없습니다. 파일 선택 창에서 원하는 순서대로 다시 선택하거나, 파일명을 순서대로 정렬해둔 뒤 전체 선택하면 편리합니다.</p>
+        <summary>업로드한 뒤에 사진 순서를 바꿀 수 있나요?</summary>
+        <p>네. 파일 목록마다 있는 위·아래 버튼으로 순서를 바꾸고, 삭제 버튼으로 빼낼 수 있습니다. 목록 순서가 그대로 PDF 페이지 순서가 됩니다.</p>
       </details>
       <details>
-        <summary>사진마다 크기(가로세로 비율)가 달라도 되나요?</summary>
-        <p>네. 각 페이지는 해당 사진의 원본 가로세로 비율 그대로 생성되므로, 세로 사진과 가로 사진을 섞어도 문제없습니다.</p>
+        <summary>세로 사진과 가로 사진을 섞어도 되나요?</summary>
+        <p>네. 각 페이지는 사진의 원래 비율대로 만들어지므로 세로 사진은 세로 페이지, 가로 사진은 가로 페이지가 됩니다.</p>
+      </details>
+      <details>
+        <summary>PDF 페이지가 A4 크기로 만들어지나요?</summary>
+        <p>아니요. 페이지 크기는 사진의 픽셀 크기를 따라갑니다. 인쇄할 때는 인쇄 창에서 "용지에 맞춤"을 선택하세요.</p>
       </details>
       <details>
         <summary>몇 장까지, 얼마나 큰 파일까지 합칠 수 있나요?</summary>
-        <p>최대 50장, 사진 한 장당 최대 20MB까지 지원합니다. JPG, PNG, WebP 형식을 사용할 수 있습니다.</p>
+        <p>최대 50장, 사진 한 장당 최대 20MB까지 지원합니다. JPG, PNG, WebP 형식을 사용할 수 있고, 아이폰 HEIC 사진은 먼저 이미지 압축 도구에서 JPG로 바꾼 뒤 넣으면 됩니다.</p>
       </details>
       <details>
-        <summary>만든 PDF를 나중에 다시 수정할 수 있나요?</summary>
-        <p>이 도구는 사진을 PDF로 합치는 기능만 제공하며, 완성된 PDF 안의 페이지 순서 변경이나 삭제 같은 편집 기능은 없습니다. 순서를 바꾸려면 사진을 원하는 순서로 다시 선택해 새로 만들어야 합니다.</p>
+        <summary>만든 PDF를 나중에 수정할 수 있나요?</summary>
+        <p>완성된 PDF 안의 페이지를 편집하는 기능은 없습니다. 순서를 바꾸려면 사진을 다시 넣어 새로 만들거나, 이미 만든 PDF 여러 개를 이을 때는 <a href="pdf-merge-multiple-files.html">PDF 합치기</a>를 쓰세요.</p>
       </details>
       <details>
         <summary>사진이 서버에 업로드되나요?</summary>
-        <p>아니요. PDF 생성은 브라우저 안에서만 이뤄지며, 어떤 사진도 서버로 전송되지 않습니다. 신분증, 계약서처럼 민감한 문서를 합칠 때도 안전합니다.</p>
+        <p>아니요. PDF는 브라우저 안에서 만들어지고 사진을 서버로 보내지 않습니다. 화면 아래의 업로드 카운터로 작업 중 바깥으로 나간 파일 데이터가 없는지 확인할 수 있습니다.</p>
       </details>
     </section>
 
@@ -165,6 +209,7 @@
       <p><a href="pdf-to-word.html">PDF를 워드로 변환하는 방법</a></p>
       <p><a href="pdf-to-ppt.html">PDF를 파워포인트로 변환하는 방법</a></p>
       <p><a href="pdf.html">PDF 변환 도구 (이미지↔PDF, PDF→Office 문서)</a></p>
+      <p><a href="old-photo-scan-digitize-workflow.html">옛날 사진, 스캔부터 보관까지</a></p>
     </section>
   </main>
 

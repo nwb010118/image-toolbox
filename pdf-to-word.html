@@ -23,28 +23,28 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image.png">
   <link rel="stylesheet" href="css/style.css?v=ea4abd9e">
-  <link rel="stylesheet" href="css/site.css?v=f3a74f6f">
+  <link rel="stylesheet" href="css/site.css?v=7e213919">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "PDF를 워드(Word)로 변환하는 방법",
-    "description": "텍스트가 있는 PDF를 워드(.docx) 문서로 변환하는 방법",
+    "description": "PDF 안의 텍스트를 추출해 .docx 워드 파일로 만드는 방법",
     "step": [
       {
         "@type": "HowToStep",
         "name": "PDF 파일 선택",
-        "text": "PDF → 문서 변환 섹션에서 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다."
+        "text": "PDF→문서 변환 섹션에서 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다."
       },
       {
         "@type": "HowToStep",
         "name": "출력 형식에서 Word 선택",
-        "text": "출력 형식의 기본값은 PowerPoint이므로, Word (.docx)를 직접 선택합니다."
+        "text": "기본값이 PowerPoint이므로 출력 형식에서 Word (.docx)를 직접 선택합니다."
       },
       {
         "@type": "HowToStep",
-        "name": "변환하기 클릭 후 다운로드",
-        "text": "변환하기 버튼을 누르면 브라우저 안에서 .docx 파일이 만들어지고, 바로 다운로드할 수 있습니다."
+        "name": "변환하기 후 다운로드",
+        "text": "변환하기를 누르면 브라우저 안에서 텍스트가 추출되어 .docx 파일로 만들어집니다."
       }
     ]
   }
@@ -59,7 +59,7 @@
         "name": "스캔한 PDF도 워드로 변환되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "아니요. 이 기능은 PDF 안에 있는 실제 텍스트만 추출하기 때문에, 사진을 스캔해서 만든 이미지 기반 PDF는 지원하지 않습니다. 텍스트가 없는 스캔본은 대신 PDF→PPT 변환을 이용해주세요. 페이지를 이미지 그대로 슬라이드에 담을 수 있습니다."
+          "text": "아니요. 스캔본에는 뽑아낼 글자가 없어서 \"텍스트가 없는 스캔본\" 안내가 나옵니다. 이 사이트는 OCR(그림 속 글자 인식)을 지원하지 않으므로, 페이지를 그림 그대로 옮기는 PDF→PPT 변환을 쓰거나 OCR 프로그램을 이용하세요."
         }
       },
       {
@@ -67,7 +67,7 @@
         "name": "표나 이미지, 서식도 그대로 옮겨지나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "아니요. 텍스트만 문단 단위로 추출되며, 표·이미지·글꼴 서식은 옮겨지지 않습니다. 원본 PDF의 페이지가 바뀔 때마다 워드 문서에서도 페이지가 나뉩니다."
+          "text": "아니요. 테스트에서 4×4 표는 칸 안의 글자만 줄글로 남았고, 제목의 큰 글씨와 굵기도 일반 글씨가 됐습니다. 이미지는 옮겨지지 않습니다."
         }
       },
       {
@@ -75,7 +75,7 @@
         "name": "문단이 이상하게 나뉘거나 합쳐져요",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "문단 구분은 텍스트 사이의 줄 간격을 기준으로 자동 인식됩니다. 레이아웃이 복잡한 PDF(다단 구성, 표 안의 텍스트 등)에서는 문단이 원본과 다르게 나뉠 수 있습니다."
+          "text": "문단은 줄 사이 간격을 기준으로 자동으로 나눕니다. 여러 단으로 된 문서나 표 안의 글자는 원본과 다르게 나뉠 수 있습니다."
         }
       },
       {
@@ -91,7 +91,15 @@
         "name": "다운로드한 파일은 어떤 프로그램에서 열리나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": ".docx 형식으로 저장되며 Microsoft Word, 한글과컴퓨터의 한컴오피스, 구글 문서 등 대부분의 워드 프로세서에서 열 수 있습니다."
+          "text": ".docx 형식이라 Microsoft Word, 한컴오피스, 구글 문서 등 대부분의 워드 프로그램에서 열립니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PDF가 서버로 전송되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. 글자 추출과 워드 파일 생성은 모두 브라우저 안에서 이뤄집니다."
         }
       }
     ]
@@ -119,36 +127,58 @@
     <p class="tool-nav"><a href="guide.html">언제 어떤 도구가 필요할까? 가이드 보기 →</a></p>
 
     <section class="info-section">
-      <h2>이런 상황에서 필요합니다</h2>
-      <p>PDF로 받은 보고서나 자료를 팀원이 직접 수정할 수 있게 워드 파일로 바꿔야 할 때, 계약서나 공문에서 텍스트만 뽑아 다른 문서에 인용해야 할 때, PDF로만 남아있는 옛날 문서를 다시 편집 가능한 형태로 되살려야 할 때처럼, PDF 안의 텍스트를 워드 문서로 옮겨야 하는 상황이 있습니다. 이 페이지에서는 image-toolbox의 PDF→문서 변환 기능으로 이를 처리하는 방법을 설명합니다.</p>
+      <h2>먼저 결론: 글자는 옮겨지고, 표와 서식은 옮겨지지 않습니다</h2>
+      <p>PDF→Word 변환은 PDF 안의 <strong>글자만</strong> 뽑아서 워드 문단으로 다시 씁니다. 받은 PDF 보고서의 문장을 고쳐 쓰거나 다른 문서에 인용하는 용도에는 잘 맞지만, 원본과 똑같은 모양의 워드 문서를 기대하면 실망하게 됩니다. 아래는 실제로 변환해 본 결과입니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>직접 변환해 본 결과</h2>
+      <p>제목, 본문 문단, 4×4 표, 번호 목록이 들어간 3페이지짜리 보고서 PDF(35.2KB)를 Word로 바꿨습니다.</p>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>원본 PDF에 있던 것</th><th>Word 파일에서</th></tr></thead>
+        <tbody>
+          <tr><td>본문 글자(약 3,200자)</td><td>모두 옮겨짐</td></tr>
+          <tr><td>제목의 큰 글씨·굵기</td><td>본문과 같은 일반 글씨로 바뀜(글씨 크기·스타일 정보 없음)</td></tr>
+          <tr><td>4×4 표</td><td>표가 사라지고 칸 안의 글자가 한 문단으로 이어짐<br>(예: "항목 1월 2월 3월 방문자 1,204 1,530 1,877 …")</td></tr>
+          <tr><td>번호 목록</td><td>번호가 붙은 일반 문단으로 남음</td></tr>
+          <tr><td>페이지 구분</td><td>원본 페이지마다 워드에서도 나뉨</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>변환은 0.3초 만에 끝났고, 결과 파일은 8.8KB로 원본보다 작았습니다. 글자만 남았기 때문입니다. 표가 많은 문서를 바꾸면 숫자들이 한 줄로 이어져 나오므로, 표는 원본을 보면서 워드에서 다시 만드는 편이 빠릅니다. 표가 실제로 어떻게 무너지는지는 <a href="pdf-conversion-accuracy.html">PDF 변환 정확도 테스트</a>에서 더 자세히 다뤘습니다.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>스캔한 PDF는 변환되지 않습니다</h2>
+      <p>종이를 스캔해서 만든 PDF는 페이지 전체가 하나의 그림이라 뽑아낼 글자가 없습니다. 스캔 문서 4페이지짜리 PDF를 넣어 보니 아래처럼 안내가 나오고 변환이 멈췄습니다. 이 사이트는 그림 속 글자를 읽어 내는 OCR 기능이 없으므로, 스캔본은 페이지를 그림 그대로 옮기는 <a href="pdf-to-ppt.html">PDF→PPT 변환</a>을 쓰거나, OCR을 지원하는 프로그램을 이용해야 합니다.</p>
+      <figure class="guide-image">
+        <img src="images/guide-pdf-to-word-scan-warning.png" alt="PDF→문서 변환 업로드 영역에 '이 PDF는 텍스트가 없는 스캔본으로 보입니다. PPT 변환을 이용해주세요.'라는 빨간 안내가 표시된 화면" width="768" height="233" loading="lazy" decoding="async">
+        <figcaption>스캔 PDF를 Word로 바꾸려고 하면 나오는 안내.</figcaption>
+      </figure>
     </section>
 
     <section class="info-section">
       <h2>사용 방법</h2>
-      <p><strong>1. PDF 파일 선택.</strong> "PDF → 문서 변환" 섹션에서 PDF 파일을 선택하거나 업로드 영역에 끌어다 놓습니다. 최대 20MB, 최대 300페이지까지 지원합니다.</p>
-      <p><strong>2. 출력 형식에서 Word 선택.</strong> 출력 형식의 기본값은 PowerPoint로 되어 있으니, 목록에서 "Word (.docx)"를 직접 선택해주세요.</p>
-      <p><strong>3. 변환하기 클릭 후 다운로드.</strong> 브라우저 안에서 텍스트가 추출되어 .docx 파일로 만들어지고, 완료되면 바로 다운로드할 수 있습니다.</p>
-      <p><a class="btn" href="pdf.html#pdfConvertUploadArea">지금 PDF를 워드로 변환하기 →</a></p>
-    </section>
-
-    <section class="info-section">
-      <h2>알아두면 좋은 점</h2>
-      <p>이 기능은 PDF 안의 텍스트를 문단 단위로 추출하는 방식이라, 표·이미지·글꼴 서식은 옮겨지지 않고 순수 텍스트만 남습니다. 문단 구분은 줄 간격을 기준으로 자동 판단하기 때문에 레이아웃이 단순한 문서(보고서, 공문, 계약서 등)에서 가장 정확하고, 다단 구성이나 표가 많은 문서는 문단이 원본과 다르게 나뉠 수 있습니다. 또한 사진을 스캔해서 만든 PDF처럼 텍스트 레이어가 없는 파일은 변환할 수 없으며, 이런 경우 화면에 "텍스트가 없는 스캔본" 안내가 표시됩니다 — 이때는 <a href="pdf-to-ppt.html">PDF→PPT 변환</a>을 이용하면 페이지를 이미지 그대로 옮길 수 있습니다.</p>
+      <p><strong>1.</strong> <a href="pdf.html#pdf-to-document">PDF 변환 도구</a>의 "PDF → Word·PPT·Excel" 탭에서 PDF를 선택합니다(최대 20MB·300페이지).</p>
+      <p><strong>2.</strong> 출력 형식의 기본값은 PowerPoint이므로 <strong>Word (.docx)</strong>를 직접 고릅니다.</p>
+      <p><strong>3.</strong> "변환하기"를 누르고 다운로드 버튼으로 받습니다. 결과는 MS 워드, 한컴오피스, 구글 문서에서 열립니다.</p>
+      <p><a class="btn" href="pdf.html#pdf-to-document">지금 PDF를 워드로 변환하기 →</a></p>
     </section>
 
     <section class="info-section">
       <h2>자주 묻는 질문</h2>
       <details>
         <summary>스캔한 PDF도 워드로 변환되나요?</summary>
-        <p>아니요. 이 기능은 PDF 안에 있는 실제 텍스트만 추출하기 때문에, 사진을 스캔해서 만든 이미지 기반 PDF는 지원하지 않습니다. 텍스트가 없는 스캔본은 대신 PDF→PPT 변환을 이용해주세요. 페이지를 이미지 그대로 슬라이드에 담을 수 있습니다.</p>
+        <p>아니요. 스캔본에는 뽑아낼 글자가 없어서 "텍스트가 없는 스캔본" 안내가 나옵니다. 이 사이트는 OCR(그림 속 글자 인식)을 지원하지 않으므로, 페이지를 그림 그대로 옮기는 PDF→PPT 변환을 쓰거나 OCR 프로그램을 이용하세요.</p>
       </details>
       <details>
         <summary>표나 이미지, 서식도 그대로 옮겨지나요?</summary>
-        <p>아니요. 텍스트만 문단 단위로 추출되며, 표·이미지·글꼴 서식은 옮겨지지 않습니다. 원본 PDF의 페이지가 바뀔 때마다 워드 문서에서도 페이지가 나뉩니다.</p>
+        <p>아니요. 테스트에서 4×4 표는 칸 안의 글자만 줄글로 남았고, 제목의 큰 글씨와 굵기도 일반 글씨가 됐습니다. 이미지는 옮겨지지 않습니다.</p>
       </details>
       <details>
         <summary>문단이 이상하게 나뉘거나 합쳐져요</summary>
-        <p>문단 구분은 텍스트 사이의 줄 간격을 기준으로 자동 인식됩니다. 레이아웃이 복잡한 PDF(다단 구성, 표 안의 텍스트 등)에서는 문단이 원본과 다르게 나뉠 수 있습니다. 표가 실제로 어떻게 무너지는지 실제 테스트 결과는 <a href="pdf-conversion-accuracy.html">이 글</a>에서 확인할 수 있습니다.</p>
+        <p>문단은 줄 사이 간격을 기준으로 자동으로 나눕니다. 여러 단으로 된 문서나 표 안의 글자는 원본과 다르게 나뉠 수 있습니다.</p>
       </details>
       <details>
         <summary>몇 페이지까지 변환할 수 있나요?</summary>
@@ -156,7 +186,11 @@
       </details>
       <details>
         <summary>다운로드한 파일은 어떤 프로그램에서 열리나요?</summary>
-        <p>.docx 형식으로 저장되며 Microsoft Word, 한글과컴퓨터의 한컴오피스, 구글 문서 등 대부분의 워드 프로세서에서 열 수 있습니다.</p>
+        <p>.docx 형식이라 Microsoft Word, 한컴오피스, 구글 문서 등 대부분의 워드 프로그램에서 열립니다.</p>
+      </details>
+      <details>
+        <summary>PDF가 서버로 전송되나요?</summary>
+        <p>아니요. 글자 추출과 워드 파일 생성은 모두 브라우저 안에서 이뤄집니다.</p>
       </details>
     </section>
 
