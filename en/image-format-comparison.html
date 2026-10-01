@@ -75,7 +75,7 @@
 
     <section class="info-section">
       <h2>What we measured</h2>
-      <p>Theory only goes so far, so we compressed two test images (one photo-like, one flat graphic) with this site's own compressor and recorded the exact byte counts. The full table is on the <a href="../benchmark.html">benchmark page</a> (in Korean, but the numbers are universal). The short version:</p>
+      <p>Theory only goes so far, so we compressed two test images (one photo-like, one flat graphic) with this site's own compressor and recorded the exact byte counts. The full table is on the <a href="../benchmark.html">benchmark page</a> (in Korean, but the numbers are universal). These figures come from the browser's built-in JPG encoder; JPG output on this site now uses MozJPEG, which produces a smaller file at the same quality value (on a synthetic 1600&times;1200 photo at quality 75 we measured 287,186 bytes with the browser encoder and 180,789 with MozJPEG; other images will differ). The short version:</p>
       <p>On the photo-like image, both JPG and WebP at 80% quality cut the file by more than 90%: from 1,808,456 bytes to 115,393 (JPG, 93.6% smaller) and 123,720 (WebP, 93.2% smaller). On the flat graphic, JPG at 100% quality came out <em>bigger</em> than the original PNG (35,171 vs 22,791 bytes), while WebP at 100% was 73.6% smaller (6,010 bytes).</p>
       <figure class="guide-image">
         <svg viewBox="0 0 400 220" role="img" aria-labelledby="gTitle gDesc" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +101,7 @@
       <p><strong>Photos:</strong> JPG or WebP at around 80% quality.</p>
       <p><strong>Logos and graphics that need a transparent background:</strong> PNG (guaranteed lossless) or WebP.</p>
       <p><strong>Screenshots and UI with lots of flat color:</strong> WebP, or PNG if compatibility is a worry.</p>
-      <p>This comparison covers still images only. The compressor handles JPG, PNG and WebP, not animated GIFs or AVIF.</p>
+      <p>This comparison covers still images only (JPG, PNG, WebP). The compressor also saves AVIF and accepts iPhone HEIC photos, but it does not handle animated GIFs. AVIF is not always smaller than JPG and takes longer to encode, so it was left out of the measurements.</p>
       <p><a class="btn" href="index.html">Try converting a format now &rarr;</a></p>
     </section>
 
@@ -117,7 +117,7 @@
       </details>
       <details>
         <summary>I want to shrink a file with zero quality loss. What should I do?</summary>
-        <p>Keep PNG for true losslessness. Note that PNG's size does not respond to the quality slider, so the way to make it smaller is to reduce the pixel dimensions.</p>
+        <p>Keep PNG and set "PNG colors" to Original for true lossless output. The quality slider does not shrink a lossless PNG, so to make it smaller either reduce the pixel dimensions or use the color-reduction option (256 colors by default), which cuts screenshots and graphics a lot but can show slight banding in photos.</p>
       </details>
       <details>
         <summary>Does re-saving an image over and over make it worse?</summary>

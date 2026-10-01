@@ -10,11 +10,11 @@
   <title>How to Reduce PDF File Size (for Scanned and Photo PDFs)</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
      crossorigin="anonymous"></script>
-  <meta name="description" content="A browser-based workaround for shrinking scanned and photo-heavy PDFs, plus when it does not help and what to use instead.">
+  <meta name="description" content="How to shrink scanned and photo-heavy PDFs in your browser, with measured results, plus when it backfires and what to use instead.">
   <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/en/pdf-file-size-reduction.html">
   <meta property="og:type" content="article">
   <meta property="og:title" content="How to Reduce PDF File Size (for Scanned and Photo PDFs)">
-  <meta property="og:description" content="A browser-based workaround for shrinking scanned and photo-heavy PDFs, plus when it does not help and what to use instead.">
+  <meta property="og:description" content="How to shrink scanned and photo-heavy PDFs in your browser, with measured results, plus when it backfires and what to use instead.">
   <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/en/pdf-file-size-reduction.html">
   <meta property="og:locale" content="en_US">
   <meta property="og:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
@@ -30,7 +30,7 @@
     "@type": "Article",
     "headline": "How to Reduce PDF File Size (for Scanned and Photo PDFs)",
     "url": "https://nwb010118.github.io/image-toolbox/en/pdf-file-size-reduction.html",
-    "description": "A browser-based workaround for shrinking scanned and photo-heavy PDFs, plus when it does not help and what to use instead.",
+    "description": "How to shrink scanned and photo-heavy PDFs in your browser, with measured results, plus when it backfires and what to use instead.",
     "inLanguage": "en",
     "datePublished": "2026-10-01",
     "dateModified": "2026-10-01",
@@ -58,48 +58,48 @@
   <main class="container" id="main-content">
     <p class="eyebrow">IMAGE TOOLBOX / GUIDE</p>
     <h1>How to Reduce PDF File Size (for Scanned and Photo PDFs)</h1>
-    <p class="subtitle">A workaround that works well for scans, and a clear note on when not to use it.</p>
+    <p class="subtitle">A tool that works well for scans, and a clear note on when not to use it.</p>
     <p class="tool-nav"><a href="guide.html">&larr; All guides</a></p>
 
     <section class="info-section">
-      <h2>The honest premise: we don't compress PDFs directly</h2>
-      <p>The <a href="pdf.html">PDF tools</a> on this site convert PDF pages to images, combine images into a PDF, and handle a few conversions. They do not have a "compress this PDF" button. There is, however, a workaround that works well for one specific kind of file.</p>
-    </section>
-
-    <section class="info-section">
-      <h2>The workaround: extract, compress, rebuild</h2>
-      <p>1) Convert the PDF pages to images with the PDF tools. 2) Compress those images in the <a href="index.html">image compressor</a>, choosing a quality that suits you. 3) Combine the compressed images back into a PDF. Because the images account for almost all of a scanned PDF's size, shrinking them shrinks the whole file.</p>
-      <p>Limits to know about: the PDF tools process up to 50 pages per workflow, so longer documents should be split into batches, and the image compressor handles up to 10 images per batch (with a ZIP download).</p>
+      <h2>Shrinking a PDF on this site</h2>
+      <p>Upload a PDF to <a href="pdf.html#shrink-pdf">Shrink a PDF</a> in the PDF tools and each page is rebuilt as a JPG image and bundled back into one PDF. You can pick three compression levels (High 150 dpi, Balanced 110 dpi, Smallest 80 dpi); it handles up to 50 pages and 20 MB per file, all inside your browser.</p>
+      <p>What we measured with test files we generated ourselves: a 3-page scan-style PDF full of photo-like texture (3.3 MB) became about 484 KB at Balanced (85% smaller) and about 197 KB at Smallest (94% smaller). Real scans will vary with their resolution and content.</p>
     </section>
 
     <section class="info-section">
       <h2>It only helps some PDFs</h2>
       <p>This works for <strong>scans and photo-heavy PDFs</strong>, where images make up most of the file size.</p>
-      <p>It does <strong>not</strong> work for text-based PDFs. Text is already tiny, so there is almost nothing to squeeze, and turning pages into images costs you the ability to select and search the text. For those files, use the size-optimization option in a word processor or PDF editor instead.</p>
-      <p>Results also depend on image type. Color-rich scans often shrink by more than 90% as JPG or WebP, while documents with flat colors, stamps or handwriting can do worse as JPG. If that happens, switch the output format to WebP. Our <a href="image-format-comparison.html">format comparison</a> has the measured numbers.</p>
+      <p>It backfires on <strong>text-based PDFs</strong>. Text is already tiny, and turning pages into images makes the file bigger: in the same test, a 3-page text-only PDF (14.5 KB) grew to about 298 KB, and the tool tells you when the result is larger than the original. Either way, pages become images, so you can no longer select or search the text. For text-heavy files, use the size-optimization option in a word processor or PDF editor instead.</p>
+      <p>Results also depend on image type. Color-rich scans often shrink a lot, while documents with flat colors, stamps or handwriting can show visible quality loss at the smallest level; step up one level if that happens. Our <a href="image-format-comparison.html">format comparison</a> explains why flat graphics behave differently.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>If you want finer control</h2>
+      <p>You can still do it by hand: convert the PDF pages to images with the PDF tools, compress them in the <a href="index.html">image compressor</a> (for example with "Fit a target file size"), then combine them back into a PDF.</p>
     </section>
 
     <section class="info-section">
       <h2>FAQ</h2>
       <details>
-        <summary>Can I upload a PDF and compress it directly?</summary>
-        <p>No. The workaround of extracting pages, compressing the images and rebuilding the PDF is the way to do it here.</p>
+        <summary>Can I upload a PDF and shrink it directly?</summary>
+        <p>Yes. Use Shrink a PDF in the PDF tools: it rebuilds each page as a JPG (up to 50 pages, 20 MB, three levels).</p>
       </details>
       <details>
         <summary>Will it work on a long text report?</summary>
-        <p>Not well. Text is already small, and converting to images removes text selection and search.</p>
+        <p>No, and it can make things worse. Text is already small, converting to images makes the file larger, and you lose text selection and search. The tool warns you when the result is bigger.</p>
       </details>
       <details>
         <summary>How much smaller will a scanned PDF get?</summary>
-        <p>It depends on the scan and your quality setting. The benchmark page shows measured reductions at each quality level.</p>
+        <p>It depends on the scan and the level. On our synthetic 3-page scan-style test it shrank 85% to 94%; already-compressed scans shrink less.</p>
       </details>
       <details>
-        <summary>Is the rebuilt PDF always smaller?</summary>
-        <p>Usually, but not always. Graphic-style scans can grow if compressed as JPG; try WebP in that case.</p>
+        <summary>What about PDFs over 50 pages?</summary>
+        <p>Shrinking is limited to 50 pages to protect memory. Split longer documents, shrink the parts, then merge them again with Merge PDFs.</p>
       </details>
       <details>
-        <summary>What if my PDF mixes photos and text?</summary>
-        <p>Every page becomes an image, so the text stops being selectable. If you need to keep the text, use a PDF editor's optimization feature.</p>
+        <summary>Is the shrunk PDF always smaller?</summary>
+        <p>No. Already well-compressed or text-based PDFs can come out larger; in that case the tool says so and keeping the original is better.</p>
       </details>
       <details>
         <summary>Is my PDF uploaded anywhere?</summary>

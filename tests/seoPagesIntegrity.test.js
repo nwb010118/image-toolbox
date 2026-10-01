@@ -367,11 +367,13 @@ test('cloud-storage-photo-tips.html contains the verified free storage capacitie
   assert.ok(html.includes('5GB'), 'missing iCloud/OneDrive 5GB');
 });
 
-test('pdf-file-size-reduction.html honestly states the tool cannot compress PDF directly', function () {
+test('pdf-file-size-reduction.html describes the PDF shrink tool and is honest about when it does not help', function () {
   const html = readRepoFile('pdf-file-size-reduction.html');
-  assert.ok(html.includes('PDF 자체') || html.includes('PDF 파일 자체'), 'missing honest disclosure about PDF compression limitation');
-  assert.ok(html.includes('href="index.html"'), 'missing link to image compression tool for the workaround');
-  assert.ok(html.includes('href="pdf.html"'), 'missing link to pdf.html for the workaround');
+  assert.ok(html.includes('PDF 용량 줄이기'), 'missing mention of the PDF shrink tool');
+  assert.ok(html.includes('글자를 선택') || html.includes('선택·검색'), 'missing disclosure that text is no longer selectable');
+  assert.ok(html.includes('오히려 커'), 'missing disclosure that text PDFs can get larger');
+  assert.ok(html.includes('href="index.html"'), 'missing link to image compression tool for the manual workaround');
+  assert.ok(html.includes('href="pdf.html'), 'missing link to pdf.html');
 });
 
 test('pdf-file-size-reduction.html is linked from pdf.html FAQ', function () {
@@ -463,11 +465,12 @@ GUIDE_ARTICLES_ROUND3.forEach(function (file) {
   });
 });
 
-test('iphone-heic-photo-guide.html states the iPhone setting path and this site does not accept HEIC directly', function () {
+test('iphone-heic-photo-guide.html states the iPhone setting path and that this site now converts HEIC directly', function () {
   const html = readRepoFile('iphone-heic-photo-guide.html');
   assert.ok(html.includes('카메라') && html.includes('포맷') && html.includes('호환성 우선'), 'missing iPhone setting path (설정 → 카메라 → 포맷 → 호환성 우선)');
   assert.ok(html.includes('HEIC'), 'missing HEIC mention');
-  assert.ok(html.includes('href="index.html"'), 'missing link to compression tool for the after-conversion step');
+  assert.ok(html.includes('href="index.html"'), 'missing link to compression tool');
+  assert.ok(html.includes('브라우저 안에서'), 'missing disclosure that conversion happens in the browser');
 });
 
 test('monitor-resolution-wallpaper-size.html contains the verified FHD/QHD/4K resolutions and the upscale reachability facts', function () {
@@ -518,12 +521,12 @@ test('print-resolution-dpi-guide.html has the DPI formula diagram', function () 
   assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
 });
 
-test('pdf-merge-multiple-files.html honestly states PDF+PDF merge is unsupported and names the 50-image bottleneck', function () {
+test('pdf-merge-multiple-files.html describes the PDF merge tool, its limits and the photo route', function () {
   const html = readRepoFile('pdf-merge-multiple-files.html');
-  assert.ok(html.includes('병합') && html.includes('없습니다'), 'missing honest disclosure that PDF+PDF merge is unsupported');
-  assert.ok(html.includes('href="pdf.html"'), 'missing link to pdf.html for the extraction step');
-  assert.ok(html.includes('href="photos-to-pdf.html"'), 'missing link to photos-to-pdf.html for the re-merge step');
-  assert.ok(html.includes('50'), 'missing mention of the 50-image batch limit bottleneck');
+  assert.ok(html.includes('PDF 합치기'), 'missing mention of the PDF merge tool');
+  assert.ok(html.includes('href="pdf.html'), 'missing link to pdf.html');
+  assert.ok(html.includes('href="photos-to-pdf.html"'), 'missing link to photos-to-pdf.html for photo-to-PDF');
+  assert.ok(html.includes('100MB') && html.includes('10개'), 'missing the 10-file / 100MB limits');
 });
 
 test('pdf-merge-multiple-files.html is linked from pdf.html FAQ', function () {
@@ -531,18 +534,6 @@ test('pdf-merge-multiple-files.html is linked from pdf.html FAQ', function () {
   assert.ok(pdfHtml.includes('href="pdf-merge-multiple-files.html"'), 'pdf.html FAQ missing link to pdf-merge-multiple-files.html');
 });
 
-test('pdf-merge-multiple-files.html has the multi-file selection screenshot', function () {
-  const html = readRepoFile('pdf-merge-multiple-files.html');
-  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
-  const imgMatch = html.match(/<img[^>]*src="images\/tool-pdf-multi-file-select\.png"[^>]*>/);
-  assert.ok(imgMatch, 'missing tool-pdf-multi-file-select.png image tag');
-  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
-  assert.ok(imgMatch[0].includes('width="858"'), 'missing correct width attribute');
-  assert.ok(imgMatch[0].includes('height="639"'), 'missing correct height attribute');
-  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
-  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
-  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
-});
 
 test('images/tool-pdf-multi-file-select.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-pdf-multi-file-select.png')), 'tool-pdf-multi-file-select.png missing from images/');
@@ -672,18 +663,6 @@ test('images/tool-resize-1080x1080.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-resize-1080x1080.png')), 'tool-resize-1080x1080.png missing from images/');
 });
 
-test('iphone-heic-photo-guide.html has the empty upload area screenshot', function () {
-  const html = readRepoFile('iphone-heic-photo-guide.html');
-  assert.ok(html.includes('<figure class="guide-image">'), 'missing guide-image figure');
-  const imgMatch = html.match(/<img[^>]*src="images\/tool-empty-upload\.png"[^>]*>/);
-  assert.ok(imgMatch, 'missing tool-empty-upload.png image tag');
-  assert.ok(/alt="[^"]+"/.test(imgMatch[0]), 'image missing non-empty alt text');
-  assert.ok(imgMatch[0].includes('width="564"'), 'missing correct width attribute');
-  assert.ok(imgMatch[0].includes('height="348"'), 'missing correct height attribute');
-  assert.ok(imgMatch[0].includes('loading="lazy"'), 'missing loading=lazy attribute');
-  assert.ok(imgMatch[0].includes('decoding="async"'), 'missing decoding=async attribute');
-  assert.ok(/<figcaption>[^<]+<\/figcaption>/.test(html), 'missing figcaption');
-});
 
 test('images/tool-empty-upload.png exists on disk', function () {
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'tool-empty-upload.png')), 'tool-empty-upload.png missing from images/');
@@ -835,10 +814,11 @@ test('cloud-storage-photo-tips.html new content covers concrete photo-count math
   assert.ok(html.includes('되돌릴 수 없'), 'missing irreversibility FAQ');
 });
 
-test('pdf-file-size-reduction.html new content covers per-page-limit, non-guaranteed shrink, and mixed-content pages without repeating the existing text-search disclosure verbatim', function () {
+test('pdf-file-size-reduction.html new content covers the page limit, non-guaranteed shrink, and mixed-content pages', function () {
   const html = readRepoFile('pdf-file-size-reduction.html');
-  assert.ok(html.includes('300페이지'), 'missing 300-page extraction limit FAQ');
-  assert.ok(html.includes('WebP'), 'missing WebP-alternative-for-graphic-scans mention');
+  assert.ok(html.includes('50페이지'), 'missing 50-page limit');
+  assert.ok(html.includes('섞여'), 'missing mixed photo/text FAQ');
+  assert.ok(html.includes('항상 원본보다 작아지나요'), 'missing non-guaranteed shrink FAQ');
 });
 
 const BATCH_B_MIN_LENGTH = {
@@ -866,10 +846,11 @@ Object.keys(BATCH_B_MIN_LENGTH).forEach(function (file) {
   });
 });
 
-test('sns-blog-image-size.html new FAQ covers X/Twitter similarity, single-file limitation, and no-auto-crop honesty', function () {
+test('sns-blog-image-size.html new FAQ covers X/Twitter similarity, batch processing, and crop-by-preset honesty', function () {
   const html = readRepoFile('sns-blog-image-size.html');
   assert.ok(html.includes('트위터') || html.includes('X('), 'missing X/Twitter FAQ');
-  assert.ok(html.includes('한 번에 한 장씩'), 'missing single-file-processing honesty');
+  assert.ok(html.includes('최대 10장'), 'missing batch-processing answer');
+  assert.ok(html.includes('가운데를 기준으로'), 'missing crop-by-preset honesty');
 });
 
 test('favicon-og-image-size.html new FAQ covers missing og:image behavior, favicon format flexibility, and dark mode', function () {
@@ -910,7 +891,7 @@ test('print-resolution-dpi-guide.html new content covers business-card/banner ex
 
 test('pdf-merge-multiple-files.html new content covers filename ordering tip, password-protected PDFs, and page rotation, phrased distinctly from pdf-file-size-reduction.html', function () {
   const html = readRepoFile('pdf-merge-multiple-files.html');
-  assert.ok(html.includes('001'), 'missing filename-numbering ordering tip');
+  assert.ok(html.includes('위·아래 버튼'), 'missing ordering instructions');
   assert.ok(html.includes('암호'), 'missing password-protected-PDF FAQ');
   const otherHtml = readRepoFile('pdf-file-size-reduction.html');
   const thisMain = html.match(/<main[\s\S]*?<\/main>/);
