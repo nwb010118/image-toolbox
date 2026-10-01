@@ -60,18 +60,18 @@ Object.keys(OLD_LITERALS_BY_FILE).forEach(function (file) {
 });
 
 var APP_SCRIPT_BY_PAGE = {
-  'index.html': 'src="js/app.js"',
-  'upscale.html': 'src="js/upscaleApp.js"',
-  'pdf.html': 'src="js/pdfApp.js"',
-  'en/index.html': 'src="../js/app.js"',
-  'en/upscale.html': 'src="../js/upscaleApp.js"',
-  'en/pdf.html': 'src="../js/pdfApp.js"'
+  'index.html': 'src="js/app.js?',
+  'upscale.html': 'src="js/upscaleApp.js?',
+  'pdf.html': 'src="js/pdfApp.js?',
+  'en/index.html': 'src="../js/app.js?',
+  'en/upscale.html': 'src="../js/upscaleApp.js?',
+  'en/pdf.html': 'src="../js/pdfApp.js?'
 };
 
 Object.keys(APP_SCRIPT_BY_PAGE).forEach(function (page) {
   test(page + ' loads js/strings.js before ' + APP_SCRIPT_BY_PAGE[page], function () {
     var html = readRepoFile(page);
-    var stringsSrc = page.indexOf('en/') === 0 ? 'src="../js/strings.js"' : 'src="js/strings.js"';
+    var stringsSrc = page.indexOf('en/') === 0 ? 'src="../js/strings.js?' : 'src="js/strings.js?';
     var stringsIndex = html.indexOf(stringsSrc);
     var appIndex = html.indexOf(APP_SCRIPT_BY_PAGE[page]);
     assert.ok(stringsIndex !== -1, page + ' missing js/strings.js script tag');

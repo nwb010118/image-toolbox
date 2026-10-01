@@ -14,7 +14,8 @@
 
   function getWorker() {
     if (worker) return worker;
-    worker = new Worker(new URL('encodeWorker.js', scriptUrl), { type: 'module' });
+    // keep this script's ?v= so a new deploy never pairs a fresh page with a cached old worker
+    worker = new Worker(new URL('encodeWorker.js' + new URL(scriptUrl).search, scriptUrl), { type: 'module' });
     worker.onmessage = function (event) {
       var entry = pending[event.data.id];
       if (!entry) return;
