@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#116b5d">
+  <title>How to Reduce PDF File Size (for Scanned and Photo PDFs)</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="A browser-based workaround for shrinking scanned and photo-heavy PDFs, plus when it does not help and what to use instead.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/en/pdf-file-size-reduction.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How to Reduce PDF File Size (for Scanned and Photo PDFs)">
+  <meta property="og:description" content="A browser-based workaround for shrinking scanned and photo-heavy PDFs, plus when it does not help and what to use instead.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/en/pdf-file-size-reduction.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Reduce PDF File Size (for Scanned and Photo PDFs)",
+    "url": "https://nwb010118.github.io/image-toolbox/en/pdf-file-size-reduction.html",
+    "description": "A browser-based workaround for shrinking scanned and photo-heavy PDFs, plus when it does not help and what to use instead.",
+    "inLanguage": "en",
+    "datePublished": "2026-10-01",
+    "dateModified": "2026-10-01",
+    "author": {
+        "@type": "Organization",
+        "name": "image toolbox"
+    }
+}
+  </script>
+</head>
+<body class="page-article">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox home"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="Main menu">
+        <a href="index.html">Compress</a>
+        <a href="pdf.html">PDF Tools</a>
+        <a href="upscale.html">Upscale</a>
+        <a href="guide.html">Guides</a>
+        <a href="../index.html" lang="ko" hreflang="ko">한국어</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" id="main-content">
+    <p class="eyebrow">IMAGE TOOLBOX / GUIDE</p>
+    <h1>How to Reduce PDF File Size (for Scanned and Photo PDFs)</h1>
+    <p class="subtitle">A workaround that works well for scans, and a clear note on when not to use it.</p>
+    <p class="tool-nav"><a href="guide.html">&larr; All guides</a></p>
+
+    <section class="info-section">
+      <h2>The honest premise: we don't compress PDFs directly</h2>
+      <p>The <a href="pdf.html">PDF tools</a> on this site convert PDF pages to images, combine images into a PDF, and handle a few conversions. They do not have a "compress this PDF" button. There is, however, a workaround that works well for one specific kind of file.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>The workaround: extract, compress, rebuild</h2>
+      <p>1) Convert the PDF pages to images with the PDF tools. 2) Compress those images in the <a href="index.html">image compressor</a>, choosing a quality that suits you. 3) Combine the compressed images back into a PDF. Because the images account for almost all of a scanned PDF's size, shrinking them shrinks the whole file.</p>
+      <p>Limits to know about: the PDF tools process up to 50 pages per workflow, so longer documents should be split into batches, and the image compressor handles up to 10 images per batch (with a ZIP download).</p>
+    </section>
+
+    <section class="info-section">
+      <h2>It only helps some PDFs</h2>
+      <p>This works for <strong>scans and photo-heavy PDFs</strong>, where images make up most of the file size.</p>
+      <p>It does <strong>not</strong> work for text-based PDFs. Text is already tiny, so there is almost nothing to squeeze, and turning pages into images costs you the ability to select and search the text. For those files, use the size-optimization option in a word processor or PDF editor instead.</p>
+      <p>Results also depend on image type. Color-rich scans often shrink by more than 90% as JPG or WebP, while documents with flat colors, stamps or handwriting can do worse as JPG. If that happens, switch the output format to WebP. Our <a href="image-format-comparison.html">format comparison</a> has the measured numbers.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Can I upload a PDF and compress it directly?</summary>
+        <p>No. The workaround of extracting pages, compressing the images and rebuilding the PDF is the way to do it here.</p>
+      </details>
+      <details>
+        <summary>Will it work on a long text report?</summary>
+        <p>Not well. Text is already small, and converting to images removes text selection and search.</p>
+      </details>
+      <details>
+        <summary>How much smaller will a scanned PDF get?</summary>
+        <p>It depends on the scan and your quality setting. The benchmark page shows measured reductions at each quality level.</p>
+      </details>
+      <details>
+        <summary>Is the rebuilt PDF always smaller?</summary>
+        <p>Usually, but not always. Graphic-style scans can grow if compressed as JPG; try WebP in that case.</p>
+      </details>
+      <details>
+        <summary>What if my PDF mixes photos and text?</summary>
+        <p>Every page becomes an image, so the text stops being selectable. If you need to keep the text, use a PDF editor's optimization feature.</p>
+      </details>
+      <details>
+        <summary>Is my PDF uploaded anywhere?</summary>
+        <p>No. All processing happens locally in your browser.</p>
+      </details>
+    </section>
+
+    <section class="info-section">
+      <h2>Related pages</h2>
+      <p><a href="pdf.html">PDF tools</a></p>
+      <p><a href="index.html">Image compressor</a></p>
+      <p><a href="image-format-comparison.html">PNG vs JPG vs WebP</a></p>
+      <p><a href="guide.html">All guides</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">Everyday image work, made simple and safe.</p></div>
+      <nav class="footer-links" aria-label="Site info"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy Policy</a></nav>
+    </div>
+  </footer>
+</body>
+</html>

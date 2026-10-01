@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#116b5d">
+  <title>PNG vs JPG vs WebP: Which Image Format Should You Use?</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608292673018037"
+     crossorigin="anonymous"></script>
+  <meta name="description" content="How PNG, JPG and WebP differ in compression, transparency and compatibility, with real file-size measurements to back up the recommendations.">
+  <link rel="canonical" href="https://nwb010118.github.io/image-toolbox/en/image-format-comparison.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="PNG vs JPG vs WebP: Which Image Format Should You Use?">
+  <meta property="og:description" content="How PNG, JPG and WebP differ in compression, transparency and compatibility, with real file-size measurements to back up the recommendations.">
+  <meta property="og:url" content="https://nwb010118.github.io/image-toolbox/en/image-format-comparison.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://nwb010118.github.io/image-toolbox/images/og-image-en.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "PNG vs JPG vs WebP: Which Image Format Should You Use?",
+    "url": "https://nwb010118.github.io/image-toolbox/en/image-format-comparison.html",
+    "description": "How PNG, JPG and WebP differ in compression, transparency and compatibility, with real file-size measurements to back up the recommendations.",
+    "inLanguage": "en",
+    "datePublished": "2026-10-01",
+    "dateModified": "2026-10-01",
+    "author": {
+        "@type": "Organization",
+        "name": "image toolbox"
+    }
+}
+  </script>
+</head>
+<body class="page-article">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="index.html" aria-label="image toolbox home"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M8 11h16M8 16h11M8 21h7" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="m21 18 3 3-3 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>image toolbox<span style="color:var(--color-accent)">.</span></span></a>
+      <nav class="site-nav" aria-label="Main menu">
+        <a href="index.html">Compress</a>
+        <a href="pdf.html">PDF Tools</a>
+        <a href="upscale.html">Upscale</a>
+        <a href="guide.html">Guides</a>
+        <a href="../index.html" lang="ko" hreflang="ko">한국어</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" id="main-content">
+    <p class="eyebrow">IMAGE TOOLBOX / GUIDE</p>
+    <h1>PNG vs JPG vs WebP: Which Image Format Should You Use?</h1>
+    <p class="subtitle">How the three formats differ, with measured file sizes instead of rules of thumb.</p>
+    <p class="tool-nav"><a href="guide.html">&larr; All guides</a></p>
+
+    <section class="info-section">
+      <h2>The three formats compress in fundamentally different ways</h2>
+      <p><strong>PNG</strong> is lossless. It keeps every pixel exactly as it was and only reorganizes the data more efficiently, so quality never drops. The price is size: photos, with their endless color variation, come out large.</p>
+      <p><strong>JPG</strong> is lossy. It throws away detail that the human eye barely notices, which shrinks photos dramatically. It struggles with flat colors and sharp edges, though, which is why screenshots and UI graphics often look worse or even get <em>larger</em> as JPG.</p>
+      <p><strong>WebP</strong> is newer and supports both lossy and lossless modes. This site's compressor outputs lossy WebP, which often matches JPG's visual quality at a smaller size.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>Transparency and compatibility</h2>
+      <p>If you need a transparent background, choose PNG or WebP; JPG has no alpha channel. WebP works in every modern browser, but older desktop software and some photo editors still cannot open it. When compatibility matters more than size (a file you are sending to someone with unknown software), PNG or JPG is the safer choice.</p>
+    </section>
+
+    <section class="info-section">
+      <h2>What we measured</h2>
+      <p>Theory only goes so far, so we compressed two test images (one photo-like, one flat graphic) with this site's own compressor and recorded the exact byte counts. The full table is on the <a href="../benchmark.html">benchmark page</a> (in Korean, but the numbers are universal). The short version:</p>
+      <p>On the photo-like image, both JPG and WebP at 80% quality cut the file by more than 90%: from 1,808,456 bytes to 115,393 (JPG, 93.6% smaller) and 123,720 (WebP, 93.2% smaller). On the flat graphic, JPG at 100% quality came out <em>bigger</em> than the original PNG (35,171 vs 22,791 bytes), while WebP at 100% was 73.6% smaller (6,010 bytes).</p>
+      <figure class="guide-image">
+        <svg viewBox="0 0 400 220" role="img" aria-labelledby="gTitle gDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="gTitle">File size of a flat graphic at 100% quality</title>
+          <desc id="gDesc">PNG original 22,791 bytes, JPG 35,171 bytes, WebP 6,010 bytes</desc>
+          <line x1="20" y1="180" x2="380" y2="180" stroke="var(--color-border)" stroke-width="2"></line>
+          <rect x="40" y="89" width="70" height="91" rx="4" fill="var(--color-text-secondary)"></rect>
+          <text x="75" y="81" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">22,791B</text>
+          <text x="75" y="200" text-anchor="middle" font-size="13" fill="var(--color-text-secondary)">PNG (original)</text>
+          <rect x="150" y="40" width="70" height="140" rx="4" fill="var(--color-accent-dark)"></rect>
+          <text x="185" y="32" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">35,171B</text>
+          <text x="185" y="200" text-anchor="middle" font-size="13" fill="var(--color-text-secondary)">JPG 100%</text>
+          <rect x="260" y="156" width="70" height="24" rx="4" fill="var(--color-accent)"></rect>
+          <text x="295" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text)">6,010B</text>
+          <text x="295" y="200" text-anchor="middle" font-size="13" fill="var(--color-text-secondary)">WebP 100%</text>
+        </svg>
+        <figcaption>Flat graphic (solid colors, UI-style): JPG at 100% quality (35,171 B) is larger than the original PNG (22,791 B).</figcaption>
+      </figure>
+    </section>
+
+    <section class="info-section">
+      <h2>Which one should you pick?</h2>
+      <p><strong>Photos:</strong> JPG or WebP at around 80% quality.</p>
+      <p><strong>Logos and graphics that need a transparent background:</strong> PNG (guaranteed lossless) or WebP.</p>
+      <p><strong>Screenshots and UI with lots of flat color:</strong> WebP, or PNG if compatibility is a worry.</p>
+      <p>This comparison covers still images only. The compressor handles JPG, PNG and WebP, not animated GIFs or AVIF.</p>
+      <p><a class="btn" href="index.html">Try converting a format now &rarr;</a></p>
+    </section>
+
+    <section class="info-section">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Why can't some programs open WebP files?</summary>
+        <p>WebP is relatively new, so older image editors and a few default OS viewers do not support it. Every modern web browser does.</p>
+      </details>
+      <details>
+        <summary>Does converting PNG to JPG always make the file smaller?</summary>
+        <p>Usually, but not always. Images with flat colors and sharp edges can get larger as JPG. See the measured numbers above.</p>
+      </details>
+      <details>
+        <summary>I want to shrink a file with zero quality loss. What should I do?</summary>
+        <p>Keep PNG for true losslessness. Note that PNG's size does not respond to the quality slider, so the way to make it smaller is to reduce the pixel dimensions.</p>
+      </details>
+      <details>
+        <summary>Does re-saving an image over and over make it worse?</summary>
+        <p>Yes for JPG and lossy WebP: every save discards a little more detail. If you need several versions, always compress from the original file. PNG does not suffer from this.</p>
+      </details>
+      <details>
+        <summary>Can I convert several photos at once?</summary>
+        <p>Yes. You can select up to 10 images at a time and download the results as a single ZIP. Selecting one image keeps the single-image flow.</p>
+      </details>
+    </section>
+
+    <section class="info-section">
+      <h2>Related pages</h2>
+      <p><a href="index.html">Image compressor</a></p>
+      <p><a href="../benchmark.html">Measured compression benchmark (Korean)</a></p>
+      <p><a href="guide.html">All guides</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div><span class="footer-brand">image toolbox.</span><p class="footer-note">Everyday image work, made simple and safe.</p></div>
+      <nav class="footer-links" aria-label="Site info"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy Policy</a></nav>
+    </div>
+  </footer>
+</body>
+</html>
