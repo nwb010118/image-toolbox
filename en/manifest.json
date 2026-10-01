@@ -1,0 +1,25 @@
+{
+  "name": "Image Toolbox - Compress, Convert & Upscale Images, PDF Tools",
+  "short_name": "Image Toolbox",
+  "description": "Free image compression, PDF tools and AI upscaling that run entirely in your browser",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f5",
+  "theme_color": "#116b5d",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "../images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "../images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
