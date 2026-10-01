@@ -63,7 +63,7 @@
         "name": "어떤 파일 형식을 지원하나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "JPG, PNG, WebP 형식의 이미지를 업로드할 수 있고, 세 형식 중 원하는 형식으로 저장할 수 있습니다."
+          "text": "JPG, PNG, WebP 이미지와 아이폰 HEIC/HEIF 사진을 업로드할 수 있습니다(HEIC는 JPG로 변환해서 처리합니다). 저장은 JPG, PNG, WebP, AVIF 중에서 고를 수 있습니다."
         }
       },
       {
@@ -88,6 +88,30 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "네. 가로/세로 값을 직접 입력해 크기를 조정할 수 있고, '비율 유지'를 켜면 한쪽 값만 입력해도 원본 비율 그대로 나머지 값이 자동 계산됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "\"200KB 이하\"처럼 목표 용량에 맞춰서 줄일 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 압축 방식에서 '목표 용량에 맞추기'를 고르고 숫자와 단위(KB/MB)를 입력하면, 그 용량 이하에서 가장 좋은 화질을 자동으로 찾아줍니다. 품질을 최저로 낮춰도 크면 가로세로 크기를 조금씩 줄여서 맞추고, 그래도 안 되면 맞추지 못했다고 알려드립니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "PNG 용량도 줄일 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 출력 형식이 PNG일 때 'PNG 색 수'를 256색 이하로 두면 색 수를 줄인 팔레트 PNG로 저장해 용량이 크게 줄어듭니다. 사진처럼 색이 많은 이미지는 미세한 색 번짐이 생길 수 있고, 완전한 무손실이 필요하면 '원본 그대로'를 선택하세요."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "사진에 들어 있는 위치 정보는 어떻게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "결과 파일은 이미지를 다시 인코딩해서 만들기 때문에 위치(GPS)와 촬영 정보가 포함되지 않습니다. 원본 JPG에 위치 정보가 있었다면 결과 화면에서 알려드립니다."
         }
       },
       {
@@ -125,7 +149,7 @@
     <nav class="task-picker" aria-label="작업 바로가기"><a href="#uploadArea" aria-current="true">사진 용량 줄이기</a><a href="pdf.html#images-to-pdf">사진을 PDF로</a><a href="upscale.html">작은 이미지 확대</a></nav>
     <div class="tool-intro-grid">
 <section class="upload-area" id="uploadArea">
-      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp" multiple>
+      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,.heic,.heif" multiple>
       <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12"></path>
         <path d="M7 8l5-5 5 5"></path>
@@ -134,7 +158,7 @@
       <h2 class="upload-heading">이미지를 여기에 놓으세요</h2>
       <button type="button" class="upload-btn">파일 선택</button>
       <p class="upload-hint">또는 파일을 이 영역에 끌어다 놓으세요</p>
-      <p class="upload-formats">JPG, PNG, WebP · 한 번에 최대 10장 · 파일당 최대 20MB</p>
+      <p class="upload-formats">JPG, PNG, WebP, HEIC · 한 번에 최대 10장 · 파일당 최대 20MB</p>
       <div id="errorMessage" class="error-message" role="alert" hidden></div>
     </section>
 <aside class="compression-example" aria-labelledby="example-title">
@@ -151,8 +175,29 @@
     <p class="privacy-strip">서버 전송 없음 · 회원가입·설치 없이 사용</p>
 
     <section class="controls" id="controls" tabindex="-1" aria-label="이미지 압축 설정" hidden>
-      <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
-      <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      <div class="option-group">
+        <label for="presetSelect">용도별 프리셋</label>
+        <select id="presetSelect"><option value="">직접 설정</option></select>
+        <p id="presetNote" class="field-note" hidden></p>
+      </div>
+
+      <fieldset class="mode-group">
+        <legend>압축 방식</legend>
+        <label class="radio-label"><input type="radio" name="compressMode" id="modeQuality" value="quality" checked> 품질로 조절</label>
+        <label class="radio-label"><input type="radio" name="compressMode" id="modeTarget" value="target"> 목표 용량에 맞추기</label>
+        <div id="targetFields" class="target-fields" hidden>
+          <label class="resize-label">목표 용량
+            <input type="number" id="targetSize" min="1" step="any" value="200">
+          </label>
+          <select id="targetUnit" aria-label="용량 단위"><option value="KB">KB</option><option value="MB">MB</option></select>
+          <p class="field-note">이 용량 이하에서 가장 좋은 화질을 자동으로 찾아요. 그래도 크면 크기(픽셀)를 조금씩 줄입니다.</p>
+        </div>
+      </fieldset>
+
+      <div id="qualityFields">
+        <label for="qualitySlider">압축 품질: <span id="qualityValue">80</span>%</label>
+        <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      </div>
 
       <div class="resize-fields" id="resizeFields">
         <label class="resize-label">가로(px)
@@ -167,6 +212,22 @@
         </label>
       </div>
 
+      <div id="fitGroup" class="option-group" hidden>
+        <label for="fitSelect">비율이 다를 때</label>
+        <select id="fitSelect">
+          <option value="cover">잘라서 꽉 채우기 (권장)</option>
+          <option value="stretch">늘려서 맞추기 (왜곡될 수 있음)</option>
+        </select>
+        <div id="cropPosition" class="crop-position">
+          <label class="resize-label">가로 위치
+            <input type="range" id="cropX" min="0" max="100" value="50">
+          </label>
+          <label class="resize-label">세로 위치
+            <input type="range" id="cropY" min="0" max="100" value="50">
+          </label>
+        </div>
+      </div>
+
       <label for="formatSelect">출력 형식</label>
       <select id="formatSelect">
         <option value="original">원본과 동일</option>
@@ -174,7 +235,22 @@
         <option value="image/png">PNG</option>
         <option value="image/webp">WebP</option>
       </select>
-      <p id="pngSizeHint" class="compress-warning" hidden>PNG는 무손실 형식이라 압축해도 용량이 줄지 않고, 오히려 원본보다 커질 수 있습니다. 용량을 줄이려면 JPG나 WebP를 선택하세요.</p>
+
+      <div id="pngOptions" class="option-group" hidden>
+        <label for="pngColors">PNG 색 수</label>
+        <select id="pngColors">
+          <option value="256" selected>256색 (권장 · 용량이 크게 줄어요)</option>
+          <option value="128">128색</option>
+          <option value="64">64색</option>
+          <option value="32">32색</option>
+          <option value="0">원본 그대로 (무손실 · 용량이 거의 안 줄어요)</option>
+        </select>
+        <label class="checkbox-label">
+          <input type="checkbox" id="pngDither">
+          디더링 (그라데이션을 더 부드럽게)
+        </label>
+      </div>
+      <p id="pngSizeHint" class="compress-warning" hidden>PNG '원본 그대로'는 무손실이라 압축해도 용량이 줄지 않고, 오히려 원본보다 커질 수 있습니다. 용량을 줄이려면 색 수를 줄이거나 JPG·WebP를 선택하세요.</p>
 
       <button id="compressBtn">적용하기</button>
       <p class="offline-badge">
@@ -184,11 +260,12 @@
         </svg>
         서버 전송 없음 · 브라우저에서만 처리
       </p>
+      <div id="privacyMeter" class="privacy-meter" aria-live="polite"></div>
     </section>
 
     <section class="pdf-section batch-area" id="batchArea" aria-label="여러 장 압축 결과" hidden>
       <h2>여러 장 압축</h2>
-      <p id="batchNote" class="batch-note">여러 장 모드: 품질과 출력 형식이 모든 이미지에 똑같이 적용되고, 크기는 원본 그대로 유지됩니다.</p>
+      <p id="batchNote" class="batch-note">여러 장 모드: 품질(또는 목표 용량)과 출력 형식이 모든 이미지에 똑같이 적용돼요. 프리셋을 고르면 모든 사진을 그 규격으로 맞추고, 고르지 않으면 크기는 원본 그대로 유지됩니다.</p>
       <ul id="batchList" class="file-list"></ul>
       <p id="batchProgress" class="pdf-progress" role="status" hidden></p>
       <p id="batchSummary" class="compression-savings" role="status" hidden></p>
@@ -206,6 +283,8 @@
         <img id="compressedPreview" alt="압축된 이미지 미리보기">
         <p id="compressedSize"></p>
         <p id="compressionSavings" class="compression-savings" role="status" hidden></p>
+        <p id="targetNote" class="result-note" role="status" hidden></p>
+        <p id="metaNotice" class="result-note" role="status" hidden></p>
         <p id="compressWarning" class="compress-warning" hidden>⚠ 압축 결과가 원본보다 커요. 품질을 낮추거나 다운로드하지 않는 걸 권장해요.</p>
         <div class="result-actions">
           <a id="downloadBtn" class="btn" href="#" download="compressed-image.jpg" hidden>다운로드</a>
@@ -218,8 +297,10 @@
     <section class="info-section">
       <h2>압축은 어떻게 동작하나요</h2>
       <p class="tool-nav"><a href="benchmark.html">실제 압축률 비교 결과 보기 →</a></p>
-      <p>이 도구는 브라우저의 Canvas API로 이미지를 다시 인코딩하는 방식으로 압축합니다. 원본을 캔버스에 그린 뒤, 선택한 형식과 품질로 다시 저장하는 원리입니다.</p>
-      <p>JPG와 WebP는 손실 압축 형식이라 품질 슬라이더 값을 낮출수록 실제로 파일 크기가 줄어듭니다. 반면 PNG는 무손실 형식이라 품질 슬라이더를 조절해도 파일 크기에는 영향이 없습니다 — 이는 이 도구만의 제약이 아니라 브라우저의 표준 동작입니다. PNG 사진의 용량을 줄이고 싶다면 출력 형식을 JPG나 WebP로 바꾸거나, 가로세로 크기(해상도) 자체를 줄이는 것을 권장합니다.</p>
+      <p>이 도구는 브라우저의 Canvas API로 이미지를 다시 인코딩하는 방식으로 압축합니다. 원본을 캔버스에 그린 뒤, 선택한 형식과 품질로 다시 저장하는 원리입니다. 다시 저장하는 과정에서 위치(GPS)·촬영 정보 같은 메타데이터는 결과 파일에 남지 않습니다.</p>
+      <p>JPG와 WebP, AVIF는 손실 압축 형식이라 품질 슬라이더 값을 낮출수록 실제로 파일 크기가 줄어듭니다. PNG는 무손실 형식이라 품질 슬라이더가 용량에 영향을 주지 않지만, 이 도구는 <strong>색 수 줄이기</strong>(팔레트 PNG)로 스크린샷·그래픽 PNG를 크게 줄일 수 있습니다. 색 수를 줄이는 방식이라 사진에서는 미세한 색 번짐이 생길 수 있고, 완전한 무손실이 필요하면 '원본 그대로'를 고르면 됩니다.</p>
+      <p><strong>목표 용량 맞추기</strong>를 고르면 "200KB 이하"처럼 숫자만 입력해도 그 이하에서 가장 좋은 화질을 자동으로 찾아줍니다. 품질을 최저로 낮춰도 크면 가로세로 크기를 조금씩 줄여서 맞춥니다. 어떻게 해도 못 맞추면 그 사실을 알려드립니다.</p>
+      <p>JPG 저장에는 브라우저 기본 인코더 대신 사이트에 포함된 <strong>MozJPEG</strong>(WebAssembly)를 사용해, 같은 품질 값에서 더 작은 파일을 만듭니다. <strong>AVIF</strong>도 같은 방식으로 저장할 수 있지만 처리 시간이 더 걸리고, 사진에 따라 JPG보다 항상 작아지는 것은 아닙니다. WebP와 PNG는 브라우저 기본 인코더를 씁니다. 이 모든 처리는 서버 없이 브라우저 안에서 이뤄집니다.</p>
     </section>
 
     <section class="info-section">
@@ -239,7 +320,7 @@
       </details>
       <details>
         <summary>어떤 파일 형식을 지원하나요?</summary>
-        <p>JPG, PNG, WebP 형식의 이미지를 업로드할 수 있고, 세 형식 중 원하는 형식으로 저장할 수 있습니다.</p>
+        <p>JPG, PNG, WebP 이미지와 아이폰 HEIC/HEIF 사진을 업로드할 수 있습니다(HEIC는 JPG로 변환해서 처리합니다). 저장은 JPG, PNG, WebP, AVIF 중에서 고를 수 있습니다.</p>
       </details>
       <details>
         <summary>압축 품질은 어떻게 설정하나요?</summary>
@@ -252,6 +333,18 @@
       <details>
         <summary>이미지 크기(가로세로 픽셀)도 줄일 수 있나요?</summary>
         <p>네. 가로/세로 값을 직접 입력해 크기를 조정할 수 있고, '비율 유지'를 켜면 한쪽 값만 입력해도 원본 비율 그대로 나머지 값이 자동 계산됩니다.</p>
+      </details>
+      <details>
+        <summary>"200KB 이하"처럼 목표 용량에 맞춰서 줄일 수 있나요?</summary>
+        <p>네. 압축 방식에서 '목표 용량에 맞추기'를 고르고 숫자와 단위(KB/MB)를 입력하면, 그 용량 이하에서 가장 좋은 화질을 자동으로 찾아줍니다. 품질을 최저로 낮춰도 크면 가로세로 크기를 조금씩 줄여서 맞추고, 그래도 안 되면 맞추지 못했다고 알려드립니다.</p>
+      </details>
+      <details>
+        <summary>PNG 용량도 줄일 수 있나요?</summary>
+        <p>네. 출력 형식이 PNG일 때 'PNG 색 수'를 256색 이하로 두면 색 수를 줄인 팔레트 PNG로 저장해 용량이 크게 줄어듭니다. 사진처럼 색이 많은 이미지는 미세한 색 번짐이 생길 수 있고, 완전한 무손실이 필요하면 '원본 그대로'를 선택하세요.</p>
+      </details>
+      <details>
+        <summary>사진에 들어 있는 위치 정보는 어떻게 되나요?</summary>
+        <p>결과 파일은 이미지를 다시 인코딩해서 만들기 때문에 위치(GPS)와 촬영 정보가 포함되지 않습니다. 원본 JPG에 위치 정보가 있었다면 결과 화면에서 알려드립니다.</p>
       </details>
       <details>
         <summary>회원가입이나 설치가 필요한가요?</summary>
@@ -267,12 +360,20 @@
     </div>
   </footer>
 
+  <script src="js/privacyMeter.js"></script>
   <script src="js/strings.js"></script>
   <script src="js/imageTools.js"></script>
+  <script src="js/targetSize.js"></script>
+  <script src="js/pngQuantize.js"></script>
+  <script src="js/exifGps.js"></script>
+  <script src="js/cropTools.js"></script>
+  <script src="js/heicLoader.js"></script>
+  <script src="js/modernEncoders.js"></script>
   <script src="js/uploadUtil.js"></script>
   <script src="js/shareUtil.js"></script>
   <script src="js/workflowTools.js"></script>
   <script src="js/batchTools.js"></script>
+  <script src="js/privacyBadge.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

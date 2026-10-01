@@ -13,7 +13,7 @@
     return value.toFixed(1) + ' ' + units[unitIndex];
   }
 
-  var SUPPORTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  var SUPPORTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
 
   function isSupportedImageType(mimeType) {
     return SUPPORTED_TYPES.indexOf(mimeType) !== -1;
@@ -65,7 +65,8 @@
   var EXTENSIONS_BY_MIME_TYPE = {
     'image/jpeg': 'jpg',
     'image/png': 'png',
-    'image/webp': 'webp'
+    'image/webp': 'webp',
+    'image/avif': 'avif'
   };
 
   function getExtensionForMimeType(mimeType) {

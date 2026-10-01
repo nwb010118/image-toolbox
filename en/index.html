@@ -62,7 +62,7 @@
         "name": "Which file formats are supported?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You can upload JPG, PNG, or WebP images, and save the result as any of those three formats."
+          "text": "You can upload JPG, PNG, or WebP images and iPhone HEIC/HEIF photos (HEIC is converted to JPG for processing). Save as JPG, PNG, WebP or AVIF."
         }
       },
       {
@@ -87,6 +87,30 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes. Enter width and height directly, or turn on \"Keep aspect ratio\" and enter just one value — the other is calculated automatically to match the original proportions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I shrink a photo to a target size like \"under 200 KB\"?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Choose \"Fit a target file size\" under Compression mode and enter a number and unit (KB/MB). The tool automatically finds the best quality that stays under it. If even the lowest quality is too big it reduces the pixel size step by step, and it tells you if the target still can't be met."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I make PNG files smaller?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. When the output format is PNG, set \"PNG colors\" to 256 or fewer and the tool saves a palette PNG with far fewer colors, which cuts the size a lot. Photos with many colors may show slight banding; choose \"Original\" for true lossless output."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to location data inside my photos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The result is created by re-encoding the image, so it contains no location (GPS) or camera data. If your original JPG had location data, the result screen tells you."
         }
       },
       {
@@ -124,7 +148,7 @@
     <nav class="task-picker" aria-label="Quick links"><a href="#uploadArea" aria-current="true">Compress photos</a><a href="pdf.html#images-to-pdf">Photos to PDF</a><a href="upscale.html">Enlarge small images</a></nav>
     <div class="tool-intro-grid">
 <section class="upload-area" id="uploadArea">
-      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp" multiple>
+      <input type="file" id="fileInput" class="visually-hidden" accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,.heic,.heif" multiple>
       <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12"></path>
         <path d="M7 8l5-5 5 5"></path>
@@ -133,7 +157,7 @@
       <h2 class="upload-heading">Drop your image here</h2>
       <button type="button" class="upload-btn">Choose File</button>
       <p class="upload-hint">or drag and drop a file into this area</p>
-      <p class="upload-formats">JPG, PNG, WebP · up to 10 files at a time · up to 20MB each</p>
+      <p class="upload-formats">JPG, PNG, WebP, HEIC · up to 10 files at a time · up to 20MB each</p>
       <div id="errorMessage" class="error-message" role="alert" hidden></div>
     </section>
 <aside class="compression-example" aria-labelledby="example-title">
@@ -150,8 +174,29 @@
     <p class="privacy-strip">No server uploads · No sign-up or install required</p>
 
     <section class="controls" id="controls" tabindex="-1" aria-label="Image compression settings" hidden>
-      <label for="qualitySlider">Quality: <span id="qualityValue">80</span>%</label>
-      <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      <div class="option-group">
+        <label for="presetSelect">Preset for a specific use</label>
+        <select id="presetSelect"><option value="">Custom</option></select>
+        <p id="presetNote" class="field-note" hidden></p>
+      </div>
+
+      <fieldset class="mode-group">
+        <legend>Compression mode</legend>
+        <label class="radio-label"><input type="radio" name="compressMode" id="modeQuality" value="quality" checked> Set the quality</label>
+        <label class="radio-label"><input type="radio" name="compressMode" id="modeTarget" value="target"> Fit a target file size</label>
+        <div id="targetFields" class="target-fields" hidden>
+          <label class="resize-label">Target size
+            <input type="number" id="targetSize" min="1" step="any" value="200">
+          </label>
+          <select id="targetUnit" aria-label="Size unit"><option value="KB">KB</option><option value="MB">MB</option></select>
+          <p class="field-note">Finds the best quality that stays under this size. If it's still too big, the pixel size is reduced step by step.</p>
+        </div>
+      </fieldset>
+
+      <div id="qualityFields">
+        <label for="qualitySlider">Quality: <span id="qualityValue">80</span>%</label>
+        <input type="range" id="qualitySlider" min="10" max="100" value="80">
+      </div>
 
       <div class="resize-fields" id="resizeFields">
         <label class="resize-label">Width (px)
@@ -166,6 +211,22 @@
         </label>
       </div>
 
+      <div id="fitGroup" class="option-group" hidden>
+        <label for="fitSelect">When the ratio doesn't match</label>
+        <select id="fitSelect">
+          <option value="cover">Crop to fill (recommended)</option>
+          <option value="stretch">Stretch to fit (may distort)</option>
+        </select>
+        <div id="cropPosition" class="crop-position">
+          <label class="resize-label">Horizontal position
+            <input type="range" id="cropX" min="0" max="100" value="50">
+          </label>
+          <label class="resize-label">Vertical position
+            <input type="range" id="cropY" min="0" max="100" value="50">
+          </label>
+        </div>
+      </div>
+
       <label for="formatSelect">Output format</label>
       <select id="formatSelect">
         <option value="original">Same as original</option>
@@ -173,7 +234,22 @@
         <option value="image/png">PNG</option>
         <option value="image/webp">WebP</option>
       </select>
-      <p id="pngSizeHint" class="compress-warning" hidden>PNG is a lossless format, so compressing it won't shrink the file size — it may even get larger than the original. Choose JPG or WebP to actually reduce file size.</p>
+
+      <div id="pngOptions" class="option-group" hidden>
+        <label for="pngColors">PNG colors</label>
+        <select id="pngColors">
+          <option value="256" selected>256 colors (recommended · big savings)</option>
+          <option value="128">128 colors</option>
+          <option value="64">64 colors</option>
+          <option value="32">32 colors</option>
+          <option value="0">Original (lossless · barely shrinks)</option>
+        </select>
+        <label class="checkbox-label">
+          <input type="checkbox" id="pngDither">
+          Dithering (smoother gradients)
+        </label>
+      </div>
+      <p id="pngSizeHint" class="compress-warning" hidden>PNG "Original" is lossless, so compressing it won't shrink the file — it may even get larger. To reduce size, lower the number of colors or choose JPG or WebP.</p>
 
       <button id="compressBtn">Apply</button>
       <p class="offline-badge">
@@ -183,11 +259,12 @@
         </svg>
         No server uploads · Processed entirely in your browser
       </p>
+      <div id="privacyMeter" class="privacy-meter" aria-live="polite"></div>
     </section>
 
     <section class="pdf-section batch-area" id="batchArea" aria-label="Batch compression results" hidden>
       <h2>Batch compression</h2>
-      <p id="batchNote" class="batch-note">Batch mode: the same quality and output format are applied to every image, and each image keeps its original size.</p>
+      <p id="batchNote" class="batch-note">Batch mode: the same quality (or target size) and output format apply to every image. Pick a preset to fit every photo to that size; without one, each image keeps its original size.</p>
       <ul id="batchList" class="file-list"></ul>
       <p id="batchProgress" class="pdf-progress" role="status" hidden></p>
       <p id="batchSummary" class="compression-savings" role="status" hidden></p>
@@ -205,6 +282,8 @@
         <img id="compressedPreview" alt="Compressed image preview">
         <p id="compressedSize"></p>
         <p id="compressionSavings" class="compression-savings" role="status" hidden></p>
+        <p id="targetNote" class="result-note" role="status" hidden></p>
+        <p id="metaNotice" class="result-note" role="status" hidden></p>
         <p id="compressWarning" class="compress-warning" hidden>⚠ The result is larger than the original. Consider lowering the quality, or skip downloading it.</p>
         <div class="result-actions">
           <a id="downloadBtn" class="btn" href="#" download="compressed-image.jpg" hidden>Download</a>
@@ -217,8 +296,10 @@
     <section class="info-section">
       <h2>How compression works</h2>
       <p class="tool-nav"><a href="../benchmark.html">See real compression-rate test results →</a></p>
-      <p>This tool compresses images by re-encoding them with the browser's Canvas API: it draws the original onto a canvas, then saves it again in the format and quality you choose.</p>
-      <p>JPG and WebP are lossy formats, so lowering the quality slider actually shrinks the file size. PNG, on the other hand, is lossless — adjusting the quality slider has no effect on its file size, and that's standard browser behavior, not a limitation of this tool. To shrink a PNG photo, switch the output format to JPG or WebP, or reduce its pixel dimensions instead.</p>
+      <p>This tool compresses images by re-encoding them with the browser's Canvas API: it draws the original onto a canvas, then saves it again in the format and quality you choose. Because the file is re-encoded, metadata such as location (GPS) and camera details does not carry over to the result.</p>
+      <p>JPG, WebP and AVIF are lossy formats, so lowering the quality slider really does shrink the file. PNG is lossless, so the quality slider has no effect on it, but this tool can shrink screenshots and graphics a lot with <strong>color reduction</strong> (palette PNG). Because it works by reducing the number of colors, photos may show slight color banding; choose "Original" if you need true lossless output.</p>
+      <p>Choose <strong>Fit a target file size</strong> and type a number such as "200 KB": the tool searches for the best quality that stays under it. If even the lowest quality is too big, it shrinks the pixel size step by step, and it tells you if the target can't be reached.</p>
+      <p>JPG output uses <strong>MozJPEG</strong> (WebAssembly bundled with this site) instead of the browser's default encoder, which produces a smaller file at the same quality value. You can save <strong>AVIF</strong> the same way, but it takes longer and isn't always smaller than JPG, depending on the photo. WebP and PNG use the browser's built-in encoders. All of this runs in your browser, with no server.</p>
     </section>
 
     <section class="info-section">
@@ -238,7 +319,7 @@
       </details>
       <details>
         <summary>Which file formats are supported?</summary>
-        <p>You can upload JPG, PNG, or WebP images, and save the result as any of those three formats.</p>
+        <p>You can upload JPG, PNG, or WebP images and iPhone HEIC/HEIF photos (HEIC is converted to JPG for processing). Save as JPG, PNG, WebP or AVIF.</p>
       </details>
       <details>
         <summary>How do I set the compression quality?</summary>
@@ -251,6 +332,18 @@
       <details>
         <summary>Can I also resize the image dimensions?</summary>
         <p>Yes. Enter width and height directly, or turn on "Keep aspect ratio" and enter just one value — the other is calculated automatically to match the original proportions.</p>
+      </details>
+      <details>
+        <summary>Can I shrink a photo to a target size like "under 200 KB"?</summary>
+        <p>Yes. Choose "Fit a target file size" under Compression mode and enter a number and unit (KB/MB). The tool automatically finds the best quality that stays under it. If even the lowest quality is too big it reduces the pixel size step by step, and it tells you if the target still can't be met.</p>
+      </details>
+      <details>
+        <summary>Can I make PNG files smaller?</summary>
+        <p>Yes. When the output format is PNG, set "PNG colors" to 256 or fewer and the tool saves a palette PNG with far fewer colors, which cuts the size a lot. Photos with many colors may show slight banding; choose "Original" for true lossless output.</p>
+      </details>
+      <details>
+        <summary>What happens to location data inside my photos?</summary>
+        <p>The result is created by re-encoding the image, so it contains no location (GPS) or camera data. If your original JPG had location data, the result screen tells you.</p>
       </details>
       <details>
         <summary>Do I need to sign up or install anything?</summary>
@@ -266,12 +359,20 @@
     </div>
   </footer>
 
+  <script src="../js/privacyMeter.js"></script>
   <script src="../js/strings.js"></script>
   <script src="../js/imageTools.js"></script>
+  <script src="../js/targetSize.js"></script>
+  <script src="../js/pngQuantize.js"></script>
+  <script src="../js/exifGps.js"></script>
+  <script src="../js/cropTools.js"></script>
+  <script src="../js/heicLoader.js"></script>
+  <script src="../js/modernEncoders.js"></script>
   <script src="../js/uploadUtil.js"></script>
   <script src="../js/shareUtil.js"></script>
   <script src="../js/workflowTools.js"></script>
   <script src="../js/batchTools.js"></script>
+  <script src="../js/privacyBadge.js"></script>
   <script src="../js/app.js"></script>
 </body>
 </html>

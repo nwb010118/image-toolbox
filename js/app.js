@@ -1,6 +1,10 @@
 var selectedFile = null;
+var selectedMeta = null;
 var batchFiles = [];
 var batchResults = [];
+var batchGpsCount = 0;
+var converting = false;
+var activePreset = null;
 
 var uploadArea = document.getElementById('uploadArea');
 var fileInput = document.getElementById('fileInput');
@@ -8,6 +12,7 @@ var errorMessage = document.getElementById('errorMessage');
 var controls = document.getElementById('controls');
 var qualitySlider = document.getElementById('qualitySlider');
 var qualityValue = document.getElementById('qualityValue');
+var qualityFields = document.getElementById('qualityFields');
 var compressBtn = document.getElementById('compressBtn');
 var previewArea = document.getElementById('previewArea');
 var originalPreview = document.getElementById('originalPreview');
@@ -15,13 +20,30 @@ var compressedPreview = document.getElementById('compressedPreview');
 var originalSize = document.getElementById('originalSize');
 var compressedSize = document.getElementById('compressedSize');
 var compressionSavings = document.getElementById('compressionSavings');
+var targetNote = document.getElementById('targetNote');
+var metaNotice = document.getElementById('metaNotice');
 var uploadHeading = uploadArea.querySelector('.upload-heading');
 var uploadButton = uploadArea.querySelector('.upload-btn');
 var compressWarning = document.getElementById('compressWarning');
 var downloadBtn = document.getElementById('downloadBtn');
 var pngSizeHint = document.getElementById('pngSizeHint');
+var pngOptions = document.getElementById('pngOptions');
+var pngColors = document.getElementById('pngColors');
+var pngDither = document.getElementById('pngDither');
 var shareBtn = document.getElementById('shareBtn');
 var shareStatus = document.getElementById('shareStatus');
+
+var presetSelect = document.getElementById('presetSelect');
+var presetNote = document.getElementById('presetNote');
+var modeQuality = document.getElementById('modeQuality');
+var modeTarget = document.getElementById('modeTarget');
+var targetFields = document.getElementById('targetFields');
+var targetSizeInput = document.getElementById('targetSize');
+var targetUnit = document.getElementById('targetUnit');
+var fitGroup = document.getElementById('fitGroup');
+var fitSelect = document.getElementById('fitSelect');
+var cropX = document.getElementById('cropX');
+var cropY = document.getElementById('cropY');
 
 var resizeWidth = document.getElementById('resizeWidth');
 var resizeHeight = document.getElementById('resizeHeight');
@@ -44,58 +66,145 @@ var SHARE_URL = LANG === 'en'
   ? 'https://nwb010118.github.io/image-toolbox/en/index.html'
   : 'https://nwb010118.github.io/image-toolbox/';
 
-function processImage(file, options) {
-  return new Promise(function (resolve, reject) {
-    if (!options.outputMimeType) {
-      reject(new Error(t('unsupportedFormatGeneric')));
-      return;
-    }
+// AVIF and MozJPEG are encoded by WebAssembly encoders bundled with the site (see js/modernEncoders.js).
+var MODERN_ENCODERS = typeof window !== 'undefined' && window.ModernEncoders ? window.ModernEncoders.isSupported() : false;
+var AVIF_ENCODE_SUPPORTED = MODERN_ENCODERS;
 
+// ---- image pipeline -------------------------------------------------------
+
+function loadImage(file) {
+  return new Promise(function (resolve, reject) {
     var img = new Image();
     var objectUrl = URL.createObjectURL(file);
-
     img.onload = function () {
-      var dimensions = resolveDimensions(img.naturalWidth, img.naturalHeight, options.targetWidth, options.targetHeight);
-
-      var canvas = document.createElement('canvas');
-      canvas.width = dimensions.width;
-      canvas.height = dimensions.height;
-
-      var ctx = canvas.getContext('2d');
-      if (!ctx) {
-        URL.revokeObjectURL(objectUrl);
-        reject(new Error(t('canvas2dUnavailable')));
-        return;
-      }
-
-      if (options.outputMimeType === 'image/jpeg') {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-      ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
-
-      canvas.toBlob(
-        function (blob) {
-          URL.revokeObjectURL(objectUrl);
-          if (!blob) {
-            reject(new Error(t('imageProcessingFailed')));
-            return;
-          }
-          resolve({ blob: blob, url: URL.createObjectURL(blob), width: dimensions.width, height: dimensions.height });
-        },
-        options.outputMimeType,
-        options.quality
-      );
+      URL.revokeObjectURL(objectUrl);
+      resolve(img);
     };
-
     img.onerror = function () {
       URL.revokeObjectURL(objectUrl);
       reject(new Error(t('imageLoadFailedGeneric')));
     };
-
     img.src = objectUrl;
   });
 }
+
+function drawToCanvas(img, dimensions, scale, options) {
+  var width = Math.max(1, Math.round(dimensions.width * scale));
+  var height = Math.max(1, Math.round(dimensions.height * scale));
+  var canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+
+  var ctx = canvas.getContext('2d');
+  if (!ctx) {
+    throw new Error(t('canvas2dUnavailable'));
+  }
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+
+  if (options.outputMimeType === 'image/jpeg') {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  var wantsCover = options.fitMode === 'cover'
+    && typeof options.targetWidth === 'number' && typeof options.targetHeight === 'number';
+  if (wantsCover) {
+    var crop = computeCoverCrop(img.naturalWidth, img.naturalHeight, width, height, options.cropX, options.cropY);
+    ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, width, height);
+  } else {
+    ctx.drawImage(img, 0, 0, width, height);
+  }
+  return canvas;
+}
+
+function canvasToBlob(canvas, mimeType, quality) {
+  return new Promise(function (resolve, reject) {
+    canvas.toBlob(function (blob) {
+      if (!blob) {
+        reject(new Error(t('imageProcessingFailed')));
+        return;
+      }
+      resolve(blob);
+    }, mimeType, quality);
+  });
+}
+
+function encodeCanvas(canvas, mimeType, level, options) {
+  if (mimeType === 'image/png') {
+    var colors = typeof level === 'number' ? level : options.pngColors;
+    if (!colors) {
+      return canvasToBlob(canvas, 'image/png');
+    }
+    return quantizeCanvasToPngBlob(canvas, colors, options.dither).catch(function () {
+      return canvasToBlob(canvas, 'image/png');
+    });
+  }
+  if (mimeType === 'image/avif') {
+    return window.ModernEncoders.encodeCanvas('avif', canvas, level);
+  }
+  if (mimeType === 'image/jpeg' && MODERN_ENCODERS) {
+    // MozJPEG gives a smaller file than the browser's built-in JPEG encoder at the same quality value.
+    return window.ModernEncoders.encodeCanvas('jpeg', canvas, level).catch(function () {
+      return canvasToBlob(canvas, mimeType, level);
+    });
+  }
+  return canvasToBlob(canvas, mimeType, level);
+}
+
+function processImage(file, options) {
+  if (!options.outputMimeType) {
+    return Promise.reject(new Error(t('unsupportedFormatGeneric')));
+  }
+
+  return loadImage(file).then(function (img) {
+    var dimensions = options.longEdge
+      ? fitInside(img.naturalWidth, img.naturalHeight, options.longEdge)
+      : resolveDimensions(img.naturalWidth, img.naturalHeight, options.targetWidth, options.targetHeight);
+    var isPng = options.outputMimeType === 'image/png';
+
+    var cachedScale = null;
+    var cachedCanvas = null;
+    function canvasFor(scale) {
+      if (cachedScale !== scale) {
+        cachedCanvas = drawToCanvas(img, dimensions, scale, options);
+        cachedScale = scale;
+      }
+      return cachedCanvas;
+    }
+
+    function finish(blob, info) {
+      var canvas = canvasFor(info.scale);
+      return {
+        blob: blob,
+        url: URL.createObjectURL(blob),
+        width: canvas.width,
+        height: canvas.height,
+        info: info
+      };
+    }
+
+    if (options.targetBytes) {
+      var levels = isPng
+        ? PALETTE_LEVELS.filter(function (n) { return !options.pngColors || n <= options.pngColors; })
+        : QUALITY_LEVELS;
+      // Keep the image looking decent: shrink the pixel size before dropping to very low quality / very few colours.
+      var preferredLevels = levels.filter(function (n) { return isPng ? n >= 32 : n >= 0.4; });
+      return fitToTargetSize(function (level, scale) {
+        return encodeCanvas(canvasFor(scale), options.outputMimeType, level, options);
+      }, options.targetBytes, { levels: levels, preferredLevels: preferredLevels }).then(function (found) {
+        return finish(found.blob, { targeted: true, fit: found.fit, level: found.level, scale: found.scale, isPng: isPng });
+      });
+    }
+
+    var level = isPng ? options.pngColors : options.quality;
+    return encodeCanvas(canvasFor(1), options.outputMimeType, level, options).then(function (blob) {
+      return finish(blob, { targeted: false, fit: true, level: level, scale: 1, isPng: isPng });
+    });
+  });
+}
+
+// ---- helpers ------------------------------------------------------------------
 
 function showError(message) {
   errorMessage.textContent = message;
@@ -107,15 +216,190 @@ function clearError() {
   errorMessage.hidden = true;
 }
 
-function updatePngSizeHint() {
+function resolveOutputType(sourceType) {
+  var type = resolveOutputMimeType(sourceType, formatSelect.value);
+  if (type === 'image/avif' && !AVIF_ENCODE_SUPPORTED) {
+    return 'image/webp';
+  }
+  return type;
+}
+
+function isTargetMode() {
+  return !!(modeTarget && modeTarget.checked);
+}
+
+function updateModeVisibility() {
+  var target = isTargetMode();
+  targetFields.hidden = !target;
+  // The quality slider only applies to JPG/WebP/AVIF output in "set the quality" mode.
+  qualityFields.hidden = target || isPngOutput();
+}
+
+function isPngOutput() {
   var probe = selectedFile || batchFiles[0];
   if (!probe) {
-    pngSizeHint.hidden = true;
+    return false;
+  }
+  return resolveOutputType(probe.type) === 'image/png';
+}
+
+function updatePngSizeHint() {
+  var png = isPngOutput();
+  pngOptions.hidden = !png;
+  pngSizeHint.hidden = !(png && Number(pngColors.value) === 0 && !isTargetMode());
+  updateModeVisibility();
+}
+
+function readCompressOptions() {
+  var options = {
+    quality: Number(qualitySlider.value) / 100,
+    pngColors: Number(pngColors.value),
+    dither: !!pngDither.checked,
+    targetBytes: null,
+    fitMode: fitSelect.value,
+    cropX: Number(cropX.value) / 100,
+    cropY: Number(cropY.value) / 100
+  };
+  if (isTargetMode()) {
+    options.targetBytes = parseTargetBytes(targetSizeInput.value, targetUnit.value);
+    if (!options.targetBytes) {
+      throw new Error(t('targetInvalid'));
+    }
+  }
+  return options;
+}
+
+function describeLevel(info) {
+  var parts = [];
+  parts.push(info.isPng
+    ? t('targetDetailColors', { n: info.level })
+    : t('targetDetailQuality', { q: Math.round(info.level * 100) }));
+  if (info.scale < 1) {
+    parts.push(t('targetDetailScale', { p: Math.round(info.scale * 100) }));
+  }
+  return parts.join(', ');
+}
+
+function showTargetNote(result, targetBytes) {
+  if (!result.info.targeted) {
+    targetNote.hidden = true;
     return;
   }
-  var outputMimeType = resolveOutputMimeType(probe.type, formatSelect.value);
-  pngSizeHint.hidden = outputMimeType !== 'image/png';
+  var targetText = formatBytes(targetBytes);
+  targetNote.textContent = result.info.fit
+    ? t('targetFit', { target: targetText, detail: describeLevel(result.info) })
+    : t('targetMiss', { target: targetText, size: formatBytes(result.blob.size) });
+  targetNote.hidden = false;
 }
+
+function showMetaNotice(meta) {
+  if (meta && meta.hasGps) {
+    metaNotice.textContent = t('metaGpsRemoved');
+  } else if (meta && meta.hasExif) {
+    metaNotice.textContent = t('metaExifRemoved');
+  } else {
+    metaNotice.textContent = t('metaNone');
+  }
+  metaNotice.hidden = false;
+}
+
+function inspectFileMeta(file) {
+  if (file.type !== 'image/jpeg' || typeof file.slice !== 'function') {
+    return Promise.resolve({ isJpeg: false, hasExif: false, hasGps: false });
+  }
+  return file.slice(0, 262144).arrayBuffer().then(inspectJpegMetadata).catch(function () {
+    return { isJpeg: false, hasExif: false, hasGps: false };
+  });
+}
+
+// ---- presets & fit controls ---------------------------------------------------
+
+function populatePresets() {
+  if (!presetSelect || !presetSelect.appendChild || typeof document.createElement !== 'function') {
+    return;
+  }
+  PRESETS.forEach(function (preset) {
+    var option = document.createElement('option');
+    option.value = preset.id;
+    option.textContent = preset[LANG] || preset.ko;
+    presetSelect.appendChild(option);
+  });
+  if (AVIF_ENCODE_SUPPORTED) {
+    var avif = document.createElement('option');
+    avif.value = 'image/avif';
+    avif.textContent = t('avifOption');
+    formatSelect.appendChild(avif);
+  }
+}
+
+function setTargetFieldsFromBytes(bytes) {
+  if (bytes >= 1024 * 1024 && bytes % (1024 * 1024) === 0) {
+    targetSizeInput.value = String(bytes / (1024 * 1024));
+    targetUnit.value = 'MB';
+  } else {
+    targetSizeInput.value = String(Math.round(bytes / 1024));
+    targetUnit.value = 'KB';
+  }
+}
+
+function updateFitVisibility() {
+  var w = Number(resizeWidth.value);
+  var h = Number(resizeHeight.value);
+  var singleVisible = batchFiles.length === 0 && w > 0 && h > 0 && originalImageWidth > 0 && originalImageHeight > 0;
+  var mismatch = singleVisible && Math.abs((w / h) / (originalImageWidth / originalImageHeight) - 1) > 0.01;
+  var batchPreset = batchFiles.length > 0 && activePreset && activePreset.width;
+  fitGroup.hidden = !(mismatch || batchPreset);
+  document.getElementById('cropPosition').hidden = fitSelect.value !== 'cover';
+}
+
+function clearPreset() {
+  activePreset = null;
+  presetSelect.value = '';
+  presetNote.hidden = true;
+  presetNote.textContent = '';
+}
+
+function applyPreset(id) {
+  var preset = getPreset(id);
+  if (!preset) {
+    clearPreset();
+    updateFitVisibility();
+    return;
+  }
+  activePreset = preset;
+  var name = preset[LANG] || preset.ko;
+
+  if (preset.maxBytes) {
+    modeTarget.checked = true;
+    setTargetFieldsFromBytes(preset.maxBytes);
+  }
+  if (preset.mime) {
+    formatSelect.value = preset.mime;
+  }
+  if (batchFiles.length === 0 && originalImageWidth > 0) {
+    if (preset.width) {
+      maintainAspectRatio.checked = false;
+      resizeWidth.value = preset.width;
+      resizeHeight.value = preset.height;
+      fitSelect.value = 'cover';
+    } else if (preset.longEdge) {
+      var fitted = fitInside(originalImageWidth, originalImageHeight, preset.longEdge);
+      resizeWidth.value = fitted.width;
+      resizeHeight.value = fitted.height;
+    }
+  } else if (preset.width) {
+    fitSelect.value = 'cover';
+  }
+  presetNote.textContent = preset.longEdge && !preset.width
+    ? t('presetLongEdge', { name: name, edge: preset.longEdge })
+    : t('presetApplied', { name: name });
+  presetNote.hidden = false;
+  updateModeVisibility();
+  updatePngSizeHint();
+  updateFitVisibility();
+}
+
+// ---- file handling ------------------------------------------------------------
 
 function handleFile(file) {
   if (compressBtn.disabled) { showError(t('busyFileChange')); return; }
@@ -124,16 +408,21 @@ function handleFile(file) {
   resetBatch();
   compressionSavings.hidden = true;
   compressionSavings.textContent = '';
+  targetNote.hidden = true;
+  metaNotice.hidden = true;
   uploadArea.classList.remove('has-file');
   uploadHeading.textContent = t('dropImageHere');
   uploadButton.textContent = t('chooseFile');
   controls.hidden = true;
   previewArea.hidden = true;
   selectedFile = null;
+  selectedMeta = null;
   originalImageWidth = 0;
   originalImageHeight = 0;
   resizeWidth.value = '';
   resizeHeight.value = '';
+  clearPreset();
+  fitGroup.hidden = true;
   pngSizeHint.hidden = true;
   shareBtn.hidden = true;
   shareStatus.hidden = true;
@@ -158,6 +447,9 @@ function handleFile(file) {
   }
 
   selectedFile = file;
+  inspectFileMeta(file).then(function (meta) {
+    if (selectedFile === file) selectedMeta = meta;
+  });
   originalPreview.src = URL.createObjectURL(file);
   originalSize.textContent = t('originalSizeLabel', { size: formatBytes(file.size) });
   // Show editing controls only after the image has decoded.
@@ -166,6 +458,7 @@ function handleFile(file) {
   compressedSize.textContent = '';
   compressWarning.hidden = true;
   downloadBtn.hidden = true;
+  updateModeVisibility();
   updatePngSizeHint();
 }
 
@@ -173,6 +466,7 @@ function resetBatch() {
   batchResults.forEach(function (r) { URL.revokeObjectURL(r.url); });
   batchResults = [];
   batchFiles = [];
+  batchGpsCount = 0;
   batchList.innerHTML = '';
   batchArea.hidden = true;
   batchProgress.hidden = true;
@@ -183,8 +477,53 @@ function resetBatch() {
   resizeFields.hidden = false;
 }
 
+// Converts any HEIC/HEIF photos to JPEG first, then continues with the normal flow.
+function prepareFiles(list) {
+  if (!list.some(isHeicFile)) {
+    return Promise.resolve({ files: list, error: '' });
+  }
+  converting = true;
+  uploadArea.classList.add('is-busy');
+  var total = list.filter(isHeicFile).length;
+  var done = 0;
+  var failed = [];
+  var out = [];
+  return list.reduce(function (promise, file) {
+    return promise.then(function () {
+      if (!isHeicFile(file)) {
+        out.push(file);
+        return null;
+      }
+      uploadHeading.textContent = t('heicConverting', { current: done + 1, total: total });
+      return convertHeicToJpeg(file).then(function (jpeg) {
+        out.push(jpeg);
+      }, function () {
+        failed.push(file.name);
+      }).then(function () { done++; });
+    });
+  }, Promise.resolve()).then(function () {
+    converting = false;
+    uploadArea.classList.remove('is-busy');
+    return { files: out, error: failed.length > 0 ? t('heicFailed', { name: failed.join(', ') }) : '' };
+  });
+}
+
 function handleFiles(files) {
   var list = Array.prototype.slice.call(files || []);
+  if (compressBtn.disabled || converting) { showError(t('busyFileChange')); return; }
+  prepareFiles(list).then(function (prepared) {
+    if (prepared.files.length === 0 && list.length > 0) {
+      uploadHeading.textContent = t('dropImageHere');
+    } else {
+      routeFiles(prepared.files);
+    }
+    if (prepared.error) {
+      showError(prepared.error);
+    }
+  });
+}
+
+function routeFiles(list) {
   if (list.length <= 1) {
     handleFile(list[0]);
     return;
@@ -226,7 +565,13 @@ function handleBatch(list) {
     li.textContent = file.name + ' (' + formatBytes(file.size) + ')';
     batchList.appendChild(li);
   });
+  Promise.all(accepted.map(inspectFileMeta)).then(function (metas) {
+    if (batchFiles !== accepted) return;
+    batchGpsCount = metas.filter(function (m) { return m.hasGps; }).length;
+  });
+  updateModeVisibility();
   updatePngSizeHint();
+  updateFitVisibility();
   controls.hidden = false;
   controls.focus({ preventScroll: true });
   controls.scrollIntoView({ behavior: 'instant', block: 'start' });
@@ -252,8 +597,38 @@ function addBatchRow(file, result, name, error) {
   batchList.appendChild(li);
 }
 
+function batchOptionsFor(base, file) {
+  var options = {
+    quality: base.quality,
+    pngColors: base.pngColors,
+    dither: base.dither,
+    targetBytes: base.targetBytes,
+    fitMode: base.fitMode,
+    cropX: base.cropX,
+    cropY: base.cropY,
+    targetWidth: null,
+    targetHeight: null,
+    longEdge: null,
+    outputMimeType: resolveOutputType(file.type)
+  };
+  if (activePreset && activePreset.width) {
+    options.targetWidth = activePreset.width;
+    options.targetHeight = activePreset.height;
+  } else if (activePreset && activePreset.longEdge) {
+    options.longEdge = activePreset.longEdge;
+  }
+  return options;
+}
+
 function runBatch() {
   clearError();
+  var base;
+  try {
+    base = readCompressOptions();
+  } catch (err) {
+    showError(err.message);
+    return;
+  }
   batchResults.forEach(function (r) { URL.revokeObjectURL(r.url); });
   batchResults = [];
   batchList.innerHTML = '';
@@ -261,7 +636,6 @@ function runBatch() {
   batchSummary.hidden = true;
 
   var files = batchFiles.slice();
-  var quality = Number(qualitySlider.value) / 100;
   var usedNames = {};
   var totalBefore = 0;
   var totalAfter = 0;
@@ -273,12 +647,7 @@ function runBatch() {
   files.reduce(function (promise, file, index) {
     return promise.then(function () {
       batchProgress.textContent = t('batchProgress', { current: index + 1, total: files.length });
-      return processImage(file, {
-        quality: quality,
-        targetWidth: null,
-        targetHeight: null,
-        outputMimeType: resolveOutputMimeType(file.type, formatSelect.value)
-      }).then(function (result) {
+      return processImage(file, batchOptionsFor(base, file)).then(function (result) {
         var name = getBatchOutputName(file.name, getExtensionForMimeType(result.blob.type), usedNames);
         batchResults.push({ name: name, blob: result.blob, url: result.url });
         totalBefore += file.size;
@@ -291,9 +660,13 @@ function runBatch() {
   }, Promise.resolve())
     .then(function () {
       batchProgress.hidden = true;
-      batchSummary.textContent = batchResults.length > 0
+      var summary = batchResults.length > 0
         ? t('batchSummary', { done: batchResults.length, total: files.length, change: describeSizeChange(totalBefore, totalAfter, LANG) })
         : t('batchSummaryNone', { done: 0, total: files.length });
+      if (batchResults.length > 0 && batchGpsCount > 0) {
+        summary += ' · ' + t('batchGpsRemoved', { n: batchGpsCount });
+      }
+      batchSummary.textContent = summary;
       batchSummary.hidden = false;
       batchZipBtn.hidden = batchResults.length === 0;
     })
@@ -333,6 +706,7 @@ originalPreview.addEventListener('load', function () {
   uploadButton.textContent = t('chooseAnotherImage');
   uploadArea.classList.add('has-file');
   controls.hidden = false;
+  updateFitVisibility();
   controls.focus({ preventScroll: true });
   controls.scrollIntoView({ behavior: 'instant', block: 'start' });
 });
@@ -378,6 +752,7 @@ compressBtn.addEventListener('click', function () {
   }
   clearError();
   compressWarning.hidden = true;
+  targetNote.hidden = true;
 
   var widthInput = readDimensionInput(resizeWidth);
   var heightInput = readDimensionInput(resizeHeight);
@@ -397,20 +772,23 @@ compressBtn.addEventListener('click', function () {
     return;
   }
 
-  var outputMimeType = resolveOutputMimeType(selectedFile.type, formatSelect.value);
+  var options;
+  try {
+    options = readCompressOptions();
+  } catch (err) {
+    showError(err.message);
+    return;
+  }
+  options.targetWidth = widthInput;
+  options.targetHeight = heightInput;
+  options.outputMimeType = resolveOutputType(selectedFile.type);
 
   compressBtn.disabled = true;
-  compressBtn.textContent = t('processingEllipsis');
-
-  var quality = Number(qualitySlider.value) / 100;
+  compressBtn.textContent = options.outputMimeType === 'image/avif' ? t('avifWorking') : t('processingEllipsis');
 
   var runFile = selectedFile;
-  processImage(runFile, {
-    quality: quality,
-    targetWidth: widthInput,
-    targetHeight: heightInput,
-    outputMimeType: outputMimeType
-  })
+  var runMeta = selectedMeta;
+  processImage(runFile, options)
     .then(function (result) {
       if (lastResultUrl) {
         URL.revokeObjectURL(lastResultUrl);
@@ -421,6 +799,8 @@ compressBtn.addEventListener('click', function () {
       compressionSavings.textContent = describeSizeChange(runFile.size, result.blob.size, LANG);
       compressionSavings.classList.toggle('size-increased', result.blob.size > runFile.size);
       compressionSavings.hidden = false;
+      showTargetNote(result, options.targetBytes);
+      showMetaNotice(runMeta);
       compressWarning.hidden = result.blob.size <= runFile.size;
       downloadBtn.href = result.url;
       downloadBtn.download = 'processed-image.' + getExtensionForMimeType(result.blob.type);
@@ -447,28 +827,36 @@ function readDimensionInput(inputEl) {
 }
 
 resizeWidth.addEventListener('input', function () {
-  if (!maintainAspectRatio.checked || !originalImageWidth || !originalImageHeight) {
-    return;
+  if (maintainAspectRatio.checked && originalImageWidth && originalImageHeight) {
+    var w = Number(resizeWidth.value);
+    if (w && !isNaN(w)) {
+      resizeHeight.value = calculateAspectRatioHeight(originalImageWidth, originalImageHeight, w);
+    }
   }
-  var w = Number(resizeWidth.value);
-  if (!w || isNaN(w)) {
-    return;
-  }
-  resizeHeight.value = calculateAspectRatioHeight(originalImageWidth, originalImageHeight, w);
+  updateFitVisibility();
 });
 
 resizeHeight.addEventListener('input', function () {
-  if (!maintainAspectRatio.checked || !originalImageWidth || !originalImageHeight) {
-    return;
+  if (maintainAspectRatio.checked && originalImageWidth && originalImageHeight) {
+    var h = Number(resizeHeight.value);
+    if (h && !isNaN(h)) {
+      resizeWidth.value = calculateAspectRatioWidth(originalImageWidth, originalImageHeight, h);
+    }
   }
-  var h = Number(resizeHeight.value);
-  if (!h || isNaN(h)) {
-    return;
-  }
-  resizeWidth.value = calculateAspectRatioWidth(originalImageWidth, originalImageHeight, h);
+  updateFitVisibility();
 });
 
-formatSelect.addEventListener('change', updatePngSizeHint);
+formatSelect.addEventListener('change', function () {
+  updateModeVisibility();
+  updatePngSizeHint();
+});
+pngColors.addEventListener('change', updatePngSizeHint);
+modeQuality.addEventListener('change', function () { updateModeVisibility(); updatePngSizeHint(); });
+modeTarget.addEventListener('change', function () { updateModeVisibility(); updatePngSizeHint(); });
+fitSelect.addEventListener('change', updateFitVisibility);
+presetSelect.addEventListener('change', function () { applyPreset(presetSelect.value); });
+
+populatePresets();
 
 wireShareButton(shareBtn, shareStatus, function () {
   return {
